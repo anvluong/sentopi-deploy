@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentopi | Review Intelligence for E-Commerce</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+<style>
+/* ─── Reset & tokens ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:    #0f172a;
+  --navy2:   #1e293b;
+  --slate7:  #334155;
+  --slate6:  #475569;
+  --slate5:  #64748b;
+  --slate4:  #94a3b8;
+  --slate3:  #cbd5e1;
+  --slate2:  #e2e8f0;
+  --slate1:  #f1f5f9;
+  --white:   #ffffff;
+  --blue:    #3b82f6;
+  --indigo:  #6366f1;
+  --violet:  #7c3aed;
+  --emerald: #10b981;
+  --red:     #ef4444;
+  --amber:   #f59e0b;
+  --r: 12px;
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--navy2); background: var(--slate1);
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font-family: inherit; }
+
+/* ─── Layout ─── */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+.section { padding: 96px 0; }
+
+/* ─── Gradient text ─── */
+.gradient-text {
+  background: linear-gradient(120deg, #60a5fa 0%, #a78bfa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────── NAV ─────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(15,23,42,0.92); backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: box-shadow 0.2s;
+}
+.nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between; height: 60px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 1.05rem; color: #fff; letter-spacing: -0.01em;
+}
+.nav-logo-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--slate4); transition: color 0.15s; }
+.nav-links a:hover { color: #fff; }
+.nav-calc-link { display: inline-flex; align-items: center; gap: 6px; }
+.nav-free-badge {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 7px; border-radius: 100px;
+  background: rgba(16,185,129,0.15); color: #34d399;
+  transition: background 0.15s;
+}
+.nav-calc-link:hover .nav-free-badge { background: rgba(16,185,129,0.25); }
+.nav-cta {
+  display: inline-flex; align-items: center;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  color: #fff; font-weight: 600; font-size: 0.8125rem;
+  padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s; box-shadow: 0 1px 8px rgba(99,102,241,0.3);
+}
+.nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+/* ─────────── HERO ─────────── */
+.hero {
+  background: var(--navy); padding: 160px 0 120px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.065) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -5%,  rgba(99,102,241,0.16), transparent),
+    radial-gradient(ellipse 50% 50% at 80% 90%, rgba(59,130,246,0.07), transparent);
+}
+/* abstract bar chart at bottom */
+.hero-bars {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 130px; z-index: 1;
+  display: flex; align-items: flex-end; gap: 8px; pointer-events: none; opacity: 0.05;
+}
+.hero-bar { border-radius: 3px 3px 0 0; background: #fff; width: 14px; flex-shrink: 0; }
+
+/* ── centered hero content ── */
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 760px; margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--slate3); font-size: 0.8rem; font-weight: 500;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 28px;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--emerald);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+.hero h1 {
+  font-size: clamp(2.75rem, 6vw, 4.25rem); font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.038em; color: #fff; margin-bottom: 16px;
+}
+.hero h2 {
+  font-size: clamp(1.1rem, 2.2vw, 1.45rem); font-weight: 400;
+  color: var(--slate4); letter-spacing: -0.005em; margin-bottom: 22px; line-height: 1.4;
+}
+.hero-sub {
+  font-size: 1.0625rem; color: var(--slate5); line-height: 1.75; margin-bottom: 40px;
+  max-width: 580px; margin-left: auto; margin-right: auto;
+}
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.hero-calc-link {
+  margin-top: 20px; font-size: 0.875rem; color: var(--slate5);
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+}
+.hero-calc-anchor {
+  color: var(--slate3); font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.hero-calc-anchor:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+.hero-calc-sub { color: var(--slate6); font-size: 0.8rem; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  color: #fff; font-weight: 700; font-size: 0.9375rem;
+  padding: 14px 30px; border-radius: 10px; border: none; cursor: pointer;
+  box-shadow: 0 2px 14px rgba(99,102,241,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 22px rgba(99,102,241,0.5); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+  color: var(--slate3); font-weight: 600; font-size: 0.9375rem;
+  padding: 14px 28px; border-radius: 10px; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.11); color: #fff; }
+
+/* ─────────── PROOF BAR ─────────── */
+.proof-bar { background: var(--white); border-bottom: 1px solid var(--slate2); padding: 36px 0; }
+.proof-inner {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; align-items: start;
+}
+.proof-item {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 0 24px;
+}
+.proof-item + .proof-item { border-left: 1px solid var(--slate2); }
+.proof-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: linear-gradient(135deg,rgba(59,130,246,0.09),rgba(99,102,241,0.13));
+  display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+}
+.proof-icon svg { width: 18px; height: 18px; stroke: var(--indigo); }
+.proof-label { font-size: 0.875rem; font-weight: 700; color: var(--navy2); margin-bottom: 2px; }
+.proof-desc  { font-size: 0.78rem; color: var(--slate5); line-height: 1.4; }
+.proof-calc-link {
+  margin-top: 8px; font-size: 0.75rem; font-weight: 600;
+  color: var(--indigo); border-bottom: 1px solid rgba(99,102,241,0.25);
+  padding-bottom: 1px; transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.proof-calc-link:hover { color: var(--violet); border-color: rgba(124,58,237,0.4); }
+
+/* ─────────── PROBLEM ─────────── */
+.problem-section { background: var(--slate1); }
+.section-eyebrow {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--indigo); margin-bottom: 14px;
+}
+.section-h2 {
+  font-size: clamp(1.7rem, 3.5vw, 2.5rem); font-weight: 800;
+  line-height: 1.14; letter-spacing: -0.028em; color: var(--navy);
+}
+.section-sub { font-size: 1.0625rem; color: var(--slate6); line-height: 1.7; }
+
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.problem-list { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.problem-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--slate2);
+  border-radius: var(--r); padding: 18px 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.problem-item:hover { border-color: rgba(99,102,241,0.3); box-shadow: 0 2px 12px rgba(99,102,241,0.07); }
+.problem-x {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 5px;
+  background: rgba(239,68,68,0.1); display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.problem-x svg { width: 11px; height: 11px; stroke: var(--red); }
+.problem-text { font-size: 0.9375rem; color: var(--slate7); line-height: 1.55; }
+.problem-text strong { color: var(--navy2); }
+.problem-transition {
+  margin-top: 24px; padding: 16px 20px;
+  background: linear-gradient(120deg,rgba(59,130,246,0.06),rgba(99,102,241,0.07));
+  border: 1px solid rgba(99,102,241,0.15); border-radius: var(--r);
+  font-size: 0.9375rem; font-weight: 600; color: var(--navy2); line-height: 1.5;
+}
+/* mini breakdown visual */
+.problem-visual {
+  background: var(--navy); border-radius: 16px; padding: 26px;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.18);
+}
+.pv-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.pv-title  { color: var(--slate3); font-size: 0.8rem; font-weight: 600; }
+.pv-badge  { font-size: 0.65rem; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: rgba(239,68,68,0.18); color: #f87171; }
+.pv-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.pv-label { color: var(--slate4); min-width: 135px; font-size: 0.775rem; }
+.pv-track { flex: 1; height: 7px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.pv-fill  { height: 100%; border-radius: 4px; }
+.pv-pct   { color: var(--slate3); font-weight: 600; min-width: 34px; text-align: right; font-size: 0.775rem; }
+.pv-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 14px 0; }
+.pv-insight { font-size: 0.795rem; color: var(--slate5); line-height: 1.6; border-left: 2px solid var(--indigo); padding-left: 12px; }
+
+/* ─────────── HOW IT WORKS ─────────── */
+.how-section { background: var(--slate1); }
+.how-header { text-align: center; max-width: 540px; margin: 0 auto 52px; }
+.how-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+.how-card {
+  background: var(--white); border: 1px solid var(--slate2);
+  border-radius: 14px; padding: 30px 24px; position: relative;
+  transition: border-color 0.2s, transform 0.18s;
+}
+.how-card:hover { border-color: rgba(99,102,241,0.35); transform: translateY(-2px); }
+
+.how-step-top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.how-step-num {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  color: #fff; font-weight: 800; font-size: 0.875rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.how-step-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: rgba(99,102,241,0.08);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.how-step-icon svg { width: 18px; height: 18px; stroke: var(--indigo); }
+.how-card h3 { font-size: 1.0625rem; font-weight: 700; color: var(--navy); margin-bottom: 9px; }
+.how-card p  { font-size: 0.9rem; color: var(--slate6); line-height: 1.65; }
+.how-card .how-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 12px; font-size: 0.75rem; font-weight: 600;
+  color: var(--indigo); background: rgba(99,102,241,0.08);
+  padding: 3px 10px; border-radius: 100px;
+}
+/* secondary CTA below how-it-works */
+.how-cta-row { text-align: center; }
+.how-cta-row p { font-size: 0.9375rem; color: var(--slate5); margin-bottom: 16px; }
+.btn-primary-dark {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  color: #fff; font-weight: 700; font-size: 0.9375rem;
+  padding: 14px 30px; border-radius: 10px; border: none; cursor: pointer;
+  box-shadow: 0 2px 14px rgba(99,102,241,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-primary-dark:hover { transform: translateY(-1px); box-shadow: 0 4px 22px rgba(99,102,241,0.4); }
+
+/* ─────────── SAMPLE INSIGHTS ─────────── */
+.output-section { background: var(--white); }
+.output-header  { text-align: center; max-width: 600px; margin: 0 auto 56px; }
+
+/* ── Chart card ── */
+.chart-card {
+  background: var(--white); border: 1px solid var(--slate2);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.06); margin-bottom: 28px;
+  max-width: 800px; margin-left: auto; margin-right: auto;
+}
+.chart-card-header {
+  padding: 16px 24px; border-bottom: 1px solid var(--slate2);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.chart-card-left { display: flex; align-items: center; gap: 10px; }
+.chart-card-title { font-size: 0.9375rem; font-weight: 700; color: var(--navy); }
+.chart-card-badge {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 3px 9px; border-radius: 100px; background: rgba(99,102,241,0.1); color: var(--indigo);
+}
+/* legend pills */
+.chart-legend { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.775rem; font-weight: 500; color: var(--slate6); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.chart-card-body { padding: 12px 16px 10px; }
+.chart-caption {
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--slate1);
+  font-size: 0.8rem; color: var(--slate5); line-height: 1.55; font-style: italic;
+}
+
+/* ── Two-column below chart ── */
+.output-cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: start; }
+
+/* priority table */
+.priority-card {
+  background: var(--white); border: 1px solid var(--slate2);
+  border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+.priority-card-header {
+  background: var(--navy); padding: 13px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.priority-card-header span:first-child { font-size: 0.775rem; font-weight: 700; color: var(--slate3); text-transform: uppercase; letter-spacing: 0.06em; }
+.priority-card-header span:last-child  { font-size: 0.7rem; color: var(--slate6); }
+.priority-row {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 13px 16px; border-bottom: 1px solid var(--slate1);
+  font-size: 0.8125rem;
+}
+.priority-row:last-child { border-bottom: none; }
+.p-badge {
+  flex-shrink: 0; font-size: 0.63rem; font-weight: 800;
+  padding: 2px 7px; border-radius: 5px; letter-spacing: 0.03em; margin-top: 2px;
+}
+.badge-p0   { background:#fee2e2; color:#b91c1c; }
+.badge-high { background:#fff7ed; color:#c2410c; }
+.badge-med  { background:#fefce8; color:#a16207; }
+.badge-low  { background:var(--slate1); color:var(--slate6); }
+.p-content  { flex: 1; }
+.p-issue    { font-weight: 600; color: var(--navy2); line-height: 1.3; }
+.p-action   { font-size: 0.74rem; color: var(--slate5); margin-top: 2px; line-height: 1.4; }
+.p-trend {
+  flex-shrink: 0; font-size: 0.7rem; font-weight: 600;
+  padding: 2px 7px; border-radius: 5px; margin-top: 2px; white-space: nowrap;
+}
+.t-up   { background:rgba(239,68,68,0.08);   color:var(--red); }
+.t-down { background:rgba(16,185,129,0.08);  color:var(--emerald); }
+.t-flat { background:var(--slate1); color:var(--slate5); }
+
+/* report contents */
+.report-contents {
+  background: var(--white); border: 1px solid var(--slate2);
+  border-radius: 14px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+.rc-heading {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--slate5); margin-bottom: 14px;
+}
+.rc-list { display: flex; flex-direction: column; gap: 10px; }
+.rc-item { display: flex; align-items: flex-start; gap: 9px; font-size: 0.865rem; }
+.rc-check {
+  flex-shrink: 0; width: 17px; height: 17px; border-radius: 5px;
+  background: rgba(16,185,129,0.11); display: flex; align-items: center; justify-content: center; margin-top: 1px;
+}
+.rc-check svg { width: 10px; height: 10px; stroke: var(--emerald); }
+.rc-text { color: var(--slate7); line-height: 1.45; }
+.rc-text strong { color: var(--navy2); }
+
+/* ─────────── PRICING ─────────── */
+.pricing-section { background: var(--white); }
+.pricing-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+.pricing-inner .section-h2 { margin-bottom: 8px; }
+.pricing-sub { font-size: 1.05rem; color: var(--slate5); margin-bottom: 36px; }
+.pricing-card {
+  background: var(--navy); border-radius: 16px; padding: 40px 36px;
+  color: #fff; position: relative; overflow: hidden;
+}
+.pricing-card::before {
+  content:''; position:absolute; top:-40%; right:-20%; width:300px; height:300px;
+  background:radial-gradient(circle,rgba(99,102,241,0.15),transparent 65%);
+  border-radius:50%; pointer-events:none;
+}
+.pricing-starting { font-size: 0.85rem; color: var(--slate4); margin-bottom: 6px; }
+.pricing-price {
+  font-size: clamp(2.4rem, 5vw, 3.2rem); font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 28px;
+}
+.pricing-price span { font-size: 1rem; font-weight: 500; color: var(--slate4); }
+.pricing-features {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;
+  text-align: left; margin-bottom: 28px;
+}
+.pricing-feat {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 0.875rem; color: var(--slate3);
+}
+.pricing-feat svg { flex-shrink: 0; color: var(--emerald); }
+.pricing-divider {
+  border: none; border-top: 1px solid rgba(255,255,255,0.1);
+  margin: 0 0 28px;
+}
+.pricing-free-label {
+  font-size: 0.95rem; font-weight: 700; color: var(--emerald);
+  margin-bottom: 6px;
+}
+.pricing-free-desc {
+  font-size: 0.875rem; color: var(--slate4); margin-bottom: 24px; line-height: 1.5;
+}
+.pricing-cta {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, var(--blue), var(--indigo));
+  color: #fff; font-weight: 700; font-size: 0.9375rem;
+  padding: 14px 30px; border-radius: 10px; border: none; cursor: pointer;
+  box-shadow: 0 2px 14px rgba(99,102,241,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+}
+.pricing-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 22px rgba(99,102,241,0.4); }
+
+/* ─────────── DEMO FORM ─────────── */
+.form-section { background: var(--navy); position: relative; overflow: hidden; }
+.form-section::before {
+  content:''; position:absolute; top:-30%; right:-15%; width:540px; height:540px;
+  background:radial-gradient(circle,rgba(99,102,241,0.13),transparent 65%);
+  border-radius:50%; pointer-events:none;
+}
+.form-section::after {
+  content:''; position:absolute; bottom:-25%; left:-10%; width:400px; height:400px;
+  background:radial-gradient(circle,rgba(59,130,246,0.07),transparent 65%);
+  border-radius:50%; pointer-events:none;
+}
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; position:relative; z-index:1; }
+.form-left h2 {
+  font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800; color: #fff;
+  line-height: 1.13; letter-spacing: -0.025em; margin-bottom: 14px;
+}
+.form-left .form-sub { font-size: 1rem; color: var(--slate4); line-height: 1.72; margin-bottom: 30px; }
+.trust-list { display:flex; flex-direction:column; gap:11px; }
+.trust-item { display:flex; align-items:center; gap:10px; font-size:0.875rem; color:var(--slate3); }
+.trust-check { color:var(--emerald); flex-shrink:0; }
+
+.demo-form {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09);
+  border-radius:16px; padding:34px; backdrop-filter:blur(8px);
+}
+.demo-form-title { color:#fff; font-size:1.1rem; font-weight:700; margin-bottom:3px; }
+.demo-form-sub   { color:var(--slate5); font-size:0.83rem; margin-bottom:22px; }
+.form-group { margin-bottom:13px; }
+.form-label {
+  display:block; font-size:0.79rem; font-weight:500; color:var(--slate4); margin-bottom:5px;
+}
+.form-input {
+  width:100%; padding:11px 13px; border-radius:9px;
+  border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05);
+  color:#fff; font-size:0.9375rem; outline:none; transition:border-color 0.15s,box-shadow 0.15s;
+}
+.form-input::placeholder { color:var(--slate6); }
+.form-input:focus { border-color:rgba(99,102,241,0.6); box-shadow:0 0 0 3px rgba(99,102,241,0.14); }
+.form-url-hint { font-size:0.73rem; color:var(--slate6); margin-top:4px; font-style:italic; }
+.form-submit {
+  width:100%; padding:14px; margin-top:8px; border-radius:10px; border:none; cursor:pointer;
+  font-weight:700; font-size:0.9375rem;
+  background:linear-gradient(135deg,var(--blue),var(--indigo));
+  color:#fff; box-shadow:0 2px 14px rgba(99,102,241,0.35);
+  transition:transform 0.15s,box-shadow 0.15s;
+}
+.form-submit:hover { transform:translateY(-1px); box-shadow:0 4px 22px rgba(99,102,241,0.45); }
+.form-note { text-align:center; font-size:0.74rem; color:var(--slate6); margin-top:9px; }
+
+/* ─────────── FOOTER ─────────── */
+.footer { background:#020617; border-top:1px solid rgba(255,255,255,0.05); padding:34px 0; }
+.footer-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.footer-copy  { font-size:0.8125rem; color:var(--slate6); }
+.footer-links { display:flex; gap:24px; }
+.footer-links a { font-size:0.8125rem; color:var(--slate6); transition:color 0.15s; }
+.footer-links a:hover { color:var(--slate3); }
+
+/* ─────────── Reveal animations ─────────── */
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.55s ease-out,transform 0.55s ease-out; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.d1 { transition-delay:0.08s; } .d2 { transition-delay:0.16s; } .d3 { transition-delay:0.24s; }
+
+/* ─────────── Responsive ─────────── */
+@media (max-width: 900px) {
+  .nav-links { display:none; }
+  .how-grid { grid-template-columns:1fr; }
+
+  .problem-grid { grid-template-columns:1fr; }
+  .output-cols { grid-template-columns:1fr; }
+  .form-grid { grid-template-columns:1fr; gap:44px; }
+  .proof-inner { grid-template-columns:repeat(3,1fr); }
+  .proof-item + .proof-item { border-left:1px solid var(--slate2); }
+}
+@media (max-width: 560px) {
+  .hero { padding:120px 0 80px; }
+  .section { padding:68px 0; }
+  .hero-bars { display:none; }
+  .hero-calc-link { flex-direction:column; gap:4px; }
+
+  /* ── Proof bar: horizontal rows ── */
+  .proof-inner { grid-template-columns:1fr; gap:0; }
+  .proof-item {
+    flex-direction:row; align-items:center; text-align:left;
+    padding:14px 20px; gap:14px;
+    border-left:none !important;
+  }
+  .proof-item + .proof-item { border-top:1px solid var(--slate2); }
+  .proof-icon { margin-bottom:0; width:34px; height:34px; flex-shrink:0; }
+  .proof-icon svg { width:16px; height:16px; }
+  .proof-label { font-size:0.8125rem; }
+  .proof-desc { display:none; }
+  .proof-calc-link { display:none; }
+
+  /* ── Problem cards: progressive disclosure ── */
+  .problem-text { font-size:0.875rem; }
+  .problem-text-detail { display:none; }
+  .problem-transition { font-size:0.875rem; padding:14px 16px; }
+
+  /* ── Chart: responsive ── */
+  .chart-card-header { flex-direction:column; align-items:flex-start; gap:10px; }
+  .chart-card-badge { display:none; }
+  .chart-card-body { padding:14px 12px 12px; }
+  .chart-caption { font-size:0.75rem; }
+  .chart-caption-detail { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      Sentopi
+    </a>
+    <div class="nav-links">
+      <a href="#how-it-works">How It Works</a>
+      <a href="#sample-insights">Sample Insights</a>
+      <a href="calculator.html" class="nav-calc-link">Star Rating Calculator <span class="nav-free-badge">Free</span></a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a href="#demo" class="nav-cta">Free Rating Report →</a>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-bars" aria-hidden="true">
+    <div class="hero-bar" style="height:32%"></div><div class="hero-bar" style="height:48%"></div>
+    <div class="hero-bar" style="height:27%"></div><div class="hero-bar" style="height:61%"></div>
+    <div class="hero-bar" style="height:78%"></div><div class="hero-bar" style="height:44%"></div>
+    <div class="hero-bar" style="height:85%"></div><div class="hero-bar" style="height:52%"></div>
+    <div class="hero-bar" style="height:69%"></div><div class="hero-bar" style="height:38%"></div>
+    <div class="hero-bar" style="height:91%"></div><div class="hero-bar" style="height:57%"></div>
+    <div class="hero-bar" style="height:43%"></div><div class="hero-bar" style="height:74%"></div>
+    <div class="hero-bar" style="height:35%"></div><div class="hero-bar" style="height:66%"></div>
+    <div class="hero-bar" style="height:82%"></div><div class="hero-bar" style="height:49%"></div>
+    <div class="hero-bar" style="height:38%"></div><div class="hero-bar" style="height:93%"></div>
+    <div class="hero-bar" style="height:56%"></div><div class="hero-bar" style="height:71%"></div>
+    <div class="hero-bar" style="height:41%"></div><div class="hero-bar" style="height:88%"></div>
+    <div class="hero-bar" style="height:29%"></div><div class="hero-bar" style="height:64%"></div>
+    <div class="hero-bar" style="height:77%"></div><div class="hero-bar" style="height:53%"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Amazon review intelligence
+      </div>
+      <h1>Stop guessing.<br><span class="gradient-text">Start listening.</span></h1>
+      <h2>Sentopi analyzes your reviews and hands you a prioritized action plan. What to fix first, who owns it, and what it's worth.</h2>
+      <div class="hero-ctas">
+        <a href="#demo" class="btn-primary">Get My Rating Report →</a>
+        <a href="#how-it-works" class="btn-ghost">See How It Works</a>
+      </div>
+      <p class="hero-calc-link">
+        Free tool: <a href="calculator.html" class="hero-calc-anchor">Star Rating Calculator →</a>
+        <span class="hero-calc-sub">See what each star improvement is worth for your product</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROOF BAR ══════════ -->
+<section class="proof-bar">
+  <div class="container">
+    <div class="proof-inner">
+      <div class="proof-item reveal">
+        <div class="proof-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="proof-label">Every Amazon review, read and categorized</div>
+        <div class="proof-desc">Every review on your listing, 1 star through 5, collected and processed</div>
+      </div>
+      <div class="proof-item reveal d1">
+        <div class="proof-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h8"/></svg>
+        </div>
+        <div class="proof-label">A ranked action plan, not a complaint list</div>
+        <div class="proof-desc">Issues scored by volume, severity, and fixability, with clear ownership per fix</div>
+      </div>
+      <div class="proof-item reveal d2">
+        <div class="proof-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="proof-label">The revenue at stake</div>
+        <div class="proof-desc">What each star improvement is worth in dollars, modeled to your product</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROBLEM ══════════ -->
+<section class="section problem-section">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <div class="section-eyebrow reveal">The Problem</div>
+        <h2 class="section-h2 reveal" style="margin-bottom:0">You already know something is off.<br>You just don't know where to start.</h2>
+        <div class="problem-list">
+          <div class="problem-item reveal">
+            <div class="problem-x"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+            <p class="problem-text"><strong>Your star rating is stuck</strong><span class="problem-text-detail"> and you don't know which complaint categories are actually driving 1-stars.</span></p>
+          </div>
+          <div class="problem-item reveal d1">
+            <div class="problem-x"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+            <p class="problem-text"><strong>You know there are listing accuracy issues.</strong><span class="problem-text-detail"> Reading hundreds of reviews to find them isn't how you're spending your week.</span></p>
+          </div>
+          <div class="problem-item reveal d2">
+            <div class="problem-x"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+            <p class="problem-text"><strong>Your team debates whether problems are product, ops, or marketing.</strong><span class="problem-text-detail"> No data to settle it.</span></p>
+          </div>
+          <div class="problem-transition reveal">
+            Every deliverable is built around one question: what do we fix first, who owns it, and how does it move our rating?
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-visual reveal d1">
+        <div class="pv-header">
+          <span class="pv-title">Sample: Complaint Root Cause Breakdown</span>
+          <span class="pv-badge">Illustrative</span>
+        </div>
+        <div class="pv-row">
+          <span class="pv-label">Listing over-promise</span>
+          <div class="pv-track"><div class="pv-fill" style="width:46%;background:linear-gradient(90deg,#6366f1,#818cf8)"></div></div>
+          <span class="pv-pct">~46%</span>
+        </div>
+        <div class="pv-row">
+          <span class="pv-label">True product failure</span>
+          <div class="pv-track"><div class="pv-fill" style="width:31%;background:#ef4444"></div></div>
+          <span class="pv-pct">~31%</span>
+        </div>
+        <div class="pv-row">
+          <span class="pv-label">Ops / fulfillment</span>
+          <div class="pv-track"><div class="pv-fill" style="width:14%;background:#f59e0b"></div></div>
+          <span class="pv-pct">~14%</span>
+        </div>
+        <div class="pv-row">
+          <span class="pv-label">Timeline expectation</span>
+          <div class="pv-track"><div class="pv-fill" style="width:9%;background:#94a3b8"></div></div>
+          <span class="pv-pct">~9%</span>
+        </div>
+        <div class="pv-divider"></div>
+        <p class="pv-insight">Nearly half of negative reviews are fixable with listing copy changes — no product reformulation required. Knowing which half is the entire game.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SAMPLE INSIGHTS ══════════ -->
+<section id="sample-insights" class="section output-section">
+  <div class="container">
+    <div class="output-header">
+      <div class="section-eyebrow reveal">Sample Insights</div>
+      <h2 class="section-h2 reveal" style="margin-bottom:12px">Your rating report.</h2>
+    </div>
+
+    <!-- ── Issue Buckets Over Time chart ── -->
+    <div class="chart-card reveal">
+      <div class="chart-card-header">
+        <div class="chart-card-left">
+          <span class="chart-card-title">Issue Buckets: Share of Negative Reviews Over Time</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Product Quality</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Operational Issues</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fb923c"></div>Customer Support</div>
+        </div>
+      </div>
+      <div class="chart-card-body">
+        <div style="position:relative"><canvas id="bucketsChart"></canvas></div>
+        <p class="chart-caption">Every spike has a cause. Catch it early, fix it fast.</p>
+      </div>
+    </div>
+
+    <!-- ── Priority table + report contents ── -->
+    <div class="output-cols">
+      <div class="priority-card reveal">
+        <div class="priority-card-header">
+          <span>Priority Action Table</span>
+          <span>Owner + root cause per issue</span>
+        </div>
+        <div class="priority-row">
+          <span class="p-badge badge-p0">P0</span>
+          <div class="p-content">
+            <div class="p-issue">Adverse reaction reports in reviews</div>
+            <div class="p-action">Immediate: ingredient &amp; allergen disclosure on listing and packaging</div>
+          </div>
+          <span class="p-trend t-flat">Safety</span>
+        </div>
+        <div class="priority-row">
+          <span class="p-badge badge-high">HIGH</span>
+          <div class="p-content">
+            <div class="p-issue">Core use-case mismatch — listing over-promises</div>
+            <div class="p-action">Owner: Marketing — rewrite listing copy to remove contested claims</div>
+          </div>
+          <span class="p-trend t-up">↑ Rising</span>
+        </div>
+        <div class="priority-row">
+          <span class="p-badge badge-high">HIGH</span>
+          <div class="p-content">
+            <div class="p-issue">Timeline expectation gap</div>
+            <div class="p-action">Owner: Content — add onset guidance to listing &amp; A+ content</div>
+          </div>
+          <span class="p-trend t-flat">Stable</span>
+        </div>
+        <div class="priority-row">
+          <span class="p-badge badge-med">MED</span>
+          <div class="p-content">
+            <div class="p-issue">Damaged or incomplete on arrival</div>
+            <div class="p-action">Owner: Ops — investigate 3PL packaging spec and carrier damage rates</div>
+          </div>
+          <span class="p-trend t-up">↑ Rising</span>
+        </div>
+        <div class="priority-row">
+          <span class="p-badge badge-low">LOW</span>
+          <div class="p-content">
+            <div class="p-issue">Refund &amp; return friction</div>
+            <div class="p-action">Owner: Ops — process improvement, not a product quality issue</div>
+          </div>
+          <span class="p-trend t-down">↓ Falling</span>
+        </div>
+      </div>
+
+      <div class="report-contents reveal d1">
+        <div class="rc-heading">Every Report Includes</div>
+        <div class="rc-list">
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Listing claim accuracy audit</strong> — every Amazon bullet validated against real review evidence</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Root cause decomposition</strong> — marketing fix vs. product fix vs. ops fix, per complaint category</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Safety signal detection</strong> — low-frequency, high-severity issues flagged regardless of review count</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Trend velocity</strong> — which complaint categories are rising and how fast</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Voice of Customer quotes</strong> — exact customer language for ad copy and listing rewrites</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Revenue impact model</strong> — personalized to your product's price and volume, per 0.1★ improvement</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>Competitor benchmark</strong> — side-by-side on ratings, complaint patterns, and trajectory</span>
+          </div>
+          <div class="rc-item">
+            <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="rc-text"><strong>90-day measurement framework</strong> — baselines and targets so you know if it's working</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section id="how-it-works" class="section how-section">
+  <div class="container">
+    <div class="how-header">
+      <div class="section-eyebrow reveal">How It Works</div>
+      <h2 class="section-h2 reveal" style="margin-bottom:12px">From your Amazon link<br>to your action plan.</h2>
+      <p class="section-sub reveal" style="max-width:460px;margin:0 auto">Share your link, get back a prioritized report with the actions that move your rating.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card reveal">
+        <div class="how-step-top">
+          <div class="how-step-num">1</div>
+          <div class="how-step-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+        </div>
+        <h3>Gather Reviews</h3>
+        <p>Drop in your Amazon URL. Every written review, 1 star through 5, is collected and processed. Nothing for you to do.</p>
+        <span class="how-tag">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Every review, 1 star through 5
+        </span>
+      </div>
+      <div class="how-card reveal d1">
+        <div class="how-step-top">
+          <div class="how-step-num">2</div>
+          <div class="how-step-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </div>
+        </div>
+        <h3>Break it Down into Actionable Categories</h3>
+        <p>Every review is categorized by root cause, scored by volume, severity, and fixability, then checked against your listing claims. Safety signals and rising trends get flagged automatically.</p>
+        <span class="how-tag">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Product, ops, or marketing
+        </span>
+      </div>
+      <div class="how-card reveal d2">
+        <div class="how-step-top">
+          <div class="how-step-num">3</div>
+          <div class="how-step-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+          </div>
+        </div>
+        <h3>Assign Ownership & Define Impact</h3>
+        <p>Every fix is assigned to product, ops, or marketing with a revenue impact model attached. Your team knows what to do, who owns it, and what it's worth.</p>
+        <span class="how-tag">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Revenue impact included
+        </span>
+      </div>
+    </div>
+    <div class="how-cta-row reveal">
+      <p>Ready to see what your reviews are telling you?</p>
+      <a href="#demo" class="btn-primary-dark">Get My Rating Report →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRICING ══════════ -->
+<section id="pricing" class="section pricing-section">
+  <div class="container">
+    <div class="pricing-inner">
+      <h2 class="section-h2 reveal">Simple pricing, serious insights.</h2>
+      <p class="pricing-sub reveal">Everything your team needs to turn reviews into a higher rating.</p>
+      <div class="pricing-card reveal d1">
+        <div class="pricing-starting">Plans starting at</div>
+        <div class="pricing-price">$149 <span>/month</span></div>
+        <div class="pricing-features">
+          <div class="pricing-feat">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Priority-scored action plan
+          </div>
+          <div class="pricing-feat">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Full review dataset (Excel)
+          </div>
+          <div class="pricing-feat">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Revenue impact modeling
+          </div>
+          <div class="pricing-feat">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Complaint trends over time
+          </div>
+        </div>
+        <hr class="pricing-divider">
+        <div class="pricing-free-label">Your first rating report is free</div>
+        <div class="pricing-free-desc">We'll analyze 100 reviews from your product and deliver a real report. See the methodology before you commit.</div>
+        <a href="#demo" class="pricing-cta">Get My Rating Report →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DEMO FORM ══════════ -->
+<section id="demo" class="section form-section">
+  <div class="container">
+    <div class="form-grid">
+      <div class="form-left reveal">
+        <h2>Get your free<br><span style="color:#818cf8">rating report.</span></h2>
+        <p class="form-sub">Drop your Amazon product link and we'll build your rating report from 100 reviews — the top complaint categories, priority scores, and what's actually driving your 1-stars.</p>
+        <div class="trust-list">
+          <div class="trust-item">
+            <svg class="trust-check" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Built from 100 of your actual reviews
+          </div>
+          <div class="trust-item">
+            <svg class="trust-check" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Priority-scored issues, ranked by impact
+          </div>
+          <div class="trust-item">
+            <svg class="trust-check" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Complaint categories broken into product, ops, and marketing
+          </div>
+          <div class="trust-item">
+            <svg class="trust-check" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No commitment, delivered within 48 hours
+          </div>
+        </div>
+      </div>
+
+      <form class="demo-form reveal d1" name="demo" method="POST" action="/success.html" data-netlify="true">
+        <input type="hidden" name="form-name" value="demo">
+        <div class="demo-form-title">Get My Rating Report</div>
+        <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
+        <div class="form-group">
+          <label class="form-label" for="f-name">Name *</label>
+          <input class="form-input" type="text" id="f-name" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-email">Email *</label>
+          <input class="form-input" type="email" id="f-email" name="email" placeholder="jane@yourbrand.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-url">Amazon product URL</label>
+          <input class="form-input" type="url" id="f-url" name="url" placeholder="https://amazon.com/dp/...">
+          <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
+        </div>
+        <button class="form-submit" type="submit" id="submitBtn">Get My Rating Report →</button>
+        <div class="form-note">No spam, ever. Your rating report arrives within 48 hours.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <span class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="mailto:hello@sentopi.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Scroll reveal ── */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ── Nav scroll ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+/* ── Form ── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn  = document.getElementById('submitBtn');
+  const form = e.target;
+  btn.textContent = 'Sending...'; btn.style.opacity = '0.65'; btn.disabled = true;
+
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(new FormData(form)).toString(),
+  })
+  .then(() => {
+    btn.textContent = '✓ You\'re in — report on its way';
+    btn.style.opacity = '1';
+    btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+    form.querySelectorAll('.form-input').forEach(i => i.value = '');
+    setTimeout(() => {
+      btn.textContent = 'Get My Rating Report →';
+      btn.style.background = 'linear-gradient(135deg,var(--blue),var(--indigo))';
+      btn.disabled = false;
+    }, 5000);
+  })
+  .catch(() => {
+    btn.textContent = 'Something went wrong — try again';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  });
+}
+
+/* ── Issue Buckets Over Time chart ── */
+window.addEventListener('load', () => {
+  const ctx = document.getElementById('bucketsChart');
+  if (!ctx || typeof Chart === 'undefined') return;
+
+  Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
+
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+
+  // Illustrative bucket data — % share of negative reviews
+  // Product Quality rises steadily (listing/formulation drift)
+  // Operational spikes sharply in April (damaged packaging) then falls as ops fixes
+  // Customer Support declines steadily
+  const productQuality  = [32, 35, 38, 44, 51, 54, 56];
+  const opsIssues       = [20, 22, 21, 54, 24, 18, 15];
+  const custSupport     = [40, 34, 33, 34, 30, 29, 29];
+
+  // Custom plugin: draws a callout annotation at the ops spike (Apr = index 3)
+  // Responsive: scales box size, clamps to chart area, hides on very small screens
+  const spikeCallout = {
+    id: 'spikeCallout',
+    afterDraw(chart) {
+      const { ctx, scales, chartArea } = chart;
+      const xScale = scales.x, yScale = scales.y;
+      if (!xScale || !yScale || !chartArea) return;
+
+      // Hide callout on narrow charts (mobile < 400px wide)
+      const chartW = chartArea.right - chartArea.left;
+      if (chartW < 300) return;
+
+      const x = xScale.getPixelForValue(3);
+      const y = yScale.getPixelForValue(54);
+
+      // Scale box based on chart width
+      const isMobile = chartW < 450;
+      const label = isMobile ? 'Packaging spike' : 'Spike: damaged packaging';
+      const fontSize = isMobile ? 10 : 11;
+      const boxW = isMobile ? 110 : 148;
+      const boxH = isMobile ? 26 : 32;
+      const pad = 8, arrowH = 7, r = 6;
+
+      // Clamp box horizontally within chart area
+      let bx = x - boxW / 2;
+      bx = Math.max(chartArea.left + 4, Math.min(bx, chartArea.right - boxW - 4));
+      const by = y - boxH - arrowH - pad;
+
+      // Don't draw if too close to top
+      if (by < chartArea.top - 5) return;
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.12)';
+      ctx.shadowBlur = 8; ctx.shadowOffsetY = 2;
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.moveTo(bx + r, by);
+      ctx.lineTo(bx + boxW - r, by);
+      ctx.quadraticCurveTo(bx + boxW, by, bx + boxW, by + r);
+      ctx.lineTo(bx + boxW, by + boxH - r);
+      ctx.quadraticCurveTo(bx + boxW, by + boxH, bx + boxW - r, by + boxH);
+      // arrow — clamp to box bounds
+      const ax = Math.max(bx + 12, Math.min(x, bx + boxW - 12));
+      ctx.lineTo(ax + 6, by + boxH);
+      ctx.lineTo(ax, by + boxH + arrowH);
+      ctx.lineTo(ax - 6, by + boxH);
+      ctx.lineTo(bx + r, by + boxH);
+      ctx.quadraticCurveTo(bx, by + boxH, bx, by + boxH - r);
+      ctx.lineTo(bx, by + r);
+      ctx.quadraticCurveTo(bx, by, bx + r, by);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+      // dot
+      ctx.fillStyle = '#f87171';
+      ctx.beginPath();
+      ctx.arc(bx + 12, by + boxH / 2, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      // text
+      ctx.fillStyle = '#f1f5f9';
+      ctx.font = `600 ${fontSize}px Inter, -apple-system, sans-serif`;
+      ctx.fillText(label, bx + 22, by + boxH / 2 + 4);
+      ctx.restore();
+    }
+  };
+
+  const gradientMaker = (ctx2, color) => {
+    const g = ctx2.createLinearGradient(0, 0, 0, 260);
+    g.addColorStop(0, color.replace(')', ', 0.18)').replace('rgb', 'rgba'));
+    g.addColorStop(1, color.replace(')', ', 0.0)').replace('rgb', 'rgba'));
+    return g;
+  };
+
+  const isMob = window.innerWidth < 560;
+  const ptR = isMob ? 3 : 5;
+  const ptH = isMob ? 5 : 7;
+  const bw = isMob ? 2 : 2.5;
+  const ptBw = isMob ? 2 : 2.5;
+
+  const chart = new Chart(ctx, { plugins: [spikeCallout],
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: 'Product Quality Issues',
+          data: productQuality,
+          borderColor: '#f87171',
+          borderWidth: bw,
+          pointRadius: ptR, pointHoverRadius: ptH,
+          pointBackgroundColor: '#fff', pointBorderColor: '#f87171', pointBorderWidth: ptBw,
+          tension: 0.42, fill: true,
+          backgroundColor: (c) => {
+            const g = c.chart.ctx.createLinearGradient(0,0,0,c.chart.height);
+            g.addColorStop(0,'rgba(248,113,113,0.14)');
+            g.addColorStop(1,'rgba(248,113,113,0.0)');
+            return g;
+          },
+          order: 0,
+        },
+        {
+          label: 'Operational Issues',
+          data: opsIssues,
+          borderColor: '#60a5fa',
+          borderWidth: 2.5,
+          pointRadius: [ptR, ptR, ptR, isMob ? 5 : 8, ptR, ptR, ptR],
+          pointHoverRadius: [ptH, ptH, ptH, isMob ? 7 : 10, ptH, ptH, ptH],
+          pointBackgroundColor: ['#fff','#fff','#fff','#60a5fa','#fff','#fff','#fff'],
+          pointBorderColor: '#60a5fa', pointBorderWidth: ptBw,
+          tension: 0.42, fill: true,
+          backgroundColor: (c) => {
+            const g = c.chart.ctx.createLinearGradient(0,0,0,c.chart.height);
+            g.addColorStop(0,'rgba(96,165,250,0.1)');
+            g.addColorStop(1,'rgba(96,165,250,0.0)');
+            return g;
+          },
+          order: 1,
+        },
+        {
+          label: 'Customer Support Issues',
+          data: custSupport,
+          borderColor: '#fb923c',
+          borderWidth: bw,
+          pointRadius: ptR, pointHoverRadius: ptH,
+          pointBackgroundColor: '#fff', pointBorderColor: '#fb923c', pointBorderWidth: ptBw,
+          tension: 0.42, fill: true,
+          backgroundColor: (c) => {
+            const g = c.chart.ctx.createLinearGradient(0,0,0,c.chart.height);
+            g.addColorStop(0,'rgba(251,146,60,0.1)');
+            g.addColorStop(1,'rgba(251,146,60,0.0)');
+            return g;
+          },
+          order: 2,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: window.innerWidth < 560 ? 1.3 : 2.0,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false }, /* handled via custom HTML legend above */
+        tooltip: {
+          backgroundColor: '#0f172a',
+          borderColor: 'rgba(255,255,255,0.08)', borderWidth: 1,
+          titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+          padding: 12, cornerRadius: 8,
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}% of negatives`,
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+          ticks: { color: '#64748b', font: { size: 12, weight: '500' } },
+          border: { display: false },
+        },
+        y: {
+          min: 0, max: 70,
+          grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+          ticks: {
+            color: '#94a3b8', font: { size: 11 },
+            callback: v => v + '%',
+          },
+          title: {
+            display: true, text: '% share of negative reviews',
+            color: '#94a3b8', font: { size: 11 },
+          },
+          border: { display: false },
+        }
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
