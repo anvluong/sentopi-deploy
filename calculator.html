@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MLF5DHCH');</script>
-<!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Star Rating Calculator | Sentopi</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --navy:    #0f172a;
-  --navy2:   #1e293b;
-  --slate7:  #334155;
-  --slate6:  #475569;
-  --slate5:  #64748b;
-  --slate4:  #94a3b8;
-  --slate3:  #cbd5e1;
-  --slate2:  #e2e8f0;
-  --slate1:  #f1f5f9;
-  --white:   #ffffff;
-  --blue:    #3b82f6;
-  --indigo:  #6366f1;
-  --violet:  #7c3aed;
-  --emerald: #10b981;
-  --red:     #ef4444;
-  --amber:   #f59e0b;
+  --cream:    #faf7f2;
+  --cream2:   #f2ece0;
+  --cream3:   #e5d9c8;
+  --parchment:#d4c9b8;
+  --ink:      #1a1714;
+  --ink2:     #2e2a25;
+  --ink3:     #4a443c;
+  --ink4:     #6b6358;
+  --ink5:     #7a6e65;
+  --forest:   #059669;
+  --forest2:  #047857;
+  --forest3:  #10b981;
+  --forest-lt:#d1fae5;
+  --ochre:    #ea580c;
+  --ochre-lt: #fff7ed;
+  --rust:     #dc2626;
+  --rust-lt:  #fee2e2;
+  --teal:     #0f766e;
+  --teal-lt:  #ccfbf1;
+  --amber:    #d97706;
+  --amber-lt: #fef9c3;
+  --white:    #ffffff;
+  --r:        4px;
+  /* legacy aliases for React inline styles */
+  --navy2:    #2e2a25;
+  --slate1:   #faf7f2;
+  --slate2:   #e5d9c8;
+  --slate3:   #d4c9b8;
+  --slate4:   #7a6e65;
+  --slate5:   #6b6358;
+  --indigo:   #059669;
+  --emerald:  #059669;
 }
 html { font-size: 16px; }
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--slate1);
-  color: var(--navy2);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--ink2);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -50,39 +59,33 @@ body {
 /* ── Nav ── */
 .nav {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(15,23,42,0.95); backdrop-filter: blur(20px) saturate(160%);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.97);
+  border-bottom: 1px solid var(--cream3);
 }
 .nav-inner {
-  max-width: 1120px; margin: 0 auto; padding: 0 28px;
+  max-width: 1120px; margin: 0 auto; padding: 0 32px;
   display: flex; align-items: center; justify-content: space-between; height: 60px;
 }
 .nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-weight: 700; font-size: 1.05rem; color: #fff;
-  text-decoration: none; letter-spacing: -0.01em;
-}
-.nav-logo-icon {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: linear-gradient(135deg, var(--blue), var(--indigo));
-  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: var(--ink);
+  text-decoration: none; letter-spacing: 0.01em;
 }
 .nav-back {
-  font-size: 0.8125rem; font-weight: 500; color: var(--slate4);
+  font-size: 0.8125rem; font-weight: 400; color: var(--ink4);
   text-decoration: none; display: flex; align-items: center; gap: 6px;
   transition: color 0.15s;
 }
-.nav-back:hover { color: #fff; }
+.nav-back:hover { color: var(--ink); }
 .nav-cta {
   display: inline-flex; align-items: center;
-  background: linear-gradient(135deg, var(--blue), var(--indigo));
-  color: #fff; font-weight: 600; font-size: 0.8125rem;
-  padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer;
+  background: var(--ochre);
+  color: #fff; font-weight: 500; font-size: 0.8125rem;
+  padding: 8px 18px; border-radius: var(--r); border: none; cursor: pointer;
   text-decoration: none;
-  transition: opacity 0.15s, transform 0.15s;
-  box-shadow: 0 1px 8px rgba(99,102,241,0.3);
+  transition: background 0.15s, transform 0.15s;
 }
-.nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+.nav-cta:hover { background: #c94d0a; transform: translateY(-1px); }
 
 /* ── Page shell ── */
 .page { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
@@ -93,17 +96,18 @@ body {
 }
 .calc-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.18);
-  color: var(--indigo); font-size: 0.75rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 100px; margin-bottom: 18px;
+  background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2);
+  color: var(--forest2); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 2px; margin-bottom: 18px;
 }
 .calc-hero h1 {
-  font-size: clamp(1.75rem, 4vw, 2.6rem); font-weight: 800;
-  color: var(--navy); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.75rem, 4vw, 2.6rem); font-weight: 400;
+  color: var(--ink); letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 12px;
 }
 .calc-hero p {
-  font-size: 1rem; color: var(--slate5); max-width: 480px; margin: 0 auto; line-height: 1.7;
+  font-size: 1rem; color: var(--ink4); max-width: 480px; margin: 0 auto; line-height: 1.7;
 }
 
 /* ── Main grid ── */
@@ -114,14 +118,15 @@ body {
 
 /* ── Panel (shared card shell) ── */
 .panel {
-  background: var(--white); border: 1px solid var(--slate2);
-  border-radius: 16px; overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  background: var(--white); border: 1px solid var(--cream3);
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26,23,20,0.06);
 }
 .panel-header {
-  background: var(--navy); padding: 14px 20px;
-  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; color: var(--slate4);
+  background: var(--white); padding: 14px 20px;
+  border-bottom: 1px solid var(--cream2);
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ink4);
 }
 .panel-body { padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; }
 
@@ -129,38 +134,38 @@ body {
 .field { display: flex; flex-direction: column; gap: 5px; }
 .field-label {
   display: flex; align-items: center; gap: 6px;
-  font-size: 0.8125rem; font-weight: 600; color: var(--navy2);
+  font-size: 0.8125rem; font-weight: 600; color: var(--ink2);
 }
 .field-tip {
   cursor: help; display: inline-flex; align-items: center; justify-content: center;
   width: 15px; height: 15px; border-radius: 50%;
-  background: var(--slate1); font-size: 9px; color: var(--slate5); font-weight: 700;
+  background: var(--cream2); font-size: 9px; color: var(--ink4); font-weight: 700;
 }
 .field-wrap { position: relative; }
 .field-prefix {
   position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-  color: var(--slate5); font-size: 0.875rem; pointer-events: none;
+  color: var(--ink4); font-size: 0.875rem; pointer-events: none;
 }
 .field-suffix {
   position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
-  color: var(--slate5); font-size: 0.875rem; pointer-events: none;
+  color: var(--ink4); font-size: 0.875rem; pointer-events: none;
 }
 .field-input {
-  width: 100%; padding: 10px 12px; border-radius: 9px;
-  border: 1px solid var(--slate2); background: var(--slate1);
-  color: var(--navy2); font-size: 0.9375rem; font-family: inherit;
+  width: 100%; padding: 10px 12px; border-radius: var(--r);
+  border: 1px solid var(--cream3); background: var(--cream);
+  color: var(--ink2); font-size: 0.9375rem; font-family: inherit;
   outline: none; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 .field-input:focus {
-  border-color: rgba(99,102,241,0.55);
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+  border-color: rgba(5,150,105,0.5);
+  box-shadow: 0 0 0 3px rgba(5,150,105,0.1);
   background: var(--white);
 }
 .field-input.has-prefix { padding-left: 24px; }
 .field-input.has-suffix { padding-right: 30px; }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { opacity: 0.4; }
-input[type="range"] { accent-color: var(--indigo); width: 100%; }
+input[type="range"] { accent-color: var(--forest); width: 100%; }
 
 /* Stars */
 .stars { display: inline-flex; gap: 2px; margin-top: 4px; }
@@ -168,19 +173,19 @@ input[type="range"] { accent-color: var(--indigo); width: 100%; }
 /* Methodology toggle */
 .method-toggle {
   background: none; border: none; cursor: pointer; padding: 0;
-  color: var(--indigo); font-size: 0.8rem; font-weight: 600; font-family: inherit;
+  color: var(--forest); font-size: 0.8rem; font-weight: 500; font-family: inherit;
   display: flex; align-items: center; gap: 5px; transition: color 0.15s;
 }
-.method-toggle:hover { color: var(--violet); }
+.method-toggle:hover { color: var(--forest2); }
 .method-caret { display: inline-block; transition: transform 0.2s; font-size: 0.65rem; }
 .method-body {
-  background: var(--slate1); border: 1px solid var(--slate2);
-  border-radius: 10px; padding: 14px 16px;
-  font-size: 0.8rem; color: var(--slate6); line-height: 1.7;
+  background: var(--cream); border: 1px solid var(--cream3);
+  border-radius: var(--r); padding: 14px 16px;
+  font-size: 0.8rem; color: var(--ink4); line-height: 1.7;
   animation: fadeUp 0.2s ease-out;
 }
 .method-body p { margin-bottom: 8px; }
-.method-body p:last-child { margin-bottom: 0; color: var(--slate4); font-style: italic; }
+.method-body p:last-child { margin-bottom: 0; color: var(--ink5); font-style: italic; }
 
 /* ── Output column ── */
 .output-col { display: flex; flex-direction: column; gap: 16px; }
@@ -207,64 +212,65 @@ input[type="range"] { accent-color: var(--indigo); width: 100%; }
 @media (max-width: 500px) { .cards-grid { grid-template-columns: 1fr; } }
 
 .stat-card {
-  border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px;
+  border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 8px;
   animation: fadeUp 0.25s ease-out;
 }
-.stat-card.indigo  { background: rgba(99,102,241,0.07); border: 1px solid rgba(99,102,241,0.18); }
-.stat-card.emerald { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.2); }
-.stat-card.amber   { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2); }
-.stat-card.violet  { background: rgba(124,58,237,0.07); border: 1px solid rgba(124,58,237,0.2); }
+.stat-card.indigo  { background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2); }
+.stat-card.emerald { background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2); }
+.stat-card.amber   { background: var(--ochre-lt);  border: 1px solid rgba(234,88,12,0.2); }
+.stat-card.violet  { background: var(--teal-lt);   border: 1px solid rgba(15,118,110,0.2); }
 .stat-label {
   display: flex; align-items: center; gap: 8px;
-  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
 }
-.stat-card.indigo  .stat-label { color: var(--indigo); }
-.stat-card.emerald .stat-label { color: #065f46; }
-.stat-card.amber   .stat-label { color: #92400e; }
-.stat-card.violet  .stat-label { color: var(--violet); }
+.stat-card.indigo  .stat-label { color: var(--forest2); }
+.stat-card.emerald .stat-label { color: var(--forest2); }
+.stat-card.amber   .stat-label { color: #9a3412; }
+.stat-card.violet  .stat-label { color: var(--teal); }
 .stat-value {
-  font-size: 1.75rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.025em;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.75rem; font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
 }
-.stat-card.indigo  .stat-value { color: var(--indigo); }
-.stat-card.emerald .stat-value { color: #065f46; }
-.stat-card.amber   .stat-value { color: #92400e; }
-.stat-card.violet  .stat-value { color: var(--violet); }
+.stat-card.indigo  .stat-value { color: var(--forest); }
+.stat-card.emerald .stat-value { color: var(--forest); }
+.stat-card.amber   .stat-value { color: var(--ochre); }
+.stat-card.violet  .stat-value { color: var(--teal); }
 .stat-sub {
-  font-size: 0.775rem; line-height: 1.4; opacity: 0.65;
+  font-size: 0.775rem; line-height: 1.4; opacity: 0.75;
 }
-.stat-card.indigo  .stat-sub { color: var(--indigo); }
-.stat-card.emerald .stat-sub { color: #065f46; }
-.stat-card.amber   .stat-sub { color: #92400e; }
-.stat-card.violet  .stat-sub { color: var(--violet); }
+.stat-card.indigo  .stat-sub { color: var(--forest2); }
+.stat-card.emerald .stat-sub { color: var(--forest2); }
+.stat-card.amber   .stat-sub { color: #9a3412; }
+.stat-card.violet  .stat-sub { color: var(--teal); }
 
 /* Rating journey */
 .journey-bar-track {
-  position: relative; height: 10px; background: var(--slate1);
+  position: relative; height: 10px; background: var(--cream2);
   border-radius: 99px; overflow: hidden; margin: 12px 0 6px;
 }
 .journey-bar-current {
   position: absolute; height: 100%;
-  background: var(--slate3); border-radius: 99px; transition: width 0.4s;
+  background: var(--parchment); border-radius: 99px; transition: width 0.4s;
 }
 .journey-bar-target {
   position: absolute; height: 100%;
-  background: linear-gradient(90deg, var(--blue), var(--indigo));
+  background: var(--forest);
   border-radius: 99px; transition: width 0.4s;
 }
 .journey-peak {
-  position: absolute; top: 0; height: 100%; width: 2px; background: var(--emerald);
+  position: absolute; top: 0; height: 100%; width: 2px; background: var(--ochre);
   left: 87.5%;
 }
 .journey-ticks {
   display: flex; justify-content: space-between;
-  font-size: 0.7rem; color: var(--slate4);
+  font-size: 0.7rem; color: var(--ink5);
 }
 .journey-legend {
   display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap;
 }
 .legend-pip {
   display: flex; align-items: center; gap: 5px;
-  font-size: 0.72rem; color: var(--slate5);
+  font-size: 0.72rem; color: var(--ink4);
 }
 .pip { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 
@@ -281,38 +287,38 @@ input[type="range"] { accent-color: var(--indigo); width: 100%; }
   background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   transition: left 0.2s;
 }
-.toggle-label { font-size: 0.875rem; font-weight: 600; color: var(--navy2); }
+.toggle-label { font-size: 0.875rem; font-weight: 500; color: var(--ink2); }
 
 .whatif-result {
-  margin-top: 14px; border-radius: 12px; padding: 16px 18px;
+  margin-top: 14px; border-radius: var(--r); padding: 16px 18px;
   animation: fadeUp 0.2s ease-out;
 }
-.whatif-result.hit  { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.2); }
-.whatif-result.miss { background: var(--slate1); border: 1px solid var(--slate2); }
+.whatif-result.hit  { background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2); }
+.whatif-result.miss { background: var(--cream); border: 1px solid var(--cream3); }
 .whatif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.whatif-item-label { font-size: 0.72rem; color: var(--slate4); margin-bottom: 3px; }
-.whatif-item-val   { font-size: 1rem; font-weight: 700; color: var(--navy2); display: flex; align-items: center; gap: 6px; }
-.whatif-hit-msg    { margin-top: 12px; font-size: 0.8rem; font-weight: 600; color: #065f46; }
+.whatif-item-label { font-size: 0.72rem; color: var(--ink5); margin-bottom: 3px; }
+.whatif-item-val   { font-size: 1rem; font-weight: 600; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+.whatif-hit-msg    { margin-top: 12px; font-size: 0.8rem; font-weight: 600; color: var(--forest2); }
 
 /* Assumptions */
 .assumptions {
-  font-size: 0.77rem; color: var(--slate4); line-height: 1.7; padding: 0 2px;
+  font-size: 0.77rem; color: var(--ink5); line-height: 1.7; padding: 0 2px;
 }
 
 /* Footer */
 .calc-footer {
-  background: #020617; border-top: 1px solid rgba(255,255,255,0.05);
+  background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04);
   padding: 28px 0; margin-top: 80px;
 }
 .calc-footer-inner {
-  max-width: 1120px; margin: 0 auto; padding: 0 28px;
+  max-width: 1120px; margin: 0 auto; padding: 0 32px;
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
 }
-.calc-footer-copy { font-size: 0.8125rem; color: var(--slate6); }
+.calc-footer-copy { font-size: 0.8125rem; color: var(--ink5); }
 .calc-footer-link {
-  font-size: 0.8125rem; color: var(--slate6); text-decoration: none; transition: color 0.15s;
+  font-size: 0.8125rem; color: var(--ink5); text-decoration: none; transition: color 0.15s;
 }
-.calc-footer-link:hover { color: var(--slate3); }
+.calc-footer-link:hover { color: rgba(255,255,255,0.5); }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
@@ -321,25 +327,12 @@ input[type="range"] { accent-color: var(--indigo); width: 100%; }
 </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
 <!-- Nav -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-icon">
-        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
-      </div>
-      Sentopi
-    </a>
-    <a href="index.html" class="nav-back">
-      ← Back to Sentopi
-    </a>
+    <a href="index.html" class="nav-logo">Sentopi</a>
+    <a href="index.html" class="nav-back">← Back to Sentopi</a>
     <a href="index.html#demo" class="nav-cta">Free Rating Report →</a>
   </div>
 </nav>
@@ -388,7 +381,7 @@ function Stars({ rating }) {
     <span className="stars">
       {[0,1,2,3,4].map(i => (
         <svg key={i} width="14" height="14" viewBox="0 0 20 20"
-          fill={i < Math.floor(rating) ? "#f59e0b" : (i === Math.floor(rating) && rating % 1 > 0) ? "#fcd34d" : "#e2e8f0"}>
+          fill={i < Math.floor(rating) ? "#f59e0b" : (i === Math.floor(rating) && rating % 1 > 0) ? "#fcd34d" : "var(--cream3)"}>
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
         </svg>
       ))}
@@ -545,10 +538,10 @@ function App() {
                   <div className="panel-header">Rating Journey</div>
                   <div className="panel-body" style={{ gap: 0 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--navy2)" }}>
+                      <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--ink2)" }}>
                         {out.cN.toFixed(1)}★ to {out.tN.toFixed(1)}★
                       </span>
-                      <span style={{ fontSize: "0.78rem", color: "var(--slate4)" }}>
+                      <span style={{ fontSize: "0.78rem", color: "var(--ink5)" }}>
                         Peak conversion ~4.5★
                       </span>
                     </div>
@@ -561,9 +554,9 @@ function App() {
                       {["1.0","2.0","3.0","4.0","5.0"].map(v => <span key={v}>{v}</span>)}
                     </div>
                     <div className="journey-legend">
-                      <div className="legend-pip"><span className="pip" style={{ background: "var(--slate3)" }}></span> Current</div>
-                      <div className="legend-pip"><span className="pip" style={{ background: "var(--indigo)" }}></span> Target</div>
-                      <div className="legend-pip"><span className="pip" style={{ background: "var(--emerald)", width: 10, height: 2, borderRadius: 1 }}></span> Peak zone</div>
+                      <div className="legend-pip"><span className="pip" style={{ background: "var(--parchment)" }}></span> Current</div>
+                      <div className="legend-pip"><span className="pip" style={{ background: "var(--forest)" }}></span> Target</div>
+                      <div className="legend-pip"><span className="pip" style={{ background: "var(--ochre)", width: 10, height: 2, borderRadius: 1 }}></span> Peak zone</div>
                     </div>
                   </div>
                 </div>
@@ -578,7 +571,7 @@ function App() {
                         setShowWI(next);
                         if (next && whatIf === null) setWhatIf(String(Math.round(out.needed !== Infinity ? out.needed / 2 : 50)));
                       }}>
-                      <div className="toggle-track" style={{ background: showWI ? "var(--indigo)" : "var(--slate3)" }}>
+                      <div className="toggle-track" style={{ background: showWI ? "var(--forest)" : "var(--parchment)" }}>
                         <div className="toggle-thumb" style={{ left: showWI ? 21 : 3 }} />
                       </div>
                       <span className="toggle-label">What if I get X new 5-star reviews?</span>
@@ -587,15 +580,15 @@ function App() {
                     {showWI && whatIf !== null && (
                       <div style={{ animation: "fadeUp 0.2s ease-out" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                          <span style={{ fontSize: "0.8125rem", color: "var(--slate5)" }}>New 5-star reviews</span>
+                          <span style={{ fontSize: "0.8125rem", color: "var(--ink4)" }}>New 5-star reviews</span>
                           <input type="number" value={whatIf} onChange={e => setWhatIf(e.target.value)}
                             min={0} max={maxSlider}
-                            style={{ width: 72, border: "1px solid var(--slate2)", borderRadius: 6, padding: "4px 8px", fontSize: "0.875rem", textAlign: "right", fontFamily: "inherit", background: "var(--slate1)", color: "var(--navy2)", outline: "none" }} />
+                            style={{ width: 72, border: "1px solid var(--cream3)", borderRadius: 4, padding: "4px 8px", fontSize: "0.875rem", textAlign: "right", fontFamily: "inherit", background: "var(--cream)", color: "var(--ink2)", outline: "none" }} />
                         </div>
                         <input type="range" min={0} max={maxSlider} value={whatIf} onChange={e => setWhatIf(e.target.value)} />
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "var(--slate4)", marginTop: 4 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "var(--ink5)", marginTop: 4 }}>
                           <span>0</span>
-                          {out.needed !== Infinity && <span style={{ color: "var(--indigo)", fontWeight: 600 }}>{out.needed} needed for target</span>}
+                          {out.needed !== Infinity && <span style={{ color: "var(--forest)", fontWeight: 600 }}>{out.needed} needed for target</span>}
                           <span>{maxSlider}</span>
                         </div>
 
@@ -608,7 +601,7 @@ function App() {
                               </div>
                               <div>
                                 <div className="whatif-item-label">Conversion lift</div>
-                                <div className="whatif-item-val" style={{ color: out.wi.lift >= 0 ? "#065f46" : "#92400e" }}>
+                                <div className="whatif-item-val" style={{ color: out.wi.lift >= 0 ? "var(--forest)" : "var(--ochre)" }}>
                                   {out.wi.lift >= 0 ? "+" : ""}{out.wi.lift.toFixed(2)}%
                                 </div>
                               </div>
@@ -635,16 +628,16 @@ function App() {
                 </p>
 
                 {/* CTA */}
-                <div style={{ background: "var(--navy)", borderRadius: 16, padding: "28px 24px", textAlign: "center" }}>
-                  <div style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--slate5)", marginBottom: 10 }}>Want the full picture?</div>
-                  <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", marginBottom: 8 }}>
+                <div style={{ background: "var(--ink)", borderRadius: 6, padding: "28px 24px", textAlign: "center" }}>
+                  <div style={{ fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.4)", marginBottom: 10 }}>Want the full picture?</div>
+                  <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: "1.3rem", fontWeight: 400, color: "#fff", letterSpacing: "-0.02em", marginBottom: 8 }}>
                     See exactly which reviews are costing you stars.
                   </div>
-                  <p style={{ fontSize: "0.875rem", color: "var(--slate4)", marginBottom: 20, lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", marginBottom: 20, lineHeight: 1.6 }}>
                     Sentopi analyzes every review for your product and delivers a prioritized action plan to get you there.
                   </p>
                   <a href="index.html#demo"
-                    style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "linear-gradient(135deg, #3b82f6, #6366f1)", color: "#fff", fontWeight: 700, fontSize: "0.9375rem", padding: "13px 28px", borderRadius: 10, textDecoration: "none", boxShadow: "0 2px 14px rgba(99,102,241,0.35)", transition: "transform 0.15s, box-shadow 0.15s" }}>
+                    style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--ochre)", color: "#fff", fontWeight: 500, fontSize: "0.9375rem", padding: "13px 28px", borderRadius: 4, textDecoration: "none", transition: "background 0.15s" }}>
                     Free Rating Report →
                   </a>
                 </div>

@@ -1,103 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MLF5DHCH');</script>
-<!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>You're In | Sentopi</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:    #faf7f2;
+  --cream2:   #f2ece0;
+  --cream3:   #e5d9c8;
+  --parchment:#d4c9b8;
+  --ink:      #1a1714;
+  --ink2:     #2e2a25;
+  --ink3:     #4a443c;
+  --ink4:     #6b6358;
+  --ink5:     #7a6e65;
+  --forest:   #059669;
+  --forest2:  #047857;
+  --forest-lt:#d1fae5;
+  --ochre:    #ea580c;
+  --white:    #ffffff;
+  --r:        4px;
+}
+
+html { font-size: 16px; }
 body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: #0f172a; color: #fff;
-  min-height: 100vh; display: flex; flex-direction: column;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--ink2);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Nav */
 .nav {
-  background: rgba(15,23,42,0.95); border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 0 28px; height: 60px; display: flex; align-items: center;
+  background: rgba(255,255,255,0.97);
+  border-bottom: 1px solid var(--cream3);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 .nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-weight: 700; font-size: 1.05rem; color: #fff; text-decoration: none;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
 }
-.nav-logo-icon {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
-  display: flex; align-items: center; justify-content: center;
-}
+
+/* Main */
 .main {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  padding: 60px 24px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
 }
 .card {
-  text-align: center; max-width: 480px;
+  text-align: center;
+  max-width: 480px;
 }
+
+/* Check circle */
 .check-circle {
   width: 72px; height: 72px; border-radius: 50%;
-  background: rgba(16,185,129,0.12); border: 2px solid rgba(16,185,129,0.3);
+  background: var(--forest-lt);
+  border: 2px solid rgba(5,150,105,0.25);
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 28px;
 }
+
 h1 {
-  font-size: 2rem; font-weight: 800; letter-spacing: -0.025em;
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.15;
   margin-bottom: 14px;
 }
 p {
-  font-size: 1rem; color: #94a3b8; line-height: 1.7; margin-bottom: 36px;
+  font-size: 1rem;
+  color: var(--ink4);
+  line-height: 1.7;
+  margin-bottom: 36px;
 }
+
 .btn {
   display: inline-flex; align-items: center; gap: 7px;
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
-  color: #fff; font-weight: 700; font-size: 0.9375rem;
-  padding: 13px 28px; border-radius: 10px; text-decoration: none;
-  box-shadow: 0 2px 14px rgba(99,102,241,0.35);
-  transition: transform 0.15s, box-shadow 0.15s;
+  background: var(--ochre);
+  color: #fff; font-weight: 500; font-size: 0.9375rem;
+  padding: 14px 28px; border-radius: var(--r);
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
 }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 22px rgba(99,102,241,0.45); }
+.btn:hover { background: #c94d0a; transform: translateY(-1px); }
+
 .footer-note {
-  margin-top: 24px; font-size: 0.8rem; color: #475569;
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: var(--ink5);
 }
+.footer-note a {
+  color: var(--forest);
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer-note a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <div class="nav-logo-icon">
-      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </div>
-    Sentopi
-  </a>
+  <a href="index.html" class="nav-logo">Sentopi</a>
 </nav>
 
 <main class="main">
   <div class="card">
     <div class="check-circle">
-      <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
     <h1>Your rating report is on its way.</h1>
     <p>We're building your report from 100 of your product's reviews now. Expect it within 48 hours. In the meantime, see what your star rating is worth.</p>
     <a href="calculator.html" class="btn">Star Rating Calculator →</a>
-    <div class="footer-note">Questions? Email us at <a href="mailto:hello@sentopi.com" style="color:#6366f1; text-decoration:none;">hello@sentopi.com</a></div>
+    <div class="footer-note">Questions? Email us at <a href="mailto:hello@sentopi.com">hello@sentopi.com</a></div>
   </div>
 </main>
 
