@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MLF5DHCH');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Risk Report | Sentopi</title>
+<meta name="description" content="Free Amazon Revenue Risk Report. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box — plus an estimated dollar impact. Results in ~30 seconds.">
+<!-- Open Graph -->
+<meta property="og:title" content="Free Amazon Revenue Risk Report | Sentopi">
+<meta property="og:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk — BSR, rating trajectory, Buy Box — plus an estimated dollar impact. No account required.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sentopi.com/revenue-risk-report">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Amazon Revenue Risk Report | Sentopi">
+<meta name="twitter:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk — plus an estimated dollar impact. Results in ~30 seconds.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream:    #faf7f2;
+  --cream2:   #f2ece0;
+  --cream3:   #e5d9c8;
+  --parchment:#d4c9b8;
+  --ink:      #1a1714;
+  --ink2:     #2e2a25;
+  --ink3:     #4a443c;
+  --ink4:     #6b6358;
+  --ink5:     #7a6e65;
+  --forest:   #059669;
+  --forest2:  #047857;
+  --forest3:  #10b981;
+  --forest-lt:#d1fae5;
+  --ochre:    #ea580c;
+  --ochre-lt: #fff7ed;
+  --rust:     #dc2626;
+  --rust-lt:  #fee2e2;
+  --teal:     #0f766e;
+  --teal-lt:  #ccfbf1;
+  --amber:    #d97706;
+  --amber-lt: #fef3c7;
+  --white:    #ffffff;
+  --r:        4px;
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--ink2);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--cream3);
+}
+.nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between; height: 58px;
+}
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+.nav-back  { font-size: 0.8125rem; color: var(--ink4); text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.15s; }
+.nav-back:hover { color: var(--ink); }
+.nav-cta {
+  display: inline-flex; align-items: center; background: var(--ochre); color: #fff;
+  font-weight: 500; font-size: 0.8125rem; padding: 8px 18px; border-radius: var(--r);
+  border: none; cursor: pointer; text-decoration: none; transition: background 0.15s;
+}
+.nav-cta:hover { background: #c94d0a; }
+
+/* ── Page ── */
+.page { max-width: 900px; margin: 0 auto; padding: 52px 24px 100px; }
+
+/* ── Hero ── */
+.hero { text-align: center; margin-bottom: 44px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.18);
+  color: var(--forest2); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 2px; margin-bottom: 18px;
+}
+.eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--forest); animation: blink 2.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 12px; }
+.hero-sub { font-size: 1rem; color: var(--ink4); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+
+/* ── Input panel ── */
+.panel { background: var(--white); border: 1px solid var(--cream3); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 16px rgba(26,23,20,0.07); }
+.panel-header { padding: 14px 22px; border-bottom: 1px solid var(--cream2); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink4); }
+.panel-body { padding: 24px 22px; }
+.input-row { display: flex; gap: 10px; align-items: stretch; }
+.input-wrap { position: relative; flex: 1; }
+.input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink5); pointer-events: none; }
+.main-input {
+  width: 100%; padding: 11px 14px 11px 36px; border: 1.5px solid var(--cream3); border-radius: var(--r);
+  background: var(--cream); color: var(--ink2); font-size: 0.9375rem; font-family: inherit;
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.main-input:focus { border-color: rgba(5,150,105,0.5); box-shadow: 0 0 0 3px rgba(5,150,105,0.1); background: var(--white); }
+.main-input::placeholder { color: var(--ink5); }
+.btn-analyze { padding: 11px 22px; border-radius: var(--r); background: var(--forest); color: #fff; font-size: 0.9rem; font-weight: 500; font-family: inherit; border: none; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.btn-analyze:hover:not(:disabled) { background: var(--forest2); }
+.btn-analyze:disabled { opacity: 0.55; cursor: not-allowed; }
+.input-hint { margin-top: 10px; font-size: 0.78rem; color: var(--ink5); line-height: 1.5; }
+.input-hint code { background: var(--cream2); padding: 1px 5px; border-radius: 2px; font-size: 0.74rem; color: var(--ink4); font-family: monospace; }
+
+/* ── Error / Loading ── */
+.error-box { background: var(--rust-lt); border: 1px solid rgba(220,38,38,0.2); border-radius: 6px; padding: 14px 16px; margin-top: 16px; font-size: 0.875rem; color: var(--rust); line-height: 1.5; }
+.loading-box { text-align: center; padding: 48px 0; }
+.spinner { width: 36px; height: 36px; margin: 0 auto 16px; border: 3px solid var(--cream3); border-top-color: var(--forest); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 0.9rem; color: var(--ink4); }
+
+/* ── Score hero ── */
+.score-hero {
+  display: flex; align-items: center; gap: 28px;
+  padding: 28px 28px; background: var(--white);
+  border: 1px solid var(--cream3); border-radius: 8px; margin-bottom: 16px;
+  box-shadow: 0 2px 16px rgba(26,23,20,0.07);
+}
+.score-ring { flex-shrink: 0; width: 116px; height: 116px; position: relative; }
+.score-ring svg { width: 116px; height: 116px; transform: rotate(-90deg); }
+.score-ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-number { font-family: 'DM Serif Display', serif; font-size: 2.25rem; line-height: 1; color: var(--ink); }
+.score-denom { font-size: 0.65rem; color: var(--ink5); margin-top: 1px; }
+.score-meta { flex: 1; }
+.score-brand-name { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); line-height: 1.2; margin-bottom: 8px; }
+.score-label-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; }
+.score-label-badge.healthy  { background: var(--forest-lt); color: var(--forest2); }
+.score-label-badge.at-risk  { background: var(--amber-lt);  color: var(--amber); }
+.score-label-badge.critical { background: var(--rust-lt);   color: var(--rust); }
+.score-cap-note { font-size: 0.775rem; color: var(--ink4); line-height: 1.5; }
+
+/* ── Revenue at Risk hero ── */
+.rev-hero {
+  border-radius: 8px; padding: 22px 24px; margin-bottom: 16px;
+  border: 1px solid;
+}
+.rev-hero.risk     { background: #fffbeb; border-color: rgba(217,119,6,0.25); }
+.rev-hero.safe     { background: var(--forest-lt); border-color: rgba(5,150,105,0.2); }
+.rev-hero-top { display: flex; align-items: flex-start; gap: 14px; }
+.rev-hero-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.rev-hero-body { flex: 1; }
+.rev-hero-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 4px; }
+.rev-hero.risk .rev-hero-label { color: var(--amber); }
+.rev-hero.safe .rev-hero-label { color: var(--forest2); }
+.rev-hero-amount { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.1; color: var(--ink); margin-bottom: 2px; }
+.rev-hero-annual { font-size: 0.875rem; color: var(--ink4); margin-bottom: 12px; }
+.rev-hero-desc { font-size: 0.8375rem; color: var(--ink3); line-height: 1.55; margin-bottom: 14px; }
+.rev-hero-cta { display: inline-flex; align-items: center; gap: 5px; color: var(--ochre); font-weight: 600; font-size: 0.8375rem; text-decoration: none; transition: color 0.15s; }
+.rev-hero-cta:hover { color: #c94d0a; }
+
+/* Inline editable fields */
+.rev-inputs { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.07); }
+.rev-field { display: flex; flex-direction: column; gap: 4px; }
+.rev-field-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink5); }
+.rev-field-wrap { position: relative; display: flex; align-items: center; }
+.rev-field-prefix { position: absolute; left: 9px; font-size: 0.875rem; color: var(--ink4); pointer-events: none; }
+.rev-input {
+  padding: 7px 10px 7px 22px; border: 1.5px solid var(--cream3); border-radius: var(--r);
+  background: var(--white); font-size: 0.875rem; font-family: inherit; color: var(--ink2);
+  width: 130px; outline: none; transition: border-color 0.15s;
+}
+.rev-input:focus { border-color: rgba(5,150,105,0.4); box-shadow: 0 0 0 2px rgba(5,150,105,0.08); }
+.rev-input.units { padding-left: 10px; }
+.rev-source-tag { font-size: 0.67rem; color: var(--ink5); margin-top: 2px; font-style: italic; }
+.rev-disclaimer { font-size: 0.72rem; color: var(--ink5); margin-top: 10px; line-height: 1.5; }
+
+/* ── Pillars ── */
+.pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 680px) { .pillars-grid { grid-template-columns: 1fr; } }
+
+.pillar-card { background: var(--white); border: 1px solid var(--cream3); border-radius: 6px; padding: 18px 20px; box-shadow: 0 1px 6px rgba(26,23,20,0.04); }
+.pillar-name { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink5); margin-bottom: 10px; }
+.pillar-metric { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+.pillar-metric-sub { font-size: 0.78rem; color: var(--ink4); margin-bottom: 12px; min-height: 18px; }
+.pillar-bar-track { height: 5px; background: var(--cream2); border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+.pillar-bar-fill { height: 100%; border-radius: 3px; transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.pillar-bar-fill.healthy { background: var(--forest); }
+.pillar-bar-fill.warning { background: var(--amber); }
+.pillar-bar-fill.danger  { background: var(--rust); }
+.pillar-score-line { font-size: 0.75rem; color: var(--ink5); }
+.pillar-score-line strong { color: var(--ink3); }
+.pillar-flag { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 2px; margin-top: 8px; }
+.pillar-flag.red   { background: var(--rust-lt);  color: var(--rust); }
+.pillar-flag.amber { background: var(--amber-lt); color: var(--amber); }
+.pillar-flag.green { background: var(--forest-lt); color: var(--forest2); }
+
+/* ── Products table ── */
+.products-section { background: var(--white); border: 1px solid var(--cream3); border-radius: 6px; overflow: hidden; box-shadow: 0 1px 6px rgba(26,23,20,0.04); margin-bottom: 16px; }
+.products-header { padding: 12px 18px; border-bottom: 1px solid var(--cream2); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink4); }
+.products-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; table-layout: fixed; }
+.products-table th { text-align: left; padding: 9px 14px; font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink5); border-bottom: 1px solid var(--cream2); background: var(--cream); white-space: nowrap; }
+.products-table td { padding: 10px 14px; border-bottom: 1px solid var(--cream2); color: var(--ink3); vertical-align: middle; }
+.products-table tr:last-child td { border-bottom: none; }
+.products-table tr:hover td { background: rgba(250,247,242,0.7); }
+.asin-code { font-family: monospace; font-size: 0.72rem; color: var(--ink5); }
+.p-title { font-weight: 500; color: var(--ink2); margin-bottom: 2px; font-size: 0.88rem; }
+.delta-up   { color: var(--rust);   font-weight: 600; }
+.delta-down { color: var(--forest); font-weight: 600; }
+.delta-flat { color: var(--ink5); }
+.score-chip { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 0.72rem; font-weight: 600; }
+.score-chip.good { background: var(--forest-lt); color: var(--forest2); }
+.score-chip.mid  { background: var(--amber-lt);  color: var(--amber); }
+.score-chip.bad  { background: var(--rust-lt);   color: var(--rust); }
+.rev-risk-cell { font-weight: 600; color: var(--amber); }
+.rev-safe-cell { color: var(--ink5); font-size: 0.75rem; }
+@media (max-width: 680px) { .col-score { display: none; } }
+.bsr-header { white-space: normal; line-height: 1.35; }
+
+/* ── Column tooltip ── */
+.col-tip-wrap { display: inline-flex; align-items: center; gap: 4px; position: relative; }
+.col-tip-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--cream2); color: var(--ink5);
+  font-size: 0.6rem; font-weight: 700; cursor: default;
+  font-style: normal; flex-shrink: 0; line-height: 1;
+}
+.col-tip-icon::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 6px); right: 0;
+  background: var(--ink2); color: var(--white);
+  font-size: 0.72rem; font-weight: 400; line-height: 1.5;
+  padding: 7px 10px; border-radius: 4px; width: 210px;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+  z-index: 100; text-transform: none; letter-spacing: 0;
+  white-space: normal; text-align: left;
+}
+.col-tip-icon:hover::after { opacity: 1; }
+
+/* ── ASP strip ── */
+.asp-strip {
+  background: var(--white); border: 1px solid var(--cream3); border-radius: 6px;
+  padding: 13px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 1px 6px rgba(26,23,20,0.04);
+}
+.asp-strip-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink5); white-space: nowrap; }
+.asp-strip-divider { width: 1px; height: 26px; background: var(--cream3); flex-shrink: 0; }
+.asp-strip-amount { font-family: 'DM Serif Display', serif; font-size: 1.45rem; color: var(--ink); line-height: 1; }
+.asp-strip-delta { font-size: 0.8rem; font-weight: 600; }
+.asp-strip-list { font-size: 0.78rem; color: var(--ink5); }
+.target-rating-input {
+  width: 52px; padding: 3px 6px; border: 1.5px solid var(--cream3); border-radius: var(--r);
+  background: var(--cream); font-size: 0.78rem; font-family: inherit; color: var(--ink2);
+  outline: none; text-align: center; transition: border-color 0.15s, background 0.15s;
+}
+.target-rating-input:focus { border-color: rgba(5,150,105,0.4); background: var(--white); }
+.recovery-amount { font-size: 0.8rem; font-weight: 700; color: var(--forest); margin-top: 4px; }
+.recovery-label { font-size: 0.67rem; color: var(--forest2); margin-top: 1px; }
+
+/* ── Bottom CTA ── */
+.bottom-cta { background: var(--ink2); border-radius: 8px; padding: 36px 32px; text-align: center; }
+.bottom-cta h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; color: var(--white); margin-bottom: 10px; line-height: 1.25; }
+.bottom-cta p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.65; max-width: 440px; margin: 0 auto 24px; }
+.btn-cta-main { display: inline-flex; align-items: center; gap: 7px; background: var(--ochre); color: #fff; font-size: 0.9375rem; font-weight: 500; font-family: inherit; padding: 14px 30px; border-radius: var(--r); border: none; cursor: pointer; text-decoration: none; transition: background 0.15s, transform 0.12s; box-shadow: 0 2px 14px rgba(234,88,12,0.35); }
+.btn-cta-main:hover { background: #c94d0a; transform: translateY(-1px); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { animation: fadeUp 0.3s ease-out forwards; }
+
+/* ── Hero split ── */
+.hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 680px) { .hero-split { grid-template-columns: 1fr; } }
+.hero-card { background: var(--white); border: 1px solid var(--cream3); border-radius: 8px; padding: 24px 28px; box-shadow: 0 2px 16px rgba(26,23,20,0.07); display: flex; flex-direction: column; }
+.hero-card.rev-risk-card { background: #fffbeb; border-color: rgba(217,119,6,0.22); }
+.hero-card.rev-safe-card { background: var(--forest-lt); border-color: rgba(5,150,105,0.2); }
+.hero-score-inner { display: flex; align-items: center; gap: 20px; }
+.rev-card-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 10px; }
+.rev-card-label.risk { color: var(--amber); }
+.rev-card-label.safe { color: var(--forest2); }
+.rev-card-amount { font-family: 'DM Serif Display', serif; font-size: 1.9rem; line-height: 1.1; color: var(--ink); margin-bottom: 4px; }
+.rev-card-annual { font-size: 0.875rem; color: var(--ink4); margin-bottom: 12px; }
+.rev-card-desc { font-size: 0.8125rem; color: var(--ink3); line-height: 1.55; margin-bottom: 14px; flex: 1; }
+.rev-card-cta { display: inline-flex; align-items: center; gap: 5px; color: var(--ochre); font-weight: 600; font-size: 0.8125rem; text-decoration: none; transition: color 0.15s; margin-top: auto; }
+.rev-card-cta:hover { color: #c94d0a; }
+.rev-card-action { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(217,119,6,0.18); }
+.rev-card-action-label { display: block; font-size: 0.67rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); margin-bottom: 3px; }
+.rev-card-action-text { font-size: 0.8rem; color: var(--ink3); line-height: 1.5; }
+.hero-card.rev-safe-card .rev-card-action { border-top-color: rgba(5,150,105,0.2); }
+.hero-card.rev-safe-card .rev-card-action-label { color: var(--forest2); }
+
+/* ── Revenue deep dive table inputs ── */
+.rev-deep-input {
+  width: 100%; padding: 5px 8px; border: 1.5px solid var(--cream3); border-radius: var(--r);
+  background: var(--cream); font-size: 0.8rem; font-family: inherit; color: var(--ink2);
+  outline: none; transition: border-color 0.15s, background 0.15s;
+}
+.rev-deep-input:focus { border-color: rgba(5,150,105,0.4); background: var(--white); }
+.rev-deep-price-wrap { position: relative; display: flex; align-items: center; width: 100%; }
+.rev-deep-prefix { position: absolute; left: 8px; font-size: 0.8rem; color: var(--ink4); pointer-events: none; }
+.rev-deep-price-input { padding-left: 18px; }
+.rev-source-tag-sm { font-size: 0.65rem; color: var(--ink5); margin-top: 2px; font-style: italic; }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sentopi</a>
+    <a href="index.html" class="nav-back">← Back to home</a>
+    <a href="index.html#demo" class="nav-cta">Get Full Analysis →</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div id="root"></div>
+</div>
+
+<script type="text/babel">
+const { useState, useCallback } = React;
+
+// ─── Conversion rate model — identical to calculator.html ─────────────────────
+const CONV_TABLE = [
+  { r: 1.0, i: 0.40 }, { r: 2.0, i: 0.55 }, { r: 2.5, i: 0.65 },
+  { r: 3.0, i: 0.75 }, { r: 3.5, i: 0.85 }, { r: 4.0, i: 0.92 },
+  { r: 4.2, i: 0.96 }, { r: 4.5, i: 1.00 }, { r: 4.7, i: 0.99 },
+  { r: 5.0, i: 0.87 },
+];
+function convRate(rating) {
+  if (!rating || rating <= CONV_TABLE[0].r) return CONV_TABLE[0].i;
+  if (rating >= CONV_TABLE[CONV_TABLE.length - 1].r) return CONV_TABLE[CONV_TABLE.length - 1].i;
+  for (let j = 0; j < CONV_TABLE.length - 1; j++) {
+    const lo = CONV_TABLE[j], hi = CONV_TABLE[j + 1];
+    if (rating >= lo.r && rating <= hi.r) {
+      const t = (rating - lo.r) / (hi.r - lo.r);
+      return lo.i + t * (hi.i - lo.i);
+    }
+  }
+  return 0.92;
+}
+
+function calcRevenueAtRisk(units, price, ratingBefore, ratingNow) {
+  if (!units || !price || !ratingBefore || !ratingNow) return 0;
+  const delta = convRate(ratingBefore) - convRate(ratingNow);
+  return Math.max(0, Math.round(units * price * delta));
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function fmt$(n) {
+  if (!n && n !== 0) return '—';
+  return '$' + Math.round(n).toLocaleString();
+}
+function fmtPct(n) {
+  if (n === null || n === undefined) return '—';
+  return n.toFixed(1) + '%';
+}
+function fmtDelta(d, inverse = false) {
+  if (d === null || d === undefined) return null;
+  const bad = inverse ? d < 0 : d > 0;
+  const cls = Math.abs(d) < 0.01 ? 'delta-flat' : bad ? 'delta-up' : 'delta-down';
+  const sign = d > 0 ? '+' : '';
+  return { cls, text: sign + d };
+}
+function pillarHealth(score, max) {
+  const p = score / max;
+  if (p >= 0.75) return 'healthy';
+  if (p >= 0.45) return 'warning';
+  return 'danger';
+}
+function labelClass(l) { return l === 'Healthy' ? 'healthy' : l === 'At Risk' ? 'at-risk' : 'critical'; }
+function labelColor(l) { return l === 'Healthy' ? '#059669' : l === 'At Risk' ? '#d97706' : '#dc2626'; }
+function scoreChip(c) { return c >= 75 ? 'good' : c >= 45 ? 'mid' : 'bad'; }
+const CAP_REASON_COPY = {
+  'Lost Buy Box on one or more products': { icon: '🚨', text: 'Buy Box lost on key products' },
+  'Rating dropped in the last 30 days':   { icon: '⚠️', text: 'Active rating drop' },
+  'Competitor undercutting detected':      { icon: '⬇️', text: 'Competitor undercutting you' },
+};
+function monthName(dateStr) {
+  if (!dateStr) return 'recent';
+  try { return new Date(dateStr + 'T12:00:00').toLocaleString('en-US', { month: 'long' }); }
+  catch { return 'recent'; }
+}
+
+// ─── Score ring ───────────────────────────────────────────────────────────────
+function ScoreRing({ score, label }) {
+  const r = 42, cx = 50, cy = 50, circ = 2 * Math.PI * r;
+  const offset = circ - (score / 100) * circ;
+  return (
+    <div className="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#e5d9c8" strokeWidth="7"/>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={labelColor(label)} strokeWidth="7"
+          strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.22,1,0.36,1)' }}/>
+      </svg>
+      <div className="score-ring-text">
+        <span className="score-number">{score}</span>
+        <span className="score-denom">/100</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Tooltip (portal-based to escape table overflow clipping) ────────────────
+function Tip({ text }) {
+  const [pos, setPos] = React.useState(null);
+  const ref = React.useRef(null);
+  function show() {
+    const r = ref.current.getBoundingClientRect();
+    setPos({ x: r.left + r.width / 2, y: r.top });
+  }
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <span ref={ref} className="col-tip-icon"
+        onMouseEnter={show} onMouseLeave={() => setPos(null)}>i</span>
+      {pos && ReactDOM.createPortal(
+        <span style={{
+          position: 'fixed', left: pos.x, top: pos.y - 8,
+          transform: 'translate(-50%, -100%)',
+          background: '#1a1714', color: '#fff',
+          fontSize: '0.72rem', lineHeight: 1.5,
+          padding: '7px 10px', borderRadius: '4px',
+          width: '220px', zIndex: 9999,
+          pointerEvents: 'none', fontWeight: 400,
+          textAlign: 'left', whiteSpace: 'normal',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+        }}>{text}</span>,
+        document.body
+      )}
+    </span>
+  );
+}
+
+// ─── Revenue Deep Dive table ──────────────────────────────────────────────────
+function RevenueDeepDive({ productRevs, fields, onUpdate, totalMonthly, totalAnnual, noWrapper = false }) {
+  const sorted = [...productRevs].sort((a, b) => (b.computedRisk || 0) - (a.computedRisk || 0));
+
+  // Compute per-row recovery and total
+  let totalRecovery = 0;
+  const rows = sorted.map(pr => {
+    const f = fields[pr.asin] || {};
+    const units        = parseFloat(f.units) || 0;
+    const price        = parseFloat(f.price) || 0;
+    const targetRating = parseFloat(f.targetRating) || 0;
+    const currentRating = pr.pillar_rating.current || 0;
+    const recoveryAmt = (targetRating > currentRating && units > 0 && price > 0)
+      ? Math.max(0, Math.round(units * price * (convRate(targetRating) - convRate(currentRating))))
+      : 0;
+    totalRecovery += recoveryAmt;
+    return { ...pr, recoveryAmt };
+  });
+
+  const tableContent = (
+    <div style={{ overflowX: 'auto' }}>
+      <table className="products-table">
+        <SharedColGroup />
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Rating</th>
+            <th>Monthly Units</th>
+            <th>Price (USD)</th>
+            <th style={{ textAlign: 'right' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
+                <span style={{ whiteSpace: 'normal', lineHeight: 1.35, textAlign: 'right' }}>Monthly<br/>Risk</span>
+                <Tip text="Revenue you're leaving on the table vs. your star rating from 30 days ago." />
+              </span>
+            </th>
+            <th style={{ textAlign: 'right' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
+                <span style={{ whiteSpace: 'normal', lineHeight: 1.35, textAlign: 'right' }}>Upside<br/>Potential</span>
+                <Tip text="Additional monthly revenue if you recover to your target star rating." />
+              </span>
+            </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(pr => {
+              const f = fields[pr.asin] || {};
+              const rat = pr.pillar_rating;
+
+              return (
+                <tr key={pr.asin}>
+                  <td>
+                    <div className="p-title">{pr.title ? pr.title.slice(0, 40) + (pr.title.length > 40 ? '…' : '') : pr.asin}</div>
+                    <div className="asin-code">{pr.asin}</div>
+                    {/* Target rating input */}
+                    <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <span style={{ fontSize: '0.67rem', color: 'var(--ink5)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 600 }}>Target ★</span>
+                      <input
+                        type="number"
+                        min="1" max="5" step="0.1"
+                        className="target-rating-input"
+                        value={f.targetRating}
+                        onChange={e => onUpdate(pr.asin, 'targetRating', e.target.value)}
+                      />
+                      <span style={{ fontSize: '0.67rem', color: 'var(--ink5)' }}>★</span>
+                    </div>
+                  </td>
+                  {/* Rating column */}
+                  <td style={{ verticalAlign: 'middle' }}>
+                    <div style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                      {rat.current ? rat.current.toFixed(1) + '★' : '—'}
+                      {rat.ratingDropped30d && <span style={{ marginLeft: 4, fontSize: '0.8rem' }}>⚠️</span>}
+                    </div>
+                    {rat.ratingDropped30d && rat.delta30d != null ? (
+                      <div style={{ fontSize: '0.72rem', color: 'var(--rust)', fontWeight: 600, marginTop: 2, whiteSpace: 'nowrap' }}>
+                        {rat.delta30d} MoM
+                      </div>
+                    ) : (
+                      <div style={{ fontSize: '0.72rem', color: 'var(--ink5)', marginTop: 2, whiteSpace: 'nowrap' }}>stable</div>
+                    )}
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      className="rev-deep-input"
+                      value={f.units}
+                      placeholder="e.g. 10000"
+                      onChange={e => onUpdate(pr.asin, 'units', e.target.value)}
+                    />
+                    <div className="rev-source-tag-sm">
+                      {f.unitsDirty ? 'your value' : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (PDP est.)` : 'enter units'}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="rev-deep-price-wrap">
+                      <span className="rev-deep-prefix">$</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="rev-deep-input rev-deep-price-input"
+                        value={f.price}
+                        placeholder="33.99"
+                        onChange={e => onUpdate(pr.asin, 'price', e.target.value)}
+                      />
+                    </div>
+                    <div className="rev-source-tag-sm">
+                      {f.priceDirty ? 'your value' : pr.defaultPrice ? `$${pr.defaultPrice.toFixed(2)} (${pr.defaultPriceSource === 'bb' ? 'Buy Box' : pr.defaultPriceSource === 'asp' ? 'ASP est.' : 'List est.'})` : 'enter price'}
+                    </div>
+                  </td>
+                  {/* Monthly Risk */}
+                  <td style={{ verticalAlign: 'middle' }}>
+                    {!pr.pillar_rating.ratingDropped30d
+                      ? <div style={{ color: 'var(--ink5)', fontSize: '0.8rem' }}>—</div>
+                      : pr.computedRisk > 0
+                        ? <div className="rev-risk-cell" style={{ fontSize: '0.9rem' }}>{fmt$(pr.computedRisk)}</div>
+                        : <div style={{ color: 'var(--ink5)', fontSize: '0.75rem' }}>enter data ↑</div>
+                    }
+                  </td>
+                  {/* Upside Potential */}
+                  <td style={{ verticalAlign: 'middle' }}>
+                    {pr.recoveryAmt > 0 ? (
+                      <>
+                        <div className="recovery-amount" style={{ fontSize: '0.9rem' }}>+{fmt$(pr.recoveryAmt)}</div>
+                        <div className="recovery-label">if {parseFloat(f.targetRating).toFixed(1)}★</div>
+                      </>
+                    ) : (
+                      <div style={{ color: 'var(--ink5)', fontSize: '0.75rem' }}>—</div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          {(totalMonthly > 0 || totalRecovery > 0) && (
+            <tfoot>
+              <tr>
+                <td colSpan={4} style={{ fontWeight: 600, fontSize: '0.78rem', color: 'var(--ink3)', paddingTop: 12, borderTop: '2px solid var(--cream2)' }}>
+                  Total
+                </td>
+                <td style={{ paddingTop: 12, borderTop: '2px solid var(--cream2)' }}>
+                  {totalMonthly > 0 && (
+                    <>
+                      <div style={{ fontWeight: 700, color: 'var(--amber)', fontSize: '0.95rem' }}>{fmt$(totalMonthly)}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--ink4)', marginTop: 2 }}>{fmt$(totalMonthly * 12)}/yr</div>
+                    </>
+                  )}
+                </td>
+                <td style={{ paddingTop: 12, borderTop: '2px solid var(--cream2)' }}>
+                  {totalRecovery > 0 && (
+                    <>
+                      <div style={{ fontWeight: 700, color: 'var(--forest)', fontSize: '0.95rem' }}>+{fmt$(totalRecovery)}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--ink4)', marginTop: 2 }}>+{fmt$(totalRecovery * 12)}/yr</div>
+                    </>
+                  )}
+                </td>
+              </tr>
+            </tfoot>
+          )}
+      </table>
+    </div>
+  );
+
+  if (noWrapper) return tableContent;
+
+  return (
+    <div className="products-section animate-in" style={{ marginBottom: 16 }}>
+      <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--cream2)' }}>
+        <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.1rem', fontWeight: 400, color: 'var(--ink)', marginBottom: 2 }}>
+          Monthly Risk &amp; Upside Calculator
+        </div>
+        <div style={{ fontSize: '0.72rem', color: 'var(--ink5)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+          {productRevs.length} product{productRevs.length !== 1 ? 's' : ''}
+        </div>
+      </div>
+      {tableContent}
+      <div style={{ padding: '10px 14px', fontSize: '0.72rem', color: 'var(--ink5)', borderTop: '1px solid var(--cream2)', lineHeight: 1.5 }}>
+        Estimates use Sentopi's conversion rate model — consistent with the{' '}
+        <a href="calculator.html" style={{ color: 'var(--ink4)', textDecoration: 'underline' }}>Star Rating Calculator</a>.
+        {' '}Update units and target rating with your actual data for accuracy.
+      </div>
+    </div>
+  );
+}
+
+// ─── Pillar cards ─────────────────────────────────────────────────────────────
+function PillarCard({ name, metric, metricSub, score, max, flags }) {
+  const pct    = Math.round((score / max) * 100);
+  const health = pillarHealth(score, max);
+  return (
+    <div className="pillar-card animate-in">
+      <div className="pillar-name">{name}</div>
+      <div className="pillar-metric">{metric}</div>
+      <div className="pillar-metric-sub">{metricSub || ''}</div>
+      <div className="pillar-bar-track">
+        <div className={`pillar-bar-fill ${health}`} style={{ width: `${pct}%` }} />
+      </div>
+      <div className="pillar-score-line">
+        Score: <strong>{score}/{max}</strong>
+      </div>
+      {flags && flags.map((f, i) => (
+        <div key={i} className={`pillar-flag ${f.color}`}>{f.icon} {f.text}</div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Shared colgroup — both tables use identical widths for column alignment ──
+const SharedColGroup = () => (
+  <colgroup>
+    <col style={{ width: '22%' }} />
+    <col style={{ width: '12%' }} />
+    <col style={{ width: '16%' }} />
+    <col style={{ width: '14%' }} />
+    <col style={{ width: '18%' }} />
+    <col style={{ width: '18%' }} />
+  </colgroup>
+);
+
+// ─── Products table ───────────────────────────────────────────────────────────
+function ProductsTable({ products, weights, noWrapper = false }) {
+  const inner = (
+    <>
+      <div className="products-header">Products Analyzed ({products.length})</div>
+      <div style={{ overflowX: 'auto' }}>
+        <table className="products-table">
+          <SharedColGroup />
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Rating</th>
+              <th className="bsr-header">Best Seller<br/>Rank</th>
+              <th>Buy Box</th>
+              <th>ASP</th>
+              <th className="col-score">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map(p => {
+              const rat  = p.pillar_rating;
+              const bsr  = p.pillar_bsr;
+              const bb   = p.pillar_buybox;
+              const d30  = fmtDelta(rat.delta30d, true);  // inverse: drop is bad
+              const bsrD = fmtDelta(bsr.delta90dPct, false); // increase is bad
+              return (
+                <tr key={p.asin}>
+                  <td>
+                    <div className="p-title">{p.title ? p.title.slice(0,45) + (p.title.length > 45 ? '…' : '') : p.asin}</div>
+                    <div className="asin-code">{p.asin}</div>
+                  </td>
+                  <td>
+                    <div style={{ fontWeight: 600 }}>{rat.current ? rat.current.toFixed(1) + '★' : '—'}</div>
+                    {d30 && <div className={d30.cls} style={{ fontSize: '0.75rem' }}>{d30.text} vs. 30d</div>}
+                    {rat.ratingDropped30d && <span title="Rating dropped" style={{ fontSize: '0.8rem' }}>⚠️</span>}
+                  </td>
+                  <td>
+                    <div style={{ fontWeight: 600 }}>{bsr.current ? '#' + bsr.current.toLocaleString() : '—'}</div>
+                    {bsrD && bsr.delta90dPct !== null && (
+                      <div className={bsrD.cls} style={{ fontSize: '0.75rem' }}>{bsrD.text}% vs. 90d</div>
+                    )}
+                  </td>
+                  <td>
+                    <div style={{ fontWeight: 600 }}>{bb.bbPct30d !== null ? fmtPct(bb.bbPct30d) : '—'}</div>
+                    {bb.lbbDetected && <div style={{ fontSize: '0.72rem', color: 'var(--rust)', fontWeight: 600 }}>🚨 LBB</div>}
+                    {bb.competitorUndercut && bb.lowestCompetitorPrice && (
+                      <div style={{ fontSize: '0.72rem', color: 'var(--amber)' }}>
+                        Competitor: ${(bb.lowestCompetitorPrice / 100).toFixed(2)}
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    {p.asp30d != null ? (
+                      <>
+                        <div style={{ fontWeight: 600 }}>${p.asp30d.toFixed(2)}</div>
+                        {p.aspMoMPct != null && (() => {
+                          const d = fmtDelta(p.aspMoMPct, true);
+                          return d ? <div className={d.cls} style={{ fontSize: '0.75rem' }}>{d.text}% MoM</div> : null;
+                        })()}
+                        {p.listPrice != null && (
+                          <div style={{ fontSize: '0.7rem', color: 'var(--ink5)', marginTop: 1 }}>
+                            List ${p.listPrice.toFixed(2)}
+                          </div>
+                        )}
+                      </>
+                    ) : <span style={{ color: 'var(--ink5)' }}>—</span>}
+                  </td>
+                  <td className="col-score"><span className={`score-chip ${scoreChip(p.composite)}`}>{p.composite}</span></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+  return noWrapper ? inner : <div className="products-section animate-in">{inner}</div>;
+}
+
+// ─── Score card ───────────────────────────────────────────────────────────────
+function ScoreCard({ data }) {
+  const { brandScore, label, capReasons, ratingDropDetails, products,
+          productsExcluded, weights, asinCountExcluded } = data;
+
+  const hasRatingDrop = ratingDropDetails && ratingDropDetails.length > 0;
+
+  // ── Revenue state (shared between hero card + deep dive table) ───────────────
+  const initFields = {};
+  products.forEach(p => {
+    const cur = p.pillar_rating?.current || 0;
+    const ago = p.pillar_rating?.rating30dAgo || 0;
+    const defaultTarget = cur > 0
+      ? Math.min(5, Math.max(cur + 0.2, ago)).toFixed(1)
+      : '';
+    initFields[p.asin] = {
+      units:        p.defaultUnits || '',
+      price:        p.defaultPrice || '',
+      targetRating: defaultTarget,
+      unitsDirty: false,
+      priceDirty: false,
+    };
+  });
+  const [fields, setFields] = useState(initFields);
+
+  function updateField(asin, key, val) {
+    setFields(prev => ({
+      ...prev,
+      [asin]: { ...prev[asin], [key]: val, [`${key}Dirty`]: true },
+    }));
+  }
+
+  // ── Compute revenue at risk ───────────────────────────────────────────────────
+  let totalMonthly = 0;
+  const productRevs = products.map(p => {
+    const f = fields[p.asin] || {};
+    const units = parseFloat(f.units) || 0;
+    const price = parseFloat(f.price) || 0;
+    const rb = p.pillar_rating.rating30dAgo;
+    const rn = p.pillar_rating.current;
+    const risk = p.pillar_rating.ratingDropped30d
+      ? calcRevenueAtRisk(units, price, rb, rn)
+      : 0;
+    totalMonthly += risk;
+    return { ...p, computedRisk: risk };
+  });
+  const totalAnnual = totalMonthly * 12;
+  const isRisk = hasRatingDrop && totalMonthly > 0;
+
+  // Show products with active drops + healthy products below 4.5★ (meaningful upside exists)
+  const displayProducts = productRevs.filter(p =>
+    p.pillar_rating.ratingDropped30d || (p.pillar_rating.current || 0) < 4.5
+  );
+
+  // Compute calculator rows + recovery totals (for merged single-table rendering)
+  const sortedCalc = [...displayProducts].sort((a, b) => (b.computedRisk || 0) - (a.computedRisk || 0));
+  let calcTotalRecovery = 0;
+  const calcRows = sortedCalc.map(pr => {
+    const f = fields[pr.asin] || {};
+    const units         = parseFloat(f.units) || 0;
+    const price         = parseFloat(f.price) || 0;
+    const targetRating  = parseFloat(f.targetRating) || 0;
+    const currentRating = pr.pillar_rating.current || 0;
+    const recoveryAmt   = (targetRating > currentRating && units > 0 && price > 0)
+      ? Math.max(0, Math.round(units * price * (convRate(targetRating) - convRate(currentRating))))
+      : 0;
+    calcTotalRecovery += recoveryAmt;
+    return { ...pr, recoveryAmt };
+  });
+
+  // For healthy brands — revenue protected estimate
+  let protectedMonthly = 0;
+  if (!hasRatingDrop) {
+    products.forEach(p => {
+      const f = fields[p.asin] || {};
+      const units = parseFloat(f.units) || 0;
+      const price = parseFloat(f.price) || 0;
+      if (units && price && p.pillar_rating.current) {
+        const worstCase = Math.max(1.0, p.pillar_rating.current - 0.5);
+        protectedMonthly += calcRevenueAtRisk(units, price, p.pillar_rating.current, worstCase);
+      }
+    });
+  }
+
+  const worstDrop = products
+    .filter(p => p.pillar_rating.ratingDropped30d)
+    .sort((a, b) => (a.pillar_rating.delta30d || 0) - (b.pillar_rating.delta30d || 0))[0];
+
+  // ── Weighted pillar averages for display ──────────────────────────────────────
+  const totalW = products.reduce((s, p) => s + (p.reviewCount || 1), 0);
+  function wAvg(key) {
+    return Math.round(products.reduce((s, p) => {
+      const w = (p.reviewCount || 1) / totalW;
+      return s + p[key].score * w;
+    }, 0) * 10) / 10;
+  }
+
+  const bsrScore = wAvg('pillar_bsr');
+  const ratScore = wAvg('pillar_rating');
+  const bbScore  = wAvg('pillar_buybox');
+
+  const lead = products[0] || {};
+
+  // BSR
+  const bsrMetric = lead.pillar_bsr?.current ? '#' + lead.pillar_bsr.current.toLocaleString() : '—';
+  const bsrDelta  = lead.pillar_bsr?.delta90dPct !== null ? lead.pillar_bsr?.delta90dPct : null;
+  const bsrSub    = bsrDelta !== null
+    ? `${bsrDelta > 0 ? '▲' : '▼'}${Math.abs(bsrDelta)}% vs. 90d${bsrDelta > 0 ? ' — worsening' : ' — improving'}`
+    : 'No rank history';
+
+  // Rating
+  const avgRating = products.length
+    ? Math.round(products.reduce((s, p) => s + (p.pillar_rating.current || 0), 0) / products.length * 10) / 10
+    : null;
+  const worstDelta30 = products.reduce((worst, p) => {
+    const d = p.pillar_rating.delta30d;
+    return d !== null && d < worst ? d : worst;
+  }, 0);
+  const ratSub = avgRating
+    ? (worstDelta30 < 0 ? `▼${Math.abs(worstDelta30)} vs. 30d` : 'Stable last 30d')
+    : 'No rating data';
+
+  // Buy Box
+  const avgBB = (() => {
+    const valid = products.filter(p => p.pillar_buybox.bbPct30d !== null);
+    if (!valid.length) return null;
+    return Math.round(valid.reduce((s, p) => s + p.pillar_buybox.bbPct30d, 0) / valid.length * 10) / 10;
+  })();
+  const anyLBB      = products.some(p => p.pillar_buybox.lbbDetected);
+  const anyUndercut = products.some(p => p.pillar_buybox.competitorUndercut);
+
+  const avgASP = (() => {
+    const valid = products.filter(p => p.asp30d != null);
+    if (!valid.length) return null;
+    return Math.round(valid.reduce((s, p) => s + p.asp30d, 0) / valid.length * 100) / 100;
+  })();
+  const avgListPrice = (() => {
+    const valid = products.filter(p => p.listPrice != null);
+    if (!valid.length) return null;
+    return Math.round(valid.reduce((s, p) => s + p.listPrice, 0) / valid.length * 100) / 100;
+  })();
+
+  const avgAspMoMPct = (() => {
+    const valid = products.filter(p => p.asp30d != null && p.aspMoMPct != null);
+    if (!valid.length) return null;
+    const totalW = valid.reduce((s, p) => s + (p.reviewCount || 1), 0);
+    return Math.round(valid.reduce((s, p) => s + p.aspMoMPct * (p.reviewCount || 1) / totalW, 0) * 10) / 10;
+  })();
+
+  const avgBBMoM = (() => {
+    const valid = products.filter(p => p.pillar_buybox.bbMoMPts != null);
+    if (!valid.length) return null;
+    return Math.round(valid.reduce((s, p) => s + p.pillar_buybox.bbMoMPts, 0) / valid.length * 10) / 10;
+  })();
+  const bbSub = avgBBMoM != null
+    ? (avgBBMoM >= 0 ? `▲${avgBBMoM.toFixed(1)}pp MoM` : `▼${Math.abs(avgBBMoM).toFixed(1)}pp MoM`)
+    : avgBB !== null ? `${products.length > 1 ? 'Avg ' : ''}${fmtPct(avgBB)} last 30d` : 'No BB data';
+
+  // (showRevAmount inlined into JSX below)
+
+  return (
+    <div>
+      {/* ── Hero split: Brand Score | Revenue at Risk ── */}
+      <div className="hero-split animate-in">
+        {/* Left: Brand Health Score */}
+        <div className="hero-card">
+          <div className="hero-score-inner">
+            <ScoreRing score={brandScore} label={label} />
+            <div className="score-meta">
+              <div className="score-brand-name">{lead.brand || 'Your Brand'} Brand Score</div>
+              <div className={`score-label-badge ${labelClass(label)}`} style={{ marginTop: 6 }}>
+                {label === 'Healthy' ? '✓' : label === 'At Risk' ? '⚠' : '✕'} {label}
+              </div>
+              {capReasons.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
+                  {capReasons.map((r, i) => {
+                    const c = CAP_REASON_COPY[r] || { icon: '⚠', text: r };
+                    return (
+                      <span key={i} className="pillar-flag amber">
+                        {c.icon} {c.text}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Revenue at Risk */}
+        <div className={`hero-card ${isRisk ? 'rev-risk-card' : 'rev-safe-card'}`}>
+          <div className={`rev-card-label ${isRisk ? 'risk' : 'safe'}`}>
+            {isRisk ? '⚠️  Revenue at Risk' : '✅  Revenue Protected'}
+          </div>
+          <div className="rev-card-amount">
+            {isRisk
+              ? (totalMonthly > 0 ? fmt$(totalAnnual) + '/yr' : 'Enter units below ↓')
+              : (protectedMonthly > 0 ? fmt$(protectedMonthly * 12) + '/yr' : 'Enter units below ↓')}
+          </div>
+          {isRisk && totalMonthly > 0 && (
+            <div className="rev-card-annual">{fmt$(totalMonthly)}/mo at risk</div>
+          )}
+          {!isRisk && protectedMonthly > 0 && (
+            <div className="rev-card-annual">{fmt$(protectedMonthly)}/mo protected vs. −0.5★ drop</div>
+          )}
+          {isRisk && worstDrop && (
+            <div className="rev-card-desc">
+              "{worstDrop.title ? worstDrop.title.slice(0, 45) + (worstDrop.title.length > 45 ? '…' : '') : worstDrop.asin}" dropped from{' '}
+              <strong>{worstDrop.pillar_rating.rating30dAgo}★</strong> to{' '}
+              <strong>{worstDrop.pillar_rating.current}★</strong> over the past 30 days.
+            </div>
+          )}
+          {isRisk && (
+            <a href="index.html#demo" className="rev-card-cta">
+              {hasRatingDrop && worstDrop
+                ? `Investigate the ${monthName(worstDrop.pillar_rating.dropDate)} ratings drop with the full Sentopi sentiment analysis →`
+                : anyLBB
+                ? 'Investigate your Buy Box loss with the full Sentopi analysis →'
+                : 'Get the full Sentopi analysis →'}
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* ── Brand ASP strip ── */}
+      {avgASP != null && (
+        <div className="asp-strip animate-in">
+          <div className="asp-strip-label">{lead.brand || 'Brand'} ASP</div>
+          <div className="asp-strip-divider" />
+          <div className="asp-strip-amount">${avgASP.toFixed(2)}</div>
+          {avgAspMoMPct != null && (() => {
+            const d = fmtDelta(avgAspMoMPct, true);
+            return d ? <span className={`asp-strip-delta ${d.cls}`}>{d.text}% MoM</span> : null;
+          })()}
+          {avgListPrice != null && (
+            <div className="asp-strip-list">· Avg List ${avgListPrice.toFixed(2)}</div>
+          )}
+        </div>
+      )}
+
+      {/* ── Pillars ── */}
+      <div className="pillars-grid">
+        <PillarCard
+          name="Best Seller Rank"
+          metric={bsrMetric}
+          metricSub={bsrSub}
+          score={bsrScore} max={weights.bsr}
+        />
+        <PillarCard
+          name="Rating Health"
+          metric={avgRating ? avgRating.toFixed(1) + '★' : '—'}
+          metricSub={ratSub}
+          score={ratScore} max={weights.rating}
+          flags={[
+            ...(hasRatingDrop ? [{ color: 'amber', icon: '⚠', text: 'Rating dropped last 30d' }] : []),
+          ]}
+        />
+        <PillarCard
+          name="Buy Box"
+          metric={avgBB !== null ? fmtPct(avgBB) : '—'}
+          metricSub={bbSub}
+          score={bbScore} max={weights.buybox}
+          flags={[
+            ...(anyLBB      ? [{ color: 'red',   icon: '🚨', text: 'Lost Buy Box' }] : []),
+            ...(anyUndercut ? [{ color: 'amber',  icon: '⬇',  text: 'Competitor undercutting' }] : []),
+          ]}
+        />
+      </div>
+
+      {/* ── Card 1: Products Analyzed ── */}
+      <div className="products-section animate-in" style={{ marginBottom: 16 }}>
+        <div style={{ overflowX: 'auto' }}>
+          <div style={{ padding: '14px 18px 12px', borderBottom: '1px solid var(--cream2)' }}>
+            <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.1rem', fontWeight: 400, color: 'var(--ink)', marginBottom: 3 }}>
+              Product Deep Dive
+            </div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--ink5)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+              {products.length} product{products.length !== 1 ? 's' : ''}
+            </div>
+          </div>
+          <table className="products-table" style={{ tableLayout: 'fixed', width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ width: '30%' }}>Product</th>
+                <th style={{ width: '14%' }}>Rating</th>
+                <th style={{ width: '14%' }} className="bsr-header">Best Seller<br/>Rank</th>
+                <th style={{ width: '14%' }}>Buy Box</th>
+                <th style={{ width: '14%' }}>ASP</th>
+                <th style={{ width: '14%' }} className="col-score">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map(p => {
+                const rat  = p.pillar_rating;
+                const bsr  = p.pillar_bsr;
+                const bb   = p.pillar_buybox;
+                const d30  = fmtDelta(rat.delta30d, true);
+                const bsrD = fmtDelta(bsr.delta90dPct, false);
+                return (
+                  <tr key={p.asin}>
+                    <td>
+                      <div className="p-title">{p.title ? p.title.slice(0,45) + (p.title.length > 45 ? '…' : '') : p.asin}</div>
+                      <div className="asin-code">{p.asin}</div>
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600 }}>{rat.current ? rat.current.toFixed(1) + '★' : '—'}</div>
+                      {d30 && <div className={d30.cls} style={{ fontSize: '0.75rem' }}>{d30.text} vs. 30d</div>}
+                      {rat.ratingDropped30d && <span title="Rating dropped" style={{ fontSize: '0.8rem' }}>⚠️</span>}
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600 }}>{bsr.current ? '#' + bsr.current.toLocaleString() : '—'}</div>
+                      {bsrD && bsr.delta90dPct !== null && (
+                        <div className={bsrD.cls} style={{ fontSize: '0.75rem' }}>{bsrD.text}% vs. 90d</div>
+                      )}
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600 }}>{bb.bbPct30d !== null ? fmtPct(bb.bbPct30d) : '—'}</div>
+                      {bb.bbMoMPts != null && (() => {
+                        const up = bb.bbMoMPts >= 0;
+                        return <div className={up ? 'delta-down' : 'delta-up'} style={{ fontSize: '0.75rem' }}>{up ? '+' : ''}{bb.bbMoMPts.toFixed(1)}pp MoM</div>;
+                      })()}
+                      {bb.lbbDetected && <div style={{ fontSize: '0.72rem', color: 'var(--rust)', fontWeight: 600 }}>🚨 LBB</div>}
+                    </td>
+                    <td>
+                      {p.asp30d != null ? (
+                        <>
+                          <div style={{ fontWeight: 600 }}>${p.asp30d.toFixed(2)}</div>
+                          {p.aspMoMPct != null && (() => {
+                            const d = fmtDelta(p.aspMoMPct, true);
+                            return d ? <div className={d.cls} style={{ fontSize: '0.75rem' }}>{d.text}% MoM</div> : null;
+                          })()}
+                          {p.listPrice != null && (
+                            <div style={{ fontSize: '0.7rem', color: 'var(--ink5)', marginTop: 1 }}>
+                              List ${p.listPrice.toFixed(2)}
+                            </div>
+                          )}
+                        </>
+                      ) : <span style={{ color: 'var(--ink5)' }}>—</span>}
+                    </td>
+                    <td className="col-score">
+                      <span className={`score-chip ${scoreChip(p.composite)}`}>{p.composite}</span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {asinCountExcluded > 0 && (
+            <div style={{ fontSize: '0.78rem', color: 'var(--ink5)', padding: '8px 18px', textAlign: 'center', borderTop: '1px solid var(--cream2)' }}>
+              + {asinCountExcluded} new/sparse product{asinCountExcluded > 1 ? 's' : ''} excluded from brand score (&lt;25 reviews)
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Card 2: Monthly Risk & Upside Calculator ── */}
+      {displayProducts.length > 0 && (
+        <div className="products-section animate-in" style={{ marginBottom: 16 }}>
+          <div style={{ overflowX: 'auto' }}>
+            <div style={{ padding: '14px 18px 0' }}>
+              <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.1rem', fontWeight: 400, color: 'var(--ink)', marginBottom: 3 }}>
+                Monthly Risk &amp; Upside Calculator
+              </div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--ink5)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, paddingBottom: 0 }}>
+                {displayProducts.length} product{displayProducts.length !== 1 ? 's' : ''}
+              </div>
+            </div>
+            <table className="products-table" style={{ tableLayout: 'fixed', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th style={{ width: '30%' }}>Product</th>
+                  <th style={{ width: '14%' }}>Rating</th>
+                  <th style={{ width: '14%' }}>Monthly Units</th>
+                  <th style={{ width: '14%' }}>Price (USD)</th>
+                  <th style={{ width: '14%' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ whiteSpace: 'normal', lineHeight: 1.35 }}>Monthly<br/>Risk</span>
+                      <Tip text="Revenue you're leaving on the table vs. your star rating from 30 days ago." />
+                    </span>
+                  </th>
+                  <th style={{ width: '14%' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ whiteSpace: 'normal', lineHeight: 1.35 }}>Upside<br/>Potential</span>
+                      <Tip text="Additional monthly revenue if you recover to your target star rating." />
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {calcRows.map(pr => {
+                  const f = fields[pr.asin] || {};
+                  const rat = pr.pillar_rating;
+                  return (
+                    <tr key={pr.asin}>
+                      <td>
+                        <div className="p-title">{pr.title ? pr.title.slice(0, 40) + (pr.title.length > 40 ? '…' : '') : pr.asin}</div>
+                        <div className="asin-code">{pr.asin}</div>
+                        <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <span style={{ fontSize: '0.67rem', color: 'var(--ink5)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 600 }}>Target ★</span>
+                          <input
+                            type="number"
+                            min="1" max="5" step="0.1"
+                            className="target-rating-input"
+                            value={f.targetRating}
+                            onChange={e => updateField(pr.asin, 'targetRating', e.target.value)}
+                          />
+                          <span style={{ fontSize: '0.67rem', color: 'var(--ink5)' }}>★</span>
+                        </div>
+                      </td>
+                      <td style={{ verticalAlign: 'middle' }}>
+                        <div style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                          {rat.current ? rat.current.toFixed(1) + '★' : '—'}
+                          {rat.ratingDropped30d && <span style={{ marginLeft: 4, fontSize: '0.8rem' }}>⚠️</span>}
+                        </div>
+                        {rat.ratingDropped30d && rat.delta30d != null ? (
+                          <div style={{ fontSize: '0.72rem', color: 'var(--rust)', fontWeight: 600, marginTop: 2, whiteSpace: 'nowrap' }}>
+                            {rat.delta30d} MoM
+                          </div>
+                        ) : (
+                          <div style={{ fontSize: '0.72rem', color: 'var(--ink5)', marginTop: 2, whiteSpace: 'nowrap' }}>stable</div>
+                        )}
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="rev-deep-input"
+                          value={f.units}
+                          placeholder="e.g. 10000"
+                          onChange={e => updateField(pr.asin, 'units', e.target.value)}
+                        />
+                        <div className="rev-source-tag-sm">
+                          {f.unitsDirty ? 'your value' : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (PDP est.)` : 'enter units'}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="rev-deep-price-wrap">
+                          <span className="rev-deep-prefix">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            className="rev-deep-input rev-deep-price-input"
+                            value={f.price}
+                            placeholder="33.99"
+                            onChange={e => updateField(pr.asin, 'price', e.target.value)}
+                          />
+                        </div>
+                        <div className="rev-source-tag-sm">
+                          {f.priceDirty ? 'your value' : pr.defaultPrice ? `$${pr.defaultPrice.toFixed(2)} (${pr.defaultPriceSource === 'bb' ? 'Buy Box' : pr.defaultPriceSource === 'asp' ? 'ASP est.' : 'List est.'})` : 'enter price'}
+                        </div>
+                      </td>
+                      <td style={{ verticalAlign: 'middle' }}>
+                        {!pr.pillar_rating.ratingDropped30d
+                          ? <div style={{ color: 'var(--ink5)', fontSize: '0.8rem' }}>—</div>
+                          : pr.computedRisk > 0
+                            ? <div className="rev-risk-cell" style={{ fontSize: '0.9rem' }}>{fmt$(pr.computedRisk)}</div>
+                            : <div style={{ color: 'var(--ink5)', fontSize: '0.75rem' }}>enter data ↑</div>
+                        }
+                      </td>
+                      <td style={{ verticalAlign: 'middle' }}>
+                        {pr.recoveryAmt > 0 ? (
+                          <>
+                            <div className="recovery-amount" style={{ fontSize: '0.9rem' }}>+{fmt$(pr.recoveryAmt)}</div>
+                            <div className="recovery-label">if {parseFloat(f.targetRating).toFixed(1)}★</div>
+                          </>
+                        ) : (
+                          <div style={{ color: 'var(--ink5)', fontSize: '0.75rem' }}>—</div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              {(totalMonthly > 0 || calcTotalRecovery > 0) && (
+                <tbody>
+                  <tr>
+                    <td colSpan={4} style={{ fontWeight: 600, fontSize: '0.78rem', color: 'var(--ink3)', paddingTop: 12, borderTop: '2px solid var(--cream2)' }}>
+                      Total
+                    </td>
+                    <td style={{ paddingTop: 12, borderTop: '2px solid var(--cream2)' }}>
+                      {totalMonthly > 0 && (
+                        <>
+                          <div style={{ fontWeight: 700, color: 'var(--amber)', fontSize: '0.95rem' }}>{fmt$(totalMonthly)}</div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--ink4)', marginTop: 2 }}>{fmt$(totalMonthly * 12)}/yr</div>
+                        </>
+                      )}
+                    </td>
+                    <td style={{ paddingTop: 12, borderTop: '2px solid var(--cream2)' }}>
+                      {calcTotalRecovery > 0 && (
+                        <>
+                          <div style={{ fontWeight: 700, color: 'var(--forest)', fontSize: '0.95rem' }}>+{fmt$(calcTotalRecovery)}</div>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--ink4)', marginTop: 2 }}>+{fmt$(calcTotalRecovery * 12)}/yr</div>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              )}
+            </table>
+            <div style={{ padding: '10px 14px', fontSize: '0.72rem', color: 'var(--ink5)', borderTop: '1px solid var(--cream2)', lineHeight: 1.5 }}>
+              Estimates use Sentopi's conversion rate model — consistent with the{' '}
+              <a href="calculator.html" style={{ color: 'var(--ink4)', textDecoration: 'underline' }}>Star Rating Calculator</a>.
+              {' '}Update units and target rating with your actual data for accuracy.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Bottom CTA ── */}
+      <div className="bottom-cta animate-in">
+        <h3>
+          {hasRatingDrop
+            ? 'Your score is slipping. Find out exactly why.'
+            : label === 'Healthy'
+              ? 'Strong signals — stay ahead before competitors notice.'
+              : 'Something\'s off. Reviews hold the answer.'}
+        </h3>
+        <p>
+          {hasRatingDrop
+            ? 'Sentopi reads every review and hands you a prioritized action plan — what changed, who\'s affected, and what to fix first to recover that revenue.'
+            : 'Sentopi surfaces the root causes your brand score can\'t see: exact issues, customer language, and a prioritized action plan.'}
+        </p>
+        <a href="index.html#demo" className="btn-cta-main">Get the Full Sentopi Analysis →</a>
+      </div>
+    </div>
+  );
+}
+
+// ─── Input form ───────────────────────────────────────────────────────────────
+function InputForm({ onResult, autoRun }) {
+  const [input, setInput]     = useState(autoRun || '');
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState('');
+
+  const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+  function cacheKey(v) { return `bh:${v.toLowerCase().trim()}`; }
+
+  function readCache(val) {
+    try {
+      const raw = localStorage.getItem(cacheKey(val));
+      if (!raw) return null;
+      const { data, ts } = JSON.parse(raw);
+      return (Date.now() - ts < CACHE_TTL) ? data : null;
+    } catch { return null; }
+  }
+
+  function writeCache(val, data) {
+    try { localStorage.setItem(cacheKey(val), JSON.stringify({ data, ts: Date.now() })); }
+    catch { /* storage full — silent fail */ }
+  }
+
+  async function runAnalysis(val) {
+    const cached = readCache(val);
+    if (cached) { onResult(cached); return; }
+    setError(''); setLoading(true);
+    try {
+      const resp = await fetch('/.netlify/functions/brand-health', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input: val }),
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.success) { setError(data.error || 'Something went wrong. Try again.'); }
+      else { writeCache(val, data); onResult(data); }
+    } catch { setError('Network error — check your connection and try again.'); }
+    finally { setLoading(false); }
+  }
+
+  React.useEffect(() => {
+    if (autoRun) runAnalysis(autoRun);
+  }, []);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!input.trim()) return;
+    window.history.pushState({}, '', `?s=${encodeURIComponent(input.trim())}`);
+    await runAnalysis(input.trim());
+  }
+
+  return (
+    <div className="panel">
+      <div className="panel-header">Revenue Risk Report — Free</div>
+      <div className="panel-body">
+        <form onSubmit={handleSubmit}>
+          <div className="input-row">
+            <div className="input-wrap">
+              <span className="input-icon">🔍</span>
+              <input type="text" className="main-input"
+                placeholder="Amazon ASIN or Seller ID  (e.g. B0FB9MXHR1)"
+                value={input} onChange={e => setInput(e.target.value)}
+                disabled={loading} autoFocus />
+            </div>
+            <button type="submit" className="btn-analyze" disabled={loading || !input.trim()}>
+              {loading ? 'Analyzing…' : 'Analyze Brand →'}
+            </button>
+          </div>
+          <p className="input-hint">
+            Enter any ASIN (e.g. <code>B0FB9MXHR1</code>) or your Seller ID.
+            Results in ~30 seconds — no account required.
+          </p>
+        </form>
+        {error && <div className="error-box">⚠ {error}</div>}
+        {loading && (
+          <div className="loading-box">
+            <div className="spinner" />
+            <div className="loading-text">Analyzing your brand across Amazon signals…</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Share strip ──────────────────────────────────────────────────────────────
+function ShareStrip({ scorecardRef, brandName }) {
+  const [copied, setCopied] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  async function downloadPng() {
+    if (!scorecardRef.current || downloading) return;
+    setDownloading(true);
+    try {
+      const canvas = await html2canvas(scorecardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#f5f1eb',
+        logging: false,
+      });
+      const link = document.createElement('a');
+      link.download = `${(brandName || 'brand').replace(/\s+/g, '-').toLowerCase()}-health-score.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } finally {
+      setDownloading(false);
+    }
+  }
+
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 10, marginTop: 24, marginBottom: 8,
+      padding: '12px 16px', background: 'var(--white)', border: '1px solid var(--cream3)',
+      borderRadius: 8, boxShadow: '0 1px 4px rgba(26,23,20,0.04)',
+    }}>
+      <span style={{ fontSize: '0.78rem', color: 'var(--ink4)', fontWeight: 500, flex: 1 }}>
+        Share this scorecard
+      </span>
+      <button onClick={copyLink} style={{
+        display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
+        background: copied ? 'var(--forest)' : 'var(--ink)', color: '#fff',
+        border: 'none', borderRadius: 6, fontSize: '0.78rem', fontWeight: 600,
+        cursor: 'pointer', fontFamily: 'inherit', transition: 'background 0.2s',
+      }}>
+        {copied ? '✓ Copied' : '🔗 Copy link'}
+      </button>
+      <button onClick={downloadPng} disabled={downloading} style={{
+        display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
+        background: 'none', color: 'var(--ink3)', border: '1px solid var(--cream3)',
+        borderRadius: 6, fontSize: '0.78rem', fontWeight: 500,
+        cursor: downloading ? 'wait' : 'pointer', fontFamily: 'inherit',
+      }}>
+        {downloading ? 'Saving…' : '↓ Download PNG'}
+      </button>
+    </div>
+  );
+}
+
+// ─── App ──────────────────────────────────────────────────────────────────────
+function App() {
+  const [result, setResult] = useState(null);
+  const resultEl   = React.useRef(null);
+  const scorecardEl = React.useRef(null);
+  const autoRun = new URLSearchParams(window.location.search).get('s') || '';
+
+  function handleResult(data) {
+    setResult(data);
+    setTimeout(() => resultEl.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+
+  function handleReset() {
+    setResult(null);
+    window.history.pushState({}, '', window.location.pathname);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const brandName = result?.products?.[0]?.brand || '';
+
+  return (
+    <>
+      <div className="hero">
+        <div className="eyebrow"><span className="eyebrow-dot" /> Free Revenue Risk Report</div>
+        <h1>Where is your Amazon revenue at risk?</h1>
+        <p className="hero-sub">Paste any ASIN or Seller ID. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box — with an estimated dollar impact.</p>
+      </div>
+
+      <InputForm onResult={handleResult} autoRun={autoRun} />
+
+      {result && (
+        <div ref={resultEl} style={{ marginTop: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--ink5)' }}>
+              {result.asinCountScored} product{result.asinCountScored !== 1 ? 's' : ''} analyzed ·{' '}
+              {result.entryPoint === 'seller' ? 'Seller ID lookup' : 'ASIN + variations'}
+            </div>
+            <button onClick={handleReset}
+              style={{ background: 'none', border: '1px solid var(--cream3)', color: 'var(--ink4)', fontSize: '0.8rem', padding: '5px 12px', borderRadius: 'var(--r)', cursor: 'pointer', fontFamily: 'inherit' }}>
+              ← Analyze another brand
+            </button>
+          </div>
+          <div ref={scorecardEl}>
+            <ScoreCard data={result} />
+          </div>
+          <ShareStrip scorecardRef={scorecardEl} brandName={brandName} />
+        </div>
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

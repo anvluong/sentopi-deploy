@@ -1,2 +1,11 @@
 [build]
   functions = "netlify/functions"
+
+[dev]
+  functions = "netlify/functions"
+  publish = "."
+
+[[redirects]]
+  from = "/revenue-risk-report"
+  to = "/brand-health.html"
+  status = 200
