@@ -310,6 +310,22 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 .rev-deep-prefix { position: absolute; left: 8px; font-size: 0.8rem; color: var(--ink4); pointer-events: none; }
 .rev-deep-price-input { padding-left: 18px; }
 .rev-source-tag-sm { font-size: 0.65rem; color: var(--ink5); margin-top: 2px; font-style: italic; }
+
+/* ── Print / Save as PDF ── */
+@media print {
+  html, body {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    print-color-adjust: exact;
+    background: var(--cream) !important;
+  }
+  .no-print { display: none !important; }
+  .nav { display: none !important; }
+  .page { padding: 12px 0 0 !important; }
+  .score-hero, .pillar-grid > *, .table-card {
+    box-shadow: none !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1354,9 +1370,8 @@ function InputForm({ onResult, autoRun }) {
 }
 
 // ─── Share strip ──────────────────────────────────────────────────────────────
-function ShareStrip({ scorecardRef, brandName }) {
+function ShareStrip({ brandName }) {
   const [copied, setCopied] = useState(false);
-  const [downloading, setDownloading] = useState(false);
 
   function copyLink() {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -1365,27 +1380,12 @@ function ShareStrip({ scorecardRef, brandName }) {
     });
   }
 
-  async function downloadPng() {
-    if (!scorecardRef.current || downloading) return;
-    setDownloading(true);
-    try {
-      const canvas = await html2canvas(scorecardRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#f5f1eb',
-        logging: false,
-      });
-      const link = document.createElement('a');
-      link.download = `${(brandName || 'brand').replace(/\s+/g, '-').toLowerCase()}-health-score.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } finally {
-      setDownloading(false);
-    }
+  function saveAsPdf() {
+    window.print();
   }
 
   return (
-    <div style={{
+    <div className="no-print" style={{
       display: 'flex', alignItems: 'center', gap: 10, marginTop: 24, marginBottom: 8,
       padding: '12px 16px', background: 'var(--white)', border: '1px solid var(--cream3)',
       borderRadius: 8, boxShadow: '0 1px 4px rgba(26,23,20,0.04)',
@@ -1401,13 +1401,13 @@ function ShareStrip({ scorecardRef, brandName }) {
       }}>
         {copied ? '✓ Copied' : '🔗 Copy link'}
       </button>
-      <button onClick={downloadPng} disabled={downloading} style={{
+      <button onClick={saveAsPdf} style={{
         display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
         background: 'none', color: 'var(--ink3)', border: '1px solid var(--cream3)',
         borderRadius: 6, fontSize: '0.78rem', fontWeight: 500,
-        cursor: downloading ? 'wait' : 'pointer', fontFamily: 'inherit',
+        cursor: 'pointer', fontFamily: 'inherit',
       }}>
-        {downloading ? 'Saving…' : '↓ Download PNG'}
+        ↓ Save as PDF
       </button>
     </div>
   );
@@ -1435,17 +1435,17 @@ function App() {
 
   return (
     <>
-      <div className="hero">
+      <div className="hero no-print">
         <div className="eyebrow"><span className="eyebrow-dot" /> Free Revenue Risk Report</div>
         <h1>Where is your Amazon revenue at risk?</h1>
         <p className="hero-sub">Paste any ASIN or Seller ID. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box — with an estimated dollar impact.</p>
       </div>
 
-      <InputForm onResult={handleResult} autoRun={autoRun} />
+      <div className="no-print"><InputForm onResult={handleResult} autoRun={autoRun} /></div>
 
       {result && (
         <div ref={resultEl} style={{ marginTop: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+          <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <div style={{ fontSize: '0.78rem', color: 'var(--ink5)' }}>
               {result.asinCountScored} product{result.asinCountScored !== 1 ? 's' : ''} analyzed ·{' '}
               {result.entryPoint === 'seller' ? 'Seller ID lookup' : 'ASIN + variations'}
@@ -1458,7 +1458,7 @@ function App() {
           <div ref={scorecardEl}>
             <ScoreCard data={result} />
           </div>
-          <ShareStrip scorecardRef={scorecardEl} brandName={brandName} />
+          <ShareStrip brandName={brandName} />
         </div>
       )}
     </>

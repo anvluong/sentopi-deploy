@@ -305,7 +305,11 @@ function scoreBrand(products) {
       revenueAtRiskMonthly = Math.round(defaultUnits * defaultPrice * convDelta);
     }
 
-    const composite = p1.score + p3.score + p4.score;
+    // If no BB data, exclude the Buy Box pillar and rescale BSR + Rating to 100
+    const bbDataAvailable = p4.bbPct30d !== null;
+    const composite = bbDataAvailable
+      ? p1.score + p3.score + p4.score
+      : (p1.score + p3.score) / (WEIGHTS.bsr + WEIGHTS.rating) * 100;
 
     const result = {
       asin:         p.asin,
