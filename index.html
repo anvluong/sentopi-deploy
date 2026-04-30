@@ -11,7 +11,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="7ijdi72mjm65BeZDHOcGuCKrUnMccBPhlX0DO24Fw8c" />
-<title>Sentopi | Review Intelligence for E-Commerce</title>
+<title>Sentopi | Prioritized Actions from Your Customer Reviews</title>
+<meta name="description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sentopi.com/">
+<meta property="og:title" content="Sentopi — Prioritized Actions from Your Customer Reviews">
+<meta property="og:description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
+<meta property="og:site_name" content="Sentopi">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sentopi — Prioritized Actions from Your Customer Reviews">
+<meta name="twitter:description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -394,8 +407,27 @@ button, input { font-family: inherit; }
 
 /* ─────────────── SAMPLE INSIGHTS ─────────────── */
 .output-section { background: var(--cream2); }
-.output-header { margin-bottom: 52px; }
+.output-header { margin-bottom: 36px; }
 .output-header .section-h2 { margin-top: 12px; }
+
+.insight-callouts {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-bottom: 36px;
+}
+.insight-callout {
+  background: var(--white); border: 1px solid var(--cream3);
+  border-radius: 6px; padding: 24px 22px;
+}
+.insight-callout-headline {
+  font-size: 0.9375rem; font-weight: 600; color: var(--ink);
+  line-height: 1.3; margin-bottom: 10px;
+}
+.insight-callout-body {
+  font-size: 0.82rem; color: var(--ink4); line-height: 1.6;
+}
+@media (max-width: 960px) {
+  .insight-callouts { grid-template-columns: 1fr; gap: 12px; }
+}
 
 .chart-card {
   background: var(--white); border: 1px solid var(--cream3);
@@ -662,13 +694,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container nav-inner">
     <a href="#" class="nav-logo">Sentopi</a>
     <div class="nav-links">
-      <a href="#how-it-works">How It Works</a>
-      <a href="#sample-insights">Sample Insights</a>
+      <a href="#sample-insights">See the Analysis</a>
       <a href="/revenue-risk-report">Revenue Risk Report <span class="nav-free-badge">Free</span></a>
       <a href="calculator.html">Star Rating Calculator <span class="nav-free-badge">Free</span></a>
       <a href="#pricing">Pricing</a>
     </div>
-    <a href="#demo" class="nav-cta">Get a Free Report →</a>
+    <a href="#demo" class="nav-cta">See My Revenue Risk →</a>
   </div>
 </nav>
 
@@ -682,10 +713,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="hero-eyebrow-dot"></span>
           Amazon Review Intelligence
         </div>
-        <h1>Stop guessing.<br><em>Start listening.</em></h1>
-        <p class="hero-sub">Sentopi analyzes your reviews and hands you a prioritized action plan. What to fix first, who owns it, and what it's worth.</p>
+        <h1>Prioritized actions<br><em>Straight from your customers.</em></h1>
+        <p class="hero-sub">Sentopi reads every review, scores every issue, and hands you a ranked list of fixes prioritized by revenue.</p>
         <div class="hero-ctas">
-          <a href="#demo" class="btn-primary">Get My Rating Report →</a>
+          <a href="#demo" class="btn-primary">Find Out What's Driving Your 1-Stars →</a>
           <a href="#how-it-works" class="btn-ghost">See How It Works</a>
         </div>
         <p class="hero-calc">Free tools: <a href="/revenue-risk-report">Revenue Risk Report →</a> &nbsp;·&nbsp; <a href="calculator.html">Star Rating Calculator →</a></p>
@@ -713,7 +744,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <!-- Revenue impact section -->
         <div class="mockup-section">
-          <div class="mockup-section-label">Revenue Impact — Top Fixable Issues</div>
+          <div class="mockup-section-label">Revenue at Risk — Top Issues</div>
           <!-- Rating recovery track -->
           <div class="mockup-rev-track">
             <div class="mockup-rev-track-inner">
@@ -730,16 +761,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <!-- Revenue line items -->
           <div class="mockup-rev-row">
-            <span class="mockup-rev-issue">Fix listing over-promise</span>
-            <span class="mockup-rev-value">+$14,200 / yr</span>
+            <span class="mockup-rev-issue">Listing over-promise</span>
+            <span class="mockup-rev-value">$14,200 at risk</span>
           </div>
           <div class="mockup-rev-row">
-            <span class="mockup-rev-issue">Fix cracking on arrival</span>
-            <span class="mockup-rev-value">+$6,800 / yr</span>
+            <span class="mockup-rev-issue">Cracking on arrival</span>
+            <span class="mockup-rev-value">$6,800 at risk</span>
+          </div>
+          <div class="mockup-rev-row">
+            <span class="mockup-rev-issue">Size / capacity mismatch</span>
+            <span class="mockup-rev-value">$3,600 at risk</span>
           </div>
           <div class="mockup-rev-row mockup-rev-total">
-            <span class="mockup-rev-issue">Total annual upside</span>
-            <span class="mockup-rev-value mockup-rev-value-total">+$24,600 / yr</span>
+            <span class="mockup-rev-issue">Total revenue at risk</span>
+            <span class="mockup-rev-value mockup-rev-value-total">$24,600 / yr</span>
           </div>
         </div>
         <!-- Priority rows -->
@@ -766,17 +801,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="proof-cell reveal">
         <div class="proof-cell-label">Coverage</div>
         <div class="proof-cell-value">Every review, read</div>
-        <div class="proof-cell-desc">1 star through 5, collected and categorized — not a sample</div>
+        <div class="proof-cell-desc">Most platforms no longer provide complete review data. Drop your URL and Sentopi collects every written review automatically — 1 star through 5, with month-over-month tracking built in.</div>
       </div>
       <div class="proof-cell reveal d1">
         <div class="proof-cell-label">Output</div>
         <div class="proof-cell-value">Action plan, not a complaint list</div>
-        <div class="proof-cell-desc">Issues scored by volume, severity, and fixability</div>
+        <div class="proof-cell-desc">Each issue ranked so your team knows what to fix next, not just what went wrong.</div>
       </div>
       <div class="proof-cell reveal d2">
-        <div class="proof-cell-label">Revenue model</div>
-        <div class="proof-cell-value">The dollars at stake</div>
-        <div class="proof-cell-desc">What each star improvement is worth, modeled to your product</div>
+        <div class="proof-cell-label">Revenue at risk</div>
+        <div class="proof-cell-value">The cost of every 0.1★ gap</div>
+        <div class="proof-cell-desc">What your rating gap is costing you right now, modeled to your product's price and volume</div>
       </div>
     </div>
   </div>
@@ -809,7 +844,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p class="problem-text"><strong>Your team debates whether problems are product, ops, or marketing.</strong> No data to settle it.</p>
           </div>
           <div class="problem-pull reveal">
-            Every deliverable is built around one question: what do we fix first, who owns it, and how does it move our rating?
+            Every analysis is built around one question: what do we fix first, who owns it, and how does it move our rating?
           </div>
         </div>
       </div>
@@ -851,7 +886,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container">
     <div class="output-header">
       <span class="eyebrow reveal">What You Get</span>
-      <h2 class="section-h2 reveal">Your rating report.</h2>
+      <h2 class="section-h2 reveal">A fix list, not a report.</h2>
+    </div>
+
+    <div class="insight-callouts">
+      <div class="insight-callout reveal">
+        <div class="insight-callout-headline">Fix issues at the root, not the symptom.</div>
+        <p class="insight-callout-body">Every complaint is decomposed by cause: listing copy problem, product failure, or ops issue. Each one routes to the right owner with a specific action attached.</p>
+      </div>
+      <div class="insight-callout reveal d1">
+        <div class="insight-callout-headline">See exactly what changed last month.</div>
+        <p class="insight-callout-body">Catch a rising complaint category before it compounds into a rating drop. Month-over-month tracking shows which issues are accelerating and which are resolving.</p>
+      </div>
+      <div class="insight-callout reveal d2">
+        <div class="insight-callout-headline">Know who owns every fix before you leave.</div>
+        <p class="insight-callout-body">Every action item comes out of the analysis pre-assigned to product, marketing, or ops. No debate, no interpretation required.</p>
+      </div>
     </div>
 
     <div class="chart-card reveal">
@@ -918,7 +968,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div class="rc-card reveal d1">
-        <div class="rc-heading">Every Report Includes</div>
+        <div class="rc-heading">The Full Analysis Includes</div>
         <div class="rc-list">
           <div class="rc-item">
             <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -934,7 +984,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="rc-item">
             <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Trend velocity</strong> — which complaint categories are rising and how fast</span>
+            <span><strong>Month-over-month trend tracking</strong> — catch what got worse this month before it becomes a pattern</span>
           </div>
           <div class="rc-item">
             <div class="rc-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -972,8 +1022,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="how-card reveal">
         <div class="how-num">01</div>
         <h3>Gather Reviews</h3>
-        <p>Drop in your Amazon URL. Every written review, 1 star through 5, is collected and processed. Nothing for you to do.</p>
-        <span class="how-tag">Every review, 1 star through 5</span>
+        <p>Drop in your Amazon URL. Most review platforms no longer provide complete review data — Sentopi collects every written review automatically. Nothing for you to do.</p>
+        <span class="how-tag">Full dataset, not a sample</span>
       </div>
       <div class="how-card reveal d1">
         <div class="how-num">02</div>
@@ -983,14 +1033,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">03</div>
-        <h3>Assign Ownership &amp; Define Impact</h3>
-        <p>Every fix is assigned to product, ops, or marketing with a revenue impact model attached. Your team knows what to do and what it's worth.</p>
-        <span class="how-tag">Revenue impact included</span>
+        <h3>Your Ranked To-Do List, Ready to Act On</h3>
+        <p>Every fix comes out pre-assigned to product, ops, or marketing with a revenue number attached. No interpretation needed — your team knows exactly what to do and what it's worth.</p>
+        <span class="how-tag">No interpretation needed</span>
       </div>
     </div>
     <div class="how-cta reveal">
-      <p>Ready to see what your reviews are telling you?</p>
-      <a href="#demo" class="btn-primary">Get My Rating Report →</a>
+      <p>Ready to see what your rating gap is costing you?</p>
+      <a href="#demo" class="btn-primary">Find Out What's Driving Your 1-Stars →</a>
     </div>
   </div>
 </section>
@@ -1012,7 +1062,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="pricing-feat">
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Full review dataset (Excel)
+            Full review dataset (exportable)
           </div>
           <div class="pricing-feat">
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1020,13 +1070,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="pricing-feat">
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Complaint trends over time
+            Month-over-month trend tracking
           </div>
         </div>
         <hr class="pricing-divider">
-        <div class="pricing-free-label">Your first rating report is free</div>
-        <div class="pricing-free-desc">We'll analyze 100 reviews from your product and deliver a real report. See the methodology before you commit.</div>
-        <a href="#demo" class="pricing-cta">Get My Rating Report →</a>
+        <div class="pricing-free-label">Your first report is free</div>
+        <div class="pricing-free-desc">The free report shows you the opportunity: your top complaint drivers, what's causing 1-stars, and what each star improvement is worth in revenue. The full analysis shows you how to get there: specific actions with owner assignments, competitor benchmarks, and month-over-month trend tracking.</div>
+        <a href="#demo" class="pricing-cta">Get My Free Report →</a>
       </div>
     </div>
   </div>
@@ -1037,7 +1087,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container">
     <div class="form-grid">
       <div class="form-left reveal">
-        <h2>Get your free<br><em>rating report.</em></h2>
+        <h2>Get your free<br><em>fix list.</em></h2>
         <p class="form-sub">Drop your Amazon product link and we'll build your rating report from 100 reviews — the top complaint categories, priority scores, and what's actually driving your 1-stars.</p>
         <div class="trust-list">
           <div class="trust-item">
@@ -1061,7 +1111,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <form class="demo-form reveal d1" name="demo" method="POST" action="/success.html" data-netlify="true">
         <input type="hidden" name="form-name" value="demo">
-        <div class="demo-form-title">Get My Rating Report</div>
+        <div class="demo-form-title">Find Out What's Driving Your 1-Stars</div>
         <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
         <div class="form-group">
           <label class="form-label" for="f-name">Name *</label>
@@ -1076,8 +1126,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <input class="form-input" type="url" id="f-url" name="url" placeholder="https://amazon.com/dp/...">
           <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
         </div>
-        <button class="form-submit" type="submit" id="submitBtn">Get My Rating Report →</button>
-        <div class="form-note">No spam, ever. Your rating report arrives within 48 hours.</div>
+        <button class="form-submit" type="submit" id="submitBtn">Find Out What's Driving Your 1-Stars →</button>
+        <div class="form-note">Your free report shows you the opportunity. The full analysis shows you how to get there.</div>
       </form>
     </div>
   </div>
@@ -1089,9 +1139,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="footer-logo">Sentopi</span>
     <span class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</span>
     <div class="footer-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Contact</a>
+      <a href="/legal.html#privacy">Privacy</a>
+      <a href="/legal.html#terms">Terms</a>
+      <a href="mailto:hello@sentopi.com">Contact</a>
     </div>
   </div>
 </footer>
@@ -1127,7 +1177,7 @@ function handleSubmit(e) {
     btn.style.background = '#059669';
     form.querySelectorAll('.form-input').forEach(i => i.value = '');
     setTimeout(() => {
-      btn.textContent = 'Get My Rating Report →';
+      btn.textContent = 'Find Out What\'s Driving Your 1-Stars →';
       btn.style.background = '#ea580c';
       btn.disabled = false;
     }, 5000);

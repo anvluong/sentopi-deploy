@@ -646,8 +646,9 @@ function RevenueDeepDive({ productRevs, fields, onUpdate, totalMonthly, totalAnn
 
 // ─── Pillar cards ─────────────────────────────────────────────────────────────
 function PillarCard({ name, metric, metricSub, score, max, flags }) {
-  const pct    = Math.round((score / max) * 100);
-  const health = pillarHealth(score, max);
+  const noData = score === null || score === undefined;
+  const pct    = noData ? 0 : Math.round((score / max) * 100);
+  const health = noData ? '' : pillarHealth(score, max);
   return (
     <div className="pillar-card animate-in">
       <div className="pillar-name">{name}</div>
@@ -657,7 +658,7 @@ function PillarCard({ name, metric, metricSub, score, max, flags }) {
         <div className={`pillar-bar-fill ${health}`} style={{ width: `${pct}%` }} />
       </div>
       <div className="pillar-score-line">
-        Score: <strong>{score}/{max}</strong>
+        Score: <strong>{noData ? '—' : `${score}/${max}`}</strong>
       </div>
       {flags && flags.map((f, i) => (
         <div key={i} className={`pillar-flag ${f.color}`}>{f.icon} {f.text}</div>
@@ -856,7 +857,7 @@ function ScoreCard({ data }) {
 
   const bsrScore = wAvg('pillar_bsr');
   const ratScore = wAvg('pillar_rating');
-  const bbScore  = wAvg('pillar_buybox');
+  const bbScore  = avgBB !== null ? wAvg('pillar_buybox') : null;
 
   const lead = products[0] || {};
 
