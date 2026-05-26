@@ -10,7 +10,7 @@ exports.handler = async function (event) {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
-  const { name, email } = payload;
+  const { name, email, url } = payload;
 
   if (!email) {
     return { statusCode: 400, body: 'Email is required' };
@@ -19,17 +19,23 @@ exports.handler = async function (event) {
   const KIT_API_KEY    = process.env.KIT_API_KEY;
   const KIT_SEQUENCE_ID = process.env.KIT_SEQUENCE_ID || '2709975';
 
+  const subscriberData = {
+    api_key: KIT_API_KEY,
+    email,
+    first_name: name ? name.split(' ')[0] : '',
+  };
+
+  if (url) {
+    subscriberData.fields = { amazon_url: url };
+  }
+
   // Add subscriber via Kit v3 API — sequence subscribe endpoint
   const kitRes = await fetch(
     `https://api.convertkit.com/v3/sequences/${KIT_SEQUENCE_ID}/subscribe`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        api_key: KIT_API_KEY,
-        email,
-        first_name: name ? name.split(' ')[0] : '',
-      }),
+      body: JSON.stringify(subscriberData),
     }
   );
 

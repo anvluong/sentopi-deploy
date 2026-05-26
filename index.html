@@ -25,6 +25,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sentopi — Prioritized Actions from Your Customer Reviews">
 <meta name="twitter:description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
+<meta property="og:image" content="https://sentopi.com/og-image.png">
+<meta name="twitter:image" content="https://sentopi.com/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1008,7 +1010,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- TESTIMONIALS: removed until real quotes are available -->
+<!-- ══════════ TESTIMONIAL ══════════ -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <span class="eyebrow reveal">From a Seller</span>
+      <div class="testimonial-card reveal" style="margin: 24px auto 0; text-align: left; max-width: 520px;">
+        <span class="testimonial-quote-mark">&ldquo;</span>
+        <p class="testimonial-body">I know the problematic reviews almost by heart, but didn't realize that changing my PDP could make such a difference.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">FP</div>
+          <div>
+            <div class="testimonial-name">Food Product Owner</div>
+            <div class="testimonial-role">Amazon Seller</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ══════════ HOW IT WORKS ══════════ -->
 <section id="how-it-works" class="section how-section">
@@ -1166,12 +1186,16 @@ function handleSubmit(e) {
   const btn = document.getElementById('submitBtn');
   const form = e.target;
   btn.textContent = 'Sending...'; btn.style.opacity = '0.65'; btn.disabled = true;
+
   fetch('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams(new FormData(form)).toString(),
   })
-  .then(() => {
+  .then(res => {
+    if (!res.ok) throw new Error('Form submission failed');
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'generate_lead', form_name: 'demo' });
     btn.textContent = '✓ You\'re in — report on its way';
     btn.style.opacity = '1';
     btn.style.background = '#059669';
