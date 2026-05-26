@@ -848,41 +848,7 @@ function ScoreCard({ data }) {
     .filter(p => p.pillar_rating.ratingDropped30d)
     .sort((a, b) => (a.pillar_rating.delta30d || 0) - (b.pillar_rating.delta30d || 0))[0];
 
-  // ── Weighted pillar averages for display ──────────────────────────────────────
-  const totalW = products.reduce((s, p) => s + (p.reviewCount || 1), 0);
-  function wAvg(key) {
-    return Math.round(products.reduce((s, p) => {
-      const w = (p.reviewCount || 1) / totalW;
-      return s + p[key].score * w;
-    }, 0) * 10) / 10;
-  }
-
-  const bsrScore = wAvg('pillar_bsr');
-  const ratScore = wAvg('pillar_rating');
-  const bbScore  = avgBB !== null ? wAvg('pillar_buybox') : null;
-
-  const lead = products[0] || {};
-
-  // BSR
-  const bsrMetric = lead.pillar_bsr?.current ? '#' + lead.pillar_bsr.current.toLocaleString() : '—';
-  const bsrDelta  = lead.pillar_bsr?.delta90dPct !== null ? lead.pillar_bsr?.delta90dPct : null;
-  const bsrSub    = bsrDelta !== null
-    ? `${bsrDelta > 0 ? '▲' : '▼'}${Math.abs(bsrDelta)}% vs. 90d${bsrDelta > 0 ? ' — worsening' : ' — improving'}`
-    : 'No rank history';
-
-  // Rating
-  const avgRating = products.length
-    ? Math.round(products.reduce((s, p) => s + (p.pillar_rating.current || 0), 0) / products.length * 10) / 10
-    : null;
-  const worstDelta30 = products.reduce((worst, p) => {
-    const d = p.pillar_rating.delta30d;
-    return d !== null && d < worst ? d : worst;
-  }, 0);
-  const ratSub = avgRating
-    ? (worstDelta30 < 0 ? `▼${Math.abs(worstDelta30)} vs. 30d` : 'Stable last 30d')
-    : 'No rating data';
-
-  // Buy Box
+  // ── Buy Box average (must be computed before pillar averages) ─────────────────
   const avgBB = (() => {
     const valid = products.filter(p => p.pillar_buybox.bbPct30d !== null);
     if (!valid.length) return null;
@@ -918,7 +884,39 @@ function ScoreCard({ data }) {
     ? (avgBBMoM >= 0 ? `▲${avgBBMoM.toFixed(1)}pp MoM` : `▼${Math.abs(avgBBMoM).toFixed(1)}pp MoM`)
     : avgBB !== null ? `${products.length > 1 ? 'Avg ' : ''}${fmtPct(avgBB)} last 30d` : 'No BB data';
 
-  // (showRevAmount inlined into JSX below)
+  // ── Weighted pillar averages for display ──────────────────────────────────────
+  const totalW = products.reduce((s, p) => s + (p.reviewCount || 1), 0);
+  function wAvg(key) {
+    return Math.round(products.reduce((s, p) => {
+      const w = (p.reviewCount || 1) / totalW;
+      return s + p[key].score * w;
+    }, 0) * 10) / 10;
+  }
+
+  const bsrScore = wAvg('pillar_bsr');
+  const ratScore = wAvg('pillar_rating');
+  const bbScore  = avgBB !== null ? wAvg('pillar_buybox') : null;
+
+  const lead = products[0] || {};
+
+  // BSR
+  const bsrMetric = lead.pillar_bsr?.current ? '#' + lead.pillar_bsr.current.toLocaleString() : '—';
+  const bsrDelta  = lead.pillar_bsr?.delta90dPct !== null ? lead.pillar_bsr?.delta90dPct : null;
+  const bsrSub    = bsrDelta !== null
+    ? `${bsrDelta > 0 ? '▲' : '▼'}${Math.abs(bsrDelta)}% vs. 90d${bsrDelta > 0 ? ' — worsening' : ' — improving'}`
+    : 'No rank history';
+
+  // Rating
+  const avgRating = products.length
+    ? Math.round(products.reduce((s, p) => s + (p.pillar_rating.current || 0), 0) / products.length * 10) / 10
+    : null;
+  const worstDelta30 = products.reduce((worst, p) => {
+    const d = p.pillar_rating.delta30d;
+    return d !== null && d < worst ? d : worst;
+  }, 0);
+  const ratSub = avgRating
+    ? (worstDelta30 < 0 ? `▼${Math.abs(worstDelta30)} vs. 30d` : 'Stable last 30d')
+    : 'No rating data';
 
   return (
     <div>
