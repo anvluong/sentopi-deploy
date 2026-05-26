@@ -1349,7 +1349,7 @@ function InputForm({ onResult, autoRun }) {
             <div className="input-wrap">
               <span className="input-icon">🔍</span>
               <input type="text" className="main-input"
-                placeholder="Amazon ASIN or Seller ID  (e.g. B0FB9MXHR1)"
+                placeholder="Seller ID or ASIN  (e.g. A2YVQMS6C6QFJO)"
                 value={input} onChange={e => setInput(e.target.value)}
                 disabled={loading} autoFocus />
             </div>
@@ -1358,7 +1358,7 @@ function InputForm({ onResult, autoRun }) {
             </button>
           </div>
           <p className="input-hint">
-            Enter any ASIN (e.g. <code>B0FB9MXHR1</code>) or your Seller ID.
+            Enter your Seller ID (e.g. <code>A2YVQMS6C6QFJO</code>) or an ASIN.
             Results in ~30 seconds — no account required.
           </p>
         </form>
