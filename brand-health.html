@@ -1322,7 +1322,11 @@ function InputForm({ onResult, autoRun }) {
       });
       const data = await resp.json();
       if (!resp.ok || !data.success) { setError(data.error || 'Something went wrong. Try again.'); }
-      else { writeCache(val, data); onResult(data); }
+      else {
+        writeCache(val, data); onResult(data);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'tool_usage', tool: 'revenue_risk_report' });
+      }
     } catch { setError('Network error — check your connection and try again.'); }
     finally { setLoading(false); }
   }
