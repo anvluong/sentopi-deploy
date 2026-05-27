@@ -11,16 +11,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revenue Risk Report | Sentopi</title>
-<meta name="description" content="Free Amazon Revenue Risk Report. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box — plus an estimated dollar impact. Results in ~30 seconds.">
+<meta name="description" content="Free Amazon Revenue Risk Report. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box, with an estimated dollar impact. Results in ~30 seconds.">
 <!-- Open Graph -->
 <meta property="og:title" content="Free Amazon Revenue Risk Report | Sentopi">
-<meta property="og:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk — BSR, rating trajectory, Buy Box — plus an estimated dollar impact. No account required.">
+<meta property="og:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk: BSR, rating trajectory, Buy Box, plus an estimated dollar impact. No account required.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sentopi.com/revenue-risk-report">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Free Amazon Revenue Risk Report | Sentopi">
-<meta name="twitter:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk — plus an estimated dollar impact. Results in ~30 seconds.">
+<meta name="twitter:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk, plus an estimated dollar impact. Results in ~30 seconds.">
 <meta property="og:image" content="https://sentopi.com/og-image.png">
 <meta name="twitter:image" content="https://sentopi.com/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
@@ -313,6 +313,103 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 .rev-deep-price-input { padding-left: 18px; }
 .rev-source-tag-sm { font-size: 0.65rem; color: var(--ink5); margin-top: 2px; font-style: italic; }
 
+/* ── Headline narrative banner ── */
+.narrative {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 18px; margin-bottom: 16px;
+  border-radius: 8px; border: 1px solid;
+  font-size: 0.92rem; line-height: 1.55;
+}
+.narrative.risk     { background: #fff7ed; border-color: rgba(217,119,6,0.28); color: var(--ink2); }
+.narrative.critical { background: var(--rust-lt); border-color: rgba(220,38,38,0.28); color: var(--ink2); }
+.narrative.safe     { background: var(--forest-lt); border-color: rgba(5,150,105,0.25); color: var(--ink2); }
+.narrative-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
+.narrative-body { flex: 1; }
+.narrative-body strong { color: var(--ink); }
+.narrative-amount { font-family: 'DM Serif Display', serif; font-weight: 400; }
+.narrative.risk     .narrative-amount { color: #b85308; }
+.narrative.critical .narrative-amount { color: var(--rust); }
+.narrative.safe     .narrative-amount { color: var(--forest2); }
+
+/* ── Risk breakdown sub-card on hero ── */
+.risk-breakdown { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.07); display: grid; gap: 6px; }
+.risk-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.78rem; color: var(--ink3); }
+.risk-row-label { color: var(--ink4); }
+.risk-row-amt   { font-weight: 600; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.risk-row.muted .risk-row-amt { color: var(--ink5); font-weight: 500; }
+
+/* ── Watch List card (new / sparse ASINs) ── */
+.watchlist {
+  background: var(--white); border: 1px solid var(--cream3); border-radius: 8px;
+  padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 6px rgba(26,23,20,0.04);
+}
+.watchlist-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.watchlist-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--ink); }
+.watchlist-tag {
+  font-size: 0.67rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--teal); background: var(--teal-lt); padding: 3px 9px; border-radius: 2px;
+}
+.watchlist-sub { font-size: 0.8rem; color: var(--ink4); line-height: 1.55; margin-bottom: 12px; }
+.watchlist-row {
+  display: grid; grid-template-columns: 1fr auto auto auto; gap: 14px; align-items: center;
+  padding: 9px 0; border-top: 1px solid var(--cream2); font-size: 0.85rem;
+}
+.watchlist-row:first-of-type { border-top: 1px solid var(--cream3); }
+.watchlist-row .p-title { font-size: 0.85rem; margin-bottom: 1px; }
+.watchlist-row .asin-code { font-size: 0.7rem; }
+.watchlist-metric { text-align: right; font-size: 0.78rem; color: var(--ink3); }
+.watchlist-metric strong { color: var(--ink2); font-weight: 600; }
+.watchlist-metric .lbl { display: block; font-size: 0.65rem; color: var(--ink5); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+
+/* ── Recommendation chip (per-signal next step) ── */
+.rec-strip {
+  background: var(--white); border: 1px solid var(--cream3); border-radius: 8px;
+  padding: 16px 18px; margin-bottom: 16px; box-shadow: 0 1px 6px rgba(26,23,20,0.04);
+}
+.rec-strip-head { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink4); margin-bottom: 12px; }
+.rec-item { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-top: 1px solid var(--cream2); font-size: 0.875rem; line-height: 1.5; }
+.rec-item:first-of-type { border-top: none; padding-top: 4px; }
+.rec-item-num {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ochre); color: #fff; font-size: 0.72rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.rec-item-num.safe { background: var(--forest); }
+.rec-item-body { flex: 1; color: var(--ink2); }
+.rec-item-body strong { color: var(--ink); }
+.rec-item-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 1px 6px; border-radius: 2px; margin-right: 6px; vertical-align: 1px; }
+.rec-item-tag.rust  { background: var(--rust-lt);   color: var(--rust); }
+.rec-item-tag.amber { background: var(--amber-lt);  color: var(--amber); }
+.rec-item-tag.green { background: var(--forest-lt); color: var(--forest2); }
+
+/* ── Methodology drawer ── */
+.meth {
+  margin: 16px 0; border: 1px solid var(--cream3); border-radius: 8px;
+  background: var(--white); overflow: hidden;
+}
+.meth-head {
+  width: 100%; padding: 12px 18px; background: none; border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: inherit; font-size: 0.82rem; color: var(--ink3); text-align: left;
+}
+.meth-head:hover { background: var(--cream); }
+.meth-head .chev { font-size: 0.7rem; color: var(--ink5); transition: transform 0.2s; }
+.meth-head[aria-expanded="true"] .chev { transform: rotate(90deg); }
+.meth-body { padding: 4px 18px 18px; font-size: 0.825rem; line-height: 1.65; color: var(--ink3); border-top: 1px solid var(--cream2); }
+.meth-body h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink4); margin: 14px 0 6px; }
+.meth-body h4:first-child { margin-top: 6px; }
+.meth-body ul { margin-left: 18px; }
+.meth-body li { margin-bottom: 3px; }
+.meth-body code { font-family: monospace; font-size: 0.78rem; background: var(--cream); padding: 1px 5px; border-radius: 2px; color: var(--ink2); }
+
+/* ── Trust strip ── */
+.trust-strip {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: center;
+  padding: 12px 16px; margin: 8px 0 16px;
+  font-size: 0.72rem; color: var(--ink5); text-align: center;
+}
+.trust-strip .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--cream3); }
+
 /* ── Print / Save as PDF ── */
 @media print {
   html, body {
@@ -377,6 +474,44 @@ function calcRevenueAtRisk(units, price, ratingBefore, ratingNow) {
   return Math.max(0, Math.round(units * price * delta));
 }
 
+// Lost revenue from chronically under-peak rating (vs. 4.5★ conversion peak).
+// Captures the "stuck at 3.8★ for a year" case the 30d-drop logic misses.
+function calcChronicGap(units, price, currentRating) {
+  if (!units || !price || !currentRating || currentRating >= 4.5) return 0;
+  const delta = convRate(4.5) - convRate(currentRating);
+  return Math.max(0, Math.round(units * price * delta));
+}
+
+// Lost revenue from not holding the Buy Box. Conservative: assume 40% of BB-loss
+// windows result in a competing seller capturing the sale (the rest goes to brand-loyal
+// buyers, off-Amazon purchase, or no purchase). Units here are Keepa's ASIN-level
+// monthlySold estimate, which represents total demand across all sellers on the ASIN.
+function calcBBLoss(units, price, bbPct) {
+  // Threshold at 90% — below this LBB is materially meaningful; above is noise from
+  // brief stockouts or pricing micro-events.
+  if (!units || !price || bbPct === null || bbPct === undefined || bbPct >= 90) return 0;
+  const lossShare = (100 - bbPct) / 100;
+  return Math.max(0, Math.round(units * price * lossShare * 0.4));
+}
+
+// Reviews needed to move from a → b given current review count.
+// Solves: (a*N + 5*X) / (N+X) = b   →   X = N*(b-a)/(5-b)
+function reviewsNeeded(currentRating, currentCount, targetRating) {
+  if (!currentRating || !currentCount || !targetRating || targetRating <= currentRating || targetRating >= 5) return null;
+  return Math.ceil(currentCount * (targetRating - currentRating) / (5 - targetRating));
+}
+
+// Smart truncation that breaks at a word boundary and adds an ellipsis.
+// Prevents the "Latest Relea" stub look when slicing mid-word inside a quoted string.
+function truncTitle(s, max = 45) {
+  if (!s) return '';
+  if (s.length <= max) return s;
+  const slice = s.slice(0, max);
+  const lastSpace = slice.lastIndexOf(' ');
+  const clean = (lastSpace > max * 0.55 ? slice.slice(0, lastSpace) : slice).replace(/[,;:\s(]+$/, '');
+  return clean + '…';
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function fmt$(n) {
   if (!n && n !== 0) return '—';
@@ -411,6 +546,29 @@ function monthName(dateStr) {
   if (!dateStr) return 'recent';
   try { return new Date(dateStr + 'T12:00:00').toLocaleString('en-US', { month: 'long' }); }
   catch { return 'recent'; }
+}
+
+// ─── Rating sparkline (90d ago → 30d ago → now) ──────────────────────────────
+function RatingSparkline({ r90, r30, rNow }) {
+  const pts = [r90, r30, rNow].filter(v => v != null);
+  if (pts.length < 2) return null;
+  const lo = Math.min(...pts, 3.5);
+  const hi = Math.max(...pts, 4.7);
+  const span = Math.max(0.4, hi - lo);
+  const w = 56, h = 18, pad = 2;
+  const xs = pts.map((_, i) => pad + (i * (w - 2*pad)) / (pts.length - 1));
+  const ys = pts.map(v => h - pad - ((v - lo) / span) * (h - 2*pad));
+  const d = xs.map((x, i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+  const dropped = pts[pts.length - 1] < pts[0];
+  const color = dropped ? '#dc2626' : '#059669';
+  return (
+    <svg width={w} height={h} style={{ display: 'block', marginTop: 3 }} aria-label="rating trend">
+      <path d={d} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      {xs.map((x, i) => (
+        <circle key={i} cx={x} cy={ys[i]} r={i === xs.length - 1 ? 1.8 : 1.2} fill={color} />
+      ))}
+    </svg>
+  );
 }
 
 // ─── Score ring ───────────────────────────────────────────────────────────────
@@ -552,7 +710,7 @@ function RevenueDeepDive({ productRevs, fields, onUpdate, totalMonthly, totalAnn
                       onChange={e => onUpdate(pr.asin, 'units', e.target.value)}
                     />
                     <div className="rev-source-tag-sm">
-                      {f.unitsDirty ? 'your value' : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (PDP est.)` : 'enter units'}
+                      {f.unitsDirty ? 'your value' : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (Keepa est.)` : 'enter units'}
                     </div>
                   </td>
                   <td>
@@ -640,6 +798,258 @@ function RevenueDeepDive({ productRevs, fields, onUpdate, totalMonthly, totalAnn
       <div style={{ padding: '10px 14px', fontSize: '0.72rem', color: 'var(--ink5)', borderTop: '1px solid var(--cream2)', lineHeight: 1.5 }}>
         Estimates use Sentopi's conversion rate model. Update units and target rating with your actual data for accuracy.
       </div>
+    </div>
+  );
+}
+
+// ─── Headline narrative ───────────────────────────────────────────────────────
+function HeadlineNarrative({ data, totalRiskMonthly, worstProduct }) {
+  const { label, products, brandScore } = data;
+  const annual = totalRiskMonthly * 12;
+
+  // Critical / At Risk → lead with the dollar amount + the product driving it
+  if (label !== 'Healthy' && totalRiskMonthly > 0 && worstProduct) {
+    const title = truncTitle(worstProduct.title, 50) || worstProduct.asin;
+    const tone = label === 'Critical' ? 'critical' : 'risk';
+    const icon = label === 'Critical' ? '🚨' : '⚠️';
+    return (
+      <div className={`narrative ${tone} animate-in`}>
+        <span className="narrative-icon">{icon}</span>
+        <div className="narrative-body">
+          Your biggest revenue risk is <strong>"{title}"</strong>, losing an estimated{' '}
+          <span className="narrative-amount">{fmt$(totalRiskMonthly)}/mo</span>{' '}
+          (<strong>{fmt$(annual)}/yr</strong>) across the signals below.
+        </div>
+      </div>
+    );
+  }
+
+  // Healthy → lead with the strongest signal as a "stay ahead" framing
+  if (label === 'Healthy') {
+    // Find the most improved BSR product
+    const bestBSR = products
+      .filter(p => p.pillar_bsr.delta90dPct !== null && p.pillar_bsr.delta90dPct < 0)
+      .sort((a, b) => a.pillar_bsr.delta90dPct - b.pillar_bsr.delta90dPct)[0];
+    const bestRating = products
+      .filter(p => (p.pillar_rating.current || 0) >= 4.5)
+      .sort((a, b) => (b.pillar_rating.current || 0) - (a.pillar_rating.current || 0))[0];
+
+    let copy = (
+      <>Your brand scored <strong>{brandScore}/100</strong>. No active revenue threats detected across BSR,
+        rating trajectory, or Buy Box in the last 90 days.</>
+    );
+    if (bestBSR && bestBSR.pillar_bsr.delta90dPct < -10) {
+      copy = (
+        <>Your strongest signal: <strong>"{truncTitle(bestBSR.title, 50) || bestBSR.asin}"</strong> improved BSR by{' '}
+          <strong>{Math.abs(bestBSR.pillar_bsr.delta90dPct).toFixed(0)}%</strong> over 90 days. No active revenue
+          threats detected, but a single bad review cycle could change that.</>
+      );
+    } else if (bestRating) {
+      copy = (
+        <>Your strongest signal: <strong>"{truncTitle(bestRating.title, 50) || bestRating.asin}"</strong> holds at{' '}
+          <strong>{bestRating.pillar_rating.current.toFixed(1)}★</strong>, squarely in the high-conversion zone.
+          No active threats detected.</>
+      );
+    }
+    return (
+      <div className="narrative safe animate-in">
+        <span className="narrative-icon">✅</span>
+        <div className="narrative-body">{copy}</div>
+      </div>
+    );
+  }
+
+  // At Risk but no quantified $ yet (user hasn't entered units, or signals are non-financial)
+  return (
+    <div className="narrative risk animate-in">
+      <span className="narrative-icon">⚠️</span>
+      <div className="narrative-body">
+        Your brand scored <strong>{brandScore}/100</strong>. We detected risk signals below. Enter monthly units
+        on at-risk products to see the dollar impact.
+      </div>
+    </div>
+  );
+}
+
+// ─── Per-signal recommendations ──────────────────────────────────────────────
+function Recommendations({ data, brandRiskMonthly, brandBBLoss, brandChronicGap }) {
+  const { products, label } = data;
+
+  const recs = [];
+
+  // 1) Worst rating drop
+  const worstDrop = products
+    .filter(p => p.pillar_rating.ratingDropped30d)
+    .sort((a, b) => (a.pillar_rating.delta30d || 0) - (b.pillar_rating.delta30d || 0))[0];
+  if (worstDrop) {
+    const t = truncTitle(worstDrop.title) || worstDrop.asin;
+    const dropMo = monthName(worstDrop.pillar_rating.dropDate);
+    recs.push({
+      tag: 'Rating drop', tagCls: 'rust',
+      title: `Investigate "${t}": rating fell to ${worstDrop.pillar_rating.current}★ around ${dropMo}.`,
+      sub: 'Pull every review from the drop window. Look for a single repeating issue (defect, expectation gap, packaging change). One pattern usually drives most of the drop.',
+    });
+  }
+
+  // 2) Lost Buy Box — only flag if materially below 90%
+  const lbbProduct = products
+    .filter(p => p.pillar_buybox.lbbDetected && (p.pillar_buybox.bbPct30d || 100) < 90)
+    .sort((a, b) => (a.pillar_buybox.bbPct30d || 0) - (b.pillar_buybox.bbPct30d || 0))[0];
+  if (lbbProduct) {
+    const t = truncTitle(lbbProduct.title) || lbbProduct.asin;
+    const pct = lbbProduct.pillar_buybox.bbPct30d;
+    const undercut = lbbProduct.pillar_buybox.competitorUndercut;
+    recs.push({
+      tag: 'Buy Box', tagCls: 'amber',
+      title: `Reclaim Buy Box on "${t}": holding only ${pct?.toFixed?.(0) ?? '—'}% of the time.`,
+      sub: undercut
+        ? 'A competitor is undercutting your price. Verify stock health, then test a matched price or a coupon to recover share.'
+        : 'Check inventory, fulfillment latency, and seller-rating health. Out-of-stock and late shipments are the usual culprits.',
+    });
+  }
+
+  // 3) Chronic underperformance (largest gap to 4.5★)
+  const chronic = products
+    .filter(p => (p.pillar_rating.current || 0) > 0 && (p.pillar_rating.current || 0) < 4.4 && !p.pillar_rating.ratingDropped30d)
+    .sort((a, b) => (a.pillar_rating.current || 0) - (b.pillar_rating.current || 0))[0];
+  if (chronic) {
+    const t = truncTitle(chronic.title) || chronic.asin;
+    recs.push({
+      tag: 'Chronic gap', tagCls: 'amber',
+      title: `Lift "${t}" from ${chronic.pillar_rating.current}★: every 0.2★ here meaningfully shifts conversion.`,
+      sub: 'Two paths: (1) eliminate the top 1-star theme so new reviews skew higher, (2) accelerate review velocity from satisfied buyers so the existing 1-stars get diluted.',
+    });
+  }
+
+  // 4) BSR deteriorating
+  const bsrSlip = products
+    .filter(p => p.pillar_bsr.delta90dPct !== null && p.pillar_bsr.delta90dPct > 15)
+    .sort((a, b) => (b.pillar_bsr.delta90dPct || 0) - (a.pillar_bsr.delta90dPct || 0))[0];
+  if (bsrSlip) {
+    const t = truncTitle(bsrSlip.title) || bsrSlip.asin;
+    recs.push({
+      tag: 'BSR slip', tagCls: 'amber',
+      title: `"${t}" rank worsened ${bsrSlip.pillar_bsr.delta90dPct.toFixed(0)}% over 90 days.`,
+      sub: 'Map rank decline to the same window as rating / pricing / inventory changes. The trigger is usually one of those three.',
+    });
+  }
+
+  // Healthy path — defensive recommendations
+  if (!recs.length && label === 'Healthy') {
+    recs.push({
+      tag: 'Stay ahead', tagCls: 'green',
+      title: 'Set up sentiment monitoring on your top SKUs.',
+      sub: "When ratings start to slip, you're already 2–4 weeks behind the review wave that caused it. Catch the language change as it happens, before the star average moves.",
+    });
+    recs.push({
+      tag: 'Compound it', tagCls: 'green',
+      title: 'Run a review-velocity push on your highest-margin SKU.',
+      sub: 'A 4.5★ product with 2× review velocity dominates the long tail of search. The math: more reviews = more rank = more conversion = more reviews.',
+    });
+  }
+
+  if (!recs.length) return null;
+
+  return (
+    <div className="rec-strip animate-in">
+      <div className="rec-strip-head">Top {Math.min(recs.length, 3)} action{recs.length === 1 ? '' : 's'} this week</div>
+      {recs.slice(0, 3).map((r, i) => (
+        <div key={i} className="rec-item">
+          <div className={`rec-item-num ${label === 'Healthy' ? 'safe' : ''}`}>{i + 1}</div>
+          <div className="rec-item-body">
+            <span className={`rec-item-tag ${r.tagCls}`}>{r.tag}</span>
+            <strong>{r.title}</strong>
+            <div style={{ marginTop: 3, color: 'var(--ink4)', fontSize: '0.82rem' }}>{r.sub}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Watch List (new / sparse ASINs) ─────────────────────────────────────────
+function WatchList({ items }) {
+  if (!items || !items.length) return null;
+  return (
+    <div className="watchlist animate-in">
+      <div className="watchlist-head">
+        <div className="watchlist-title">Launch Watch List</div>
+        <span className="watchlist-tag">{items.length} new ASIN{items.length === 1 ? '' : 's'}</span>
+      </div>
+      <div className="watchlist-sub">
+        Excluded from the brand score (under 25 reviews). For new launches, the first 90 days are make-or-break:
+        early 1-stars set the trajectory. Watch these closely.
+      </div>
+      {items.map(p => {
+        const r = p.pillar_rating?.current;
+        const rc = p.reviewCount || 0;
+        const fragile = r != null && r < 4.0 && rc < 25;
+        return (
+          <div key={p.asin} className="watchlist-row">
+            <div>
+              <div className="p-title">{p.title ? p.title.slice(0, 50) + (p.title.length > 50 ? '…' : '') : p.asin}</div>
+              <div className="asin-code">{p.asin}</div>
+              {fragile && (
+                <div style={{ fontSize: '0.72rem', color: 'var(--rust)', fontWeight: 600, marginTop: 3 }}>
+                  ⚠️ Early reviews skew low. Investigate before the pattern locks in.
+                </div>
+              )}
+            </div>
+            <div className="watchlist-metric">
+              <span className="lbl">Reviews</span>
+              <strong>{rc}</strong>
+            </div>
+            <div className="watchlist-metric">
+              <span className="lbl">Rating</span>
+              <strong>{r != null ? r.toFixed(1) + '★' : '—'}</strong>
+            </div>
+            <div className="watchlist-metric">
+              <span className="lbl">Buy Box</span>
+              <strong>{p.pillar_buybox?.bbPct30d != null ? fmtPct(p.pillar_buybox.bbPct30d) : '—'}</strong>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Methodology drawer ──────────────────────────────────────────────────────
+function Methodology() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="meth no-print">
+      <button className="meth-head" aria-expanded={open} onClick={() => setOpen(o => !o)}>
+        <span>How we calculate this</span>
+        <span className="chev">▸</span>
+      </button>
+      {open && (
+        <div className="meth-body">
+          <h4>Data sources</h4>
+          <p>Best Seller Rank, star rating history, review count, list price, Buy Box ownership, and average sale price are pulled from Keepa over a 90-day window. Updated daily.</p>
+
+          <h4>Brand Score (0–100)</h4>
+          <ul>
+            <li><strong>BSR Health (40 pts):</strong> 90-day rank trajectory. Each 10% deterioration costs 4 points.</li>
+            <li><strong>Rating Health (35 pts):</strong> Penalizes both the absolute drop and the recency. A drop in the last 30 days hurts more than a drop 60 days ago.</li>
+            <li><strong>Buy Box Health (25 pts):</strong> % of time you held the Buy Box in the last 30 days. Extra penalty when competitors undercut.</li>
+          </ul>
+
+          <h4>Revenue at risk</h4>
+          <p>For each product where the rating dropped, we apply a conversion-rate index by star rating (based on Spiegel Research Center 2017, PowerReviews, and Pattern.com). Conversion peaks around 4.5★ and declines toward 5.0★ ("too good to be true" skepticism).</p>
+          <p>Monthly risk = <code>units × price × (conv@oldRating − conv@newRating)</code>. We default units to Keepa's monthlySold estimate and price to your Buy Box modal price. Override either for a sharper number.</p>
+
+          <h4>Chronic gap & Buy Box loss</h4>
+          <p>We also surface (a) chronic underperformance: revenue left on the table by sitting below the 4.5★ peak, even without a recent drop, and (b) Buy Box loss: assuming a 40% capture rate by competing sellers during the windows you don't hold the Buy Box. The rest is split between brand-loyal direct buys, off-Amazon purchase, and no purchase at all.</p>
+
+          <h4>Limitations</h4>
+          <ul>
+            <li>Estimates are observational, not causal. Actual lift varies by category, price point, and competitive density.</li>
+            <li>Brand score caps at "At Risk" when an active rating drop or lost Buy Box is detected, even if the underlying pillar math is otherwise high.</li>
+            <li>Products under 25 reviews are excluded from the brand-score rollup. They appear in the Watch List instead.</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
@@ -791,7 +1201,13 @@ function ScoreCard({ data }) {
   }
 
   // ── Compute revenue at risk ───────────────────────────────────────────────────
+  // We surface three categories of monthly $ exposure:
+  //   (1) Active drop  — rating fell in last 30d
+  //   (2) Chronic gap  — sitting below the 4.5★ peak (no recent drop required)
+  //   (3) Buy Box loss — % of time you don't hold the BB × conservative capture
   let totalMonthly = 0;
+  let totalChronic = 0;
+  let totalBBLoss  = 0;
   const productRevs = products.map(p => {
     const f = fields[p.asin] || {};
     const units = parseFloat(f.units) || 0;
@@ -801,10 +1217,17 @@ function ScoreCard({ data }) {
     const risk = p.pillar_rating.ratingDropped30d
       ? calcRevenueAtRisk(units, price, rb, rn)
       : 0;
+    const chronic = !p.pillar_rating.ratingDropped30d
+      ? calcChronicGap(units, price, rn)
+      : 0;
+    const bbLoss = calcBBLoss(units, price, p.pillar_buybox?.bbPct30d);
     totalMonthly += risk;
-    return { ...p, computedRisk: risk };
+    totalChronic += chronic;
+    totalBBLoss  += bbLoss;
+    return { ...p, computedRisk: risk, computedChronic: chronic, computedBBLoss: bbLoss };
   });
   const totalAnnual = totalMonthly * 12;
+  const totalExposureMonthly = totalMonthly + totalChronic + totalBBLoss;
   const isRisk = hasRatingDrop && totalMonthly > 0;
 
   // At-risk brands: show drops + sub-4.5★ products. Healthy brands: show all so units can be entered.
@@ -901,7 +1324,7 @@ function ScoreCard({ data }) {
   const bsrMetric = lead.pillar_bsr?.current ? '#' + lead.pillar_bsr.current.toLocaleString() : '—';
   const bsrDelta  = lead.pillar_bsr?.delta90dPct !== null ? lead.pillar_bsr?.delta90dPct : null;
   const bsrSub    = bsrDelta !== null
-    ? `${bsrDelta > 0 ? '▲' : '▼'}${Math.abs(bsrDelta)}% vs. 90d${bsrDelta > 0 ? ' — worsening' : ' — improving'}`
+    ? `${bsrDelta > 0 ? '▲' : '▼'}${Math.abs(bsrDelta)}% vs. 90d ${bsrDelta > 0 ? '(worsening)' : '(improving)'}`
     : 'No rank history';
 
   // Rating
@@ -918,6 +1341,13 @@ function ScoreCard({ data }) {
 
   return (
     <div>
+      {/* ── Headline narrative — one-sentence read of the situation ── */}
+      <HeadlineNarrative
+        data={data}
+        totalRiskMonthly={totalExposureMonthly}
+        worstProduct={worstDrop || productRevs.sort((a,b) => (b.computedRisk + b.computedChronic + b.computedBBLoss) - (a.computedRisk + a.computedChronic + a.computedBBLoss))[0]}
+      />
+
       {/* ── Hero split: Brand Score | Revenue at Risk ── */}
       <div className="hero-split animate-in">
         {/* Left: Brand Health Score */}
@@ -946,23 +1376,53 @@ function ScoreCard({ data }) {
         </div>
 
         {/* Right: Revenue at Risk */}
-        <div className={`hero-card ${isRisk ? 'rev-risk-card' : 'rev-safe-card'}`}>
-          <div className={`rev-card-label ${isRisk ? 'risk' : 'safe'}`}>
-            {isRisk ? '⚠️  Revenue at Risk' : '✅  Revenue Protected'}
+        {(() => {
+          const showExposureHero = label !== 'Healthy';
+          const heroAmount = showExposureHero
+            ? (totalExposureMonthly > 0 ? fmt$(totalExposureMonthly * 12) + '/yr' : null)
+            : (protectedMonthly > 0 ? fmt$(protectedMonthly * 12) + '/yr' : null);
+          return (
+        <div className={`hero-card ${showExposureHero ? 'rev-risk-card' : 'rev-safe-card'}`}>
+          <div className={`rev-card-label ${showExposureHero ? 'risk' : 'safe'}`}>
+            {showExposureHero ? '⚠️  Total Monthly Exposure' : '✅  Revenue Resilience'}
           </div>
           <div className="rev-card-amount">
-            {isRisk
-              ? (totalMonthly > 0 ? fmt$(totalAnnual) + '/yr' : 'Enter units below ↓')
-              : (protectedMonthly > 0
-                  ? fmt$(protectedMonthly * 12) + '/yr'
-                  : <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--ink5)', lineHeight: 1.5 }}>
-                      Add monthly units below to see your protection estimate.
-                      <br/>
-                      <span style={{ fontSize: '0.78rem' }}>Set a Target ★ to also see upside potential.</span>
-                    </span>
-                )}
+            {heroAmount || (
+              <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--ink5)', lineHeight: 1.5 }}>
+                Add monthly units below to estimate what's at stake.
+                <br/>
+                <span style={{ fontSize: '0.78rem' }}>Set a Target ★ to also see upside potential.</span>
+              </span>
+            )}
           </div>
-          {!isRisk && protectedMonthly === 0 && (
+          {showExposureHero && totalExposureMonthly > 0 && (
+            <div className="risk-breakdown">
+              {totalMonthly > 0 && (
+                <div className="risk-row">
+                  <span className="risk-row-label">Active rating drop</span>
+                  <span className="risk-row-amt">{fmt$(totalMonthly)}/mo</span>
+                </div>
+              )}
+              {totalChronic > 0 && (
+                <div className="risk-row">
+                  <span className="risk-row-label">Chronic gap to 4.5★</span>
+                  <span className="risk-row-amt">{fmt$(totalChronic)}/mo</span>
+                </div>
+              )}
+              {totalBBLoss > 0 && (
+                <div className="risk-row">
+                  <span className="risk-row-label">Lost Buy Box revenue</span>
+                  <span className="risk-row-amt">{fmt$(totalBBLoss)}/mo</span>
+                </div>
+              )}
+            </div>
+          )}
+          {!showExposureHero && protectedMonthly > 0 && (
+            <div className="rev-card-desc" style={{ marginTop: 10 }}>
+              Your conversion stays roughly intact today. If your rating slipped 0.5★, this is what would be at stake within 12 months.
+            </div>
+          )}
+          {!heroAmount && (
             <a
               href="#calc-table"
               className="rev-card-cta"
@@ -972,11 +1432,11 @@ function ScoreCard({ data }) {
               Go to calculator ↓
             </a>
           )}
-          {isRisk && totalMonthly > 0 && (
-            <div className="rev-card-annual">{fmt$(totalMonthly)}/mo at risk</div>
+          {showExposureHero && totalExposureMonthly > 0 && (
+            <div className="rev-card-annual">{fmt$(totalExposureMonthly)}/mo total exposure</div>
           )}
-          {!isRisk && protectedMonthly > 0 && (
-            <div className="rev-card-annual">{fmt$(protectedMonthly)}/mo protected vs. −0.5★ drop</div>
+          {!showExposureHero && protectedMonthly > 0 && (
+            <div className="rev-card-annual">{fmt$(protectedMonthly)}/mo at stake if rating slips 0.5★</div>
           )}
           {isRisk && worstDrop && (
             <div className="rev-card-desc">
@@ -985,17 +1445,27 @@ function ScoreCard({ data }) {
               <strong>{worstDrop.pillar_rating.current}★</strong> over the past 30 days.
             </div>
           )}
-          {isRisk && (
+          {showExposureHero && (
             <a href="index.html#demo" className="rev-card-cta">
               {hasRatingDrop && worstDrop
-                ? `Investigate the ${monthName(worstDrop.pillar_rating.dropDate)} ratings drop with the full Sentopi sentiment analysis →`
+                ? `Diagnose the ${monthName(worstDrop.pillar_rating.dropDate)} ratings drop with full sentiment analysis →`
                 : anyLBB
-                ? 'Investigate your Buy Box loss with the full Sentopi analysis →'
+                ? 'Diagnose your Buy Box loss with the full Sentopi analysis →'
                 : 'Get the full Sentopi analysis →'}
             </a>
           )}
         </div>
+          );
+        })()}
       </div>
+
+      {/* ── Per-signal recommendations ── */}
+      <Recommendations
+        data={data}
+        brandRiskMonthly={totalMonthly}
+        brandBBLoss={totalBBLoss}
+        brandChronicGap={totalChronic}
+      />
 
       {/* ── Brand ASP strip ── */}
       {avgASP != null && (
@@ -1081,6 +1551,7 @@ function ScoreCard({ data }) {
                       <div style={{ fontWeight: 600 }}>{rat.current ? rat.current.toFixed(1) + '★' : '—'}</div>
                       {d30 && <div className={d30.cls} style={{ fontSize: '0.75rem' }}>{d30.text} vs. 30d</div>}
                       {rat.ratingDropped30d && <span title="Rating dropped" style={{ fontSize: '0.8rem' }}>⚠️</span>}
+                      <RatingSparkline r90={rat.rating90dAgo} r30={rat.rating30dAgo} rNow={rat.current} />
                     </td>
                     <td>
                       <div style={{ fontWeight: 600 }}>{bsr.current ? '#' + bsr.current.toLocaleString() : '—'}</div>
@@ -1209,7 +1680,7 @@ function ScoreCard({ data }) {
                         <div className="rev-source-tag-sm" style={{ color: (!hasRatingDrop && f.unitsDirty) ? 'var(--green, #2d7a4f)' : undefined }}>
                           {f.unitsDirty
                             ? (!hasRatingDrop ? '→ Rev Protected ↑' : 'your value')
-                            : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (PDP est.)` : 'enter units'}
+                            : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (Keepa est.)` : 'enter units'}
                         </div>
                       </td>
                       <td>
@@ -1277,27 +1748,52 @@ function ScoreCard({ data }) {
               )}
             </table>
             <div style={{ padding: '10px 14px', fontSize: '0.72rem', color: 'var(--ink5)', borderTop: '1px solid var(--cream2)', lineHeight: 1.5 }}>
-              Estimates use Sentopi's conversion rate model. Update units and target rating with your actual data for accuracy.
+              Estimates use Sentopi's conversion rate model (Spiegel, PowerReviews, Pattern). Override units and target rating with your actual data for a sharper number.
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Bottom CTA ── */}
+      {/* ── Watch List (new / sparse ASINs) ── */}
+      <WatchList items={data.productsExcluded || []} />
+
+      {/* ── Methodology drawer (collapsible) ── */}
+      <Methodology />
+
+      {/* ── Trust strip ── */}
+      <div className="trust-strip no-print">
+        <span>Built on Keepa marketplace data</span>
+        <span className="dot" />
+        <span>90-day window</span>
+        <span className="dot" />
+        <span>Refreshed daily</span>
+        <span className="dot" />
+        <span>No account required</span>
+      </div>
+
+      {/* ── Bottom CTA — varies by archetype ── */}
       <div className="bottom-cta animate-in">
         <h3>
           {hasRatingDrop
             ? 'Your score is slipping. Find out exactly why.'
             : label === 'Healthy'
-              ? 'Strong signals — stay ahead before competitors notice.'
-              : 'Something\'s off. Reviews hold the answer.'}
+              ? 'You\'re ahead. Stay there.'
+              : 'Something is off. Your reviews hold the answer.'}
         </h3>
         <p>
           {hasRatingDrop
-            ? 'Sentopi reads every review and hands you a prioritized action plan — what changed, who\'s affected, and what to fix first to recover that revenue.'
-            : 'Sentopi surfaces the root causes your brand score can\'t see: exact issues, customer language, and a prioritized action plan.'}
+            ? 'Sentopi reads every review and hands you a prioritized action plan: what changed, who is affected, and what to fix first to recover the revenue.'
+            : label === 'Healthy'
+              ? 'Sentopi monitors every new review on your top SKUs and flags issues weeks before the star average moves. The earlier you catch a problem, the cheaper it is to fix.'
+              : 'Sentopi surfaces the root causes your brand score cannot see: exact issues, customer language, and a prioritized action plan.'}
         </p>
-        <a href="index.html#demo" className="btn-cta-main">Get the Full Sentopi Analysis →</a>
+        <a href="index.html#demo" className="btn-cta-main">
+          {hasRatingDrop
+            ? 'Diagnose the drop →'
+            : label === 'Healthy'
+              ? 'Set up monitoring →'
+              : 'Get the full analysis →'}
+        </a>
       </div>
     </div>
   );
@@ -1343,7 +1839,7 @@ function InputForm({ onResult, autoRun }) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'tool_usage', tool: 'revenue_risk_report' });
       }
-    } catch { setError('Network error — check your connection and try again.'); }
+    } catch { setError('Network error. Check your connection and try again.'); }
     finally { setLoading(false); }
   }
 
@@ -1360,7 +1856,7 @@ function InputForm({ onResult, autoRun }) {
 
   return (
     <div className="panel">
-      <div className="panel-header">Revenue Risk Report — Free</div>
+      <div className="panel-header">Revenue Risk Report · Free</div>
       <div className="panel-body">
         <form onSubmit={handleSubmit}>
           <div className="input-row">
@@ -1377,7 +1873,7 @@ function InputForm({ onResult, autoRun }) {
           </div>
           <p className="input-hint">
             Enter your Seller ID (e.g. <code>A2YVQMS6C6QFJO</code>) or an ASIN.
-            Results in ~30 seconds — no account required.
+            Results in ~30 seconds. No account required.
           </p>
         </form>
         {error && <div className="error-box">⚠ {error}</div>}
@@ -1461,7 +1957,7 @@ function App() {
       <div className="hero no-print">
         <div className="eyebrow"><span className="eyebrow-dot" /> Free Revenue Risk Report</div>
         <h1>Where is your Amazon revenue at risk?</h1>
-        <p className="hero-sub">Paste any ASIN or Seller ID. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box — with an estimated dollar impact.</p>
+        <p className="hero-sub">Paste any ASIN or Seller ID. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box, with an estimated dollar impact.</p>
       </div>
 
       <div className="no-print"><InputForm onResult={handleResult} autoRun={autoRun} /></div>
