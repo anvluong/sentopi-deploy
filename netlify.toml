@@ -9,3 +9,8 @@
   from = "/revenue-risk-report"
   to = "/brand-health.html"
   status = 200
+
+[[redirects]]
+  from = "/listing-accuracy"
+  to = "/listing-accuracy-v3.html"
+  status = 200
