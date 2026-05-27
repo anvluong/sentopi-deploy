@@ -404,7 +404,7 @@ async function fetchSellerASINs(apiKey, sellerId) {
   url.searchParams.set('storefront', 1);
 
   const resp = await fetch(url.toString());
-  if (!resp.ok) throw new Error(`Keepa /seller returned ${resp.status}`);
+  if (!resp.ok) { const e = new Error(`Keepa /seller returned ${resp.status}`); e.status = resp.status; throw e; }
 
   const data = await resp.json();
   const seller = (data.sellers || {})[sellerId] || {};
@@ -422,7 +422,7 @@ async function fetchProductData(apiKey, asins) {
   url.searchParams.set('buybox', 1);   // Required for csv[18]
 
   const resp = await fetch(url.toString());
-  if (!resp.ok) throw new Error(`Keepa /product returned ${resp.status}`);
+  if (!resp.ok) { const e = new Error(`Keepa /product returned ${resp.status}`); e.status = resp.status; throw e; }
 
   const data = await resp.json();
   return data.products || [];
@@ -643,6 +643,9 @@ exports.handler = async function (event) {
 
   } catch (err) {
     console.error('brand-health error:', err);
-    return { statusCode: 502, headers, body: JSON.stringify({ error: `Keepa API error: ${err.message}` }) };
+    const userMsg = err.status === 429
+      ? "We're seeing high demand. Please try again in 15 mins."
+      : 'Something went wrong. Please try again later.';
+    return { statusCode: 502, headers, body: JSON.stringify({ error: userMsg }) };
   }
 };

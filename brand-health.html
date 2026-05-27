@@ -809,10 +809,10 @@ function ScoreCard({ data }) {
   const totalAnnual = totalMonthly * 12;
   const isRisk = hasRatingDrop && totalMonthly > 0;
 
-  // Show products with active drops + healthy products below 4.5★ (meaningful upside exists)
-  const displayProducts = productRevs.filter(p =>
-    p.pillar_rating.ratingDropped30d || (p.pillar_rating.current || 0) < 4.5
-  );
+  // At-risk brands: show drops + sub-4.5★ products. Healthy brands: show all so units can be entered.
+  const displayProducts = hasRatingDrop
+    ? productRevs.filter(p => p.pillar_rating.ratingDropped30d || (p.pillar_rating.current || 0) < 4.5)
+    : productRevs;
 
   // Compute calculator rows + recovery totals (for merged single-table rendering)
   const sortedCalc = [...displayProducts].sort((a, b) => (b.computedRisk || 0) - (a.computedRisk || 0));
@@ -955,8 +955,25 @@ function ScoreCard({ data }) {
           <div className="rev-card-amount">
             {isRisk
               ? (totalMonthly > 0 ? fmt$(totalAnnual) + '/yr' : 'Enter units below ↓')
-              : (protectedMonthly > 0 ? fmt$(protectedMonthly * 12) + '/yr' : 'Enter units below ↓')}
+              : (protectedMonthly > 0
+                  ? fmt$(protectedMonthly * 12) + '/yr'
+                  : <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--ink5)', lineHeight: 1.5 }}>
+                      Add monthly units below to see your protection estimate.
+                      <br/>
+                      <span style={{ fontSize: '0.78rem' }}>Set a Target ★ to also see upside potential.</span>
+                    </span>
+                )}
           </div>
+          {!isRisk && protectedMonthly === 0 && (
+            <a
+              href="#calc-table"
+              className="rev-card-cta"
+              style={{ marginTop: 10 }}
+              onClick={e => { e.preventDefault(); document.getElementById('calc-table')?.scrollIntoView({ behavior: 'smooth' }); }}
+            >
+              Go to calculator ↓
+            </a>
+          )}
           {isRisk && totalMonthly > 0 && (
             <div className="rev-card-annual">{fmt$(totalMonthly)}/mo at risk</div>
           )}
@@ -1115,7 +1132,7 @@ function ScoreCard({ data }) {
 
       {/* ── Card 2: Monthly Risk & Upside Calculator ── */}
       {displayProducts.length > 0 && (
-        <div className="products-section animate-in" style={{ marginBottom: 16 }}>
+        <div className="products-section animate-in" id="calc-table" style={{ marginBottom: 16 }}>
           <div style={{ overflowX: 'auto' }}>
             <div style={{ padding: '14px 18px 0' }}>
               <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.1rem', fontWeight: 400, color: 'var(--ink)', marginBottom: 3 }}>
@@ -1155,6 +1172,9 @@ function ScoreCard({ data }) {
                       <td>
                         <div className="p-title">{pr.title ? pr.title.slice(0, 40) + (pr.title.length > 40 ? '…' : '') : pr.asin}</div>
                         <div className="asin-code">{pr.asin}</div>
+                        {!hasRatingDrop && (pr.pillar_rating.current || 0) >= 4.5 && (
+                          <span className="pillar-flag green" style={{ marginTop: 4 }}>♥ Top-Rated</span>
+                        )}
                         <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
                           <span style={{ fontSize: '0.67rem', color: 'var(--ink5)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 600 }}>Target ★</span>
                           <input
@@ -1188,8 +1208,10 @@ function ScoreCard({ data }) {
                           placeholder="e.g. 10000"
                           onChange={e => updateField(pr.asin, 'units', e.target.value)}
                         />
-                        <div className="rev-source-tag-sm">
-                          {f.unitsDirty ? 'your value' : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (PDP est.)` : 'enter units'}
+                        <div className="rev-source-tag-sm" style={{ color: (!hasRatingDrop && f.unitsDirty) ? 'var(--green, #2d7a4f)' : undefined }}>
+                          {f.unitsDirty
+                            ? (!hasRatingDrop ? '→ Rev Protected ↑' : 'your value')
+                            : pr.defaultUnits ? `~${pr.defaultUnits.toLocaleString()} (PDP est.)` : 'enter units'}
                         </div>
                       </td>
                       <td>
@@ -1461,7 +1483,7 @@ function App() {
             </button>
           </div>
           <div ref={scorecardEl}>
-            <ScoreCard data={result} />
+            <ScoreCard key={result.input} data={result} />
           </div>
           <ShareStrip brandName={brandName} />
         </div>
