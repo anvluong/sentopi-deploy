@@ -122,12 +122,13 @@ button, input { font-family: inherit; }
 }
 .nav-cta {
   display: inline-flex; align-items: center; gap: 6px;
-  background: var(--forest); color: #fff;
+  background: var(--ochre); color: #fff;
   font-size: 0.8125rem; font-weight: 500;
-  padding: 9px 20px; border-radius: var(--r);
+  padding: 8px 18px; border-radius: var(--r);
   border: none; cursor: pointer; transition: background 0.15s;
+  text-decoration: none;
 }
-.nav-cta:hover { background: var(--forest2); }
+.nav-cta:hover { background: #c94d0a; }
 
 /* ─────────────── HERO — CREAM/LIGHT ─────────────── */
 .hero {
@@ -761,13 +762,15 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 .form-note { text-align: center; font-size: 0.72rem; color: var(--ink5); margin-top: 10px; }
 
 /* ─────────────── FOOTER ─────────────── */
-.footer { background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04); padding: 32px 0; }
-.footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.footer-logo { font-family: 'DM Serif Display', serif; font-size: 1rem; color: rgba(255,255,255,0.3); }
-.footer-copy { font-size: 0.78rem; color: var(--ink5); }
-.footer-links { display: flex; gap: 22px; }
-.footer-links a { font-size: 0.78rem; color: var(--ink5); transition: color 0.15s; }
-.footer-links a:hover { color: var(--ink4); }
+.footer { background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04); padding: 36px 24px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: rgba(255,255,255,0.85); }
+.footer-tagline { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+.footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: rgba(255,255,255,0.85); }
+.footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); }
 
 /* ─────────────── REVEAL ─────────────── */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
@@ -806,11 +809,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ══════════ NAV ══════════ -->
 <nav class="nav" id="nav">
   <div class="container nav-inner">
-    <a href="#" class="nav-logo">Sentopi</a>
+    <a href="/" class="nav-logo">Sentopi</a>
     <div class="nav-links">
-      <a href="#sample-insights">See the Analysis</a>
       <a href="/revenue-risk-report">Revenue Risk Report <span class="nav-free-badge">Free</span></a>
-      <a href="listing-accuracy-v2.html">Research</a>
+      <a href="/listing-accuracy">Research</a>
       <a href="#pricing">Pricing</a>
     </div>
     <a href="#demo" class="nav-cta">Get My Free 48hr Report →</a>
@@ -955,7 +957,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="pv-card reveal d1">
         <div class="pv-head">
           <span class="pv-title">Root Cause Breakdown</span>
-          <a class="pv-tag" href="listing-accuracy-v2.html">3,725 reviews · 7 brands</a>
+          <a class="pv-tag" href="/listing-accuracy">3,725 reviews · 7 brands</a>
         </div>
         <div class="pv-row">
           <span class="pv-name">Listing accuracy</span>
@@ -992,7 +994,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="eyebrow">Research</span>
         <h3 class="research-h3">What 3,725 Amazon reviews reveal about <em>listing accuracy.</em></h3>
         <p class="research-body">Across 7 brands spanning pet wellness, packaged food, smart home, and home goods, 40-55% of 1-star reviews traced to listing accuracy problems, not product failures. The fix is usually a copy change.</p>
-        <a href="listing-accuracy-v2.html" class="research-link">Read the analysis →</a>
+        <a href="/listing-accuracy" class="research-link">Read the analysis →</a>
       </div>
       <div class="research-stat">
         <div class="research-stat-row">
@@ -1385,14 +1387,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- ══════════ FOOTER ══════════ -->
 <footer class="footer">
-  <div class="container footer-inner">
-    <span class="footer-logo">Sentopi</span>
-    <span class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</span>
-    <div class="footer-links">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">Sentopi</span>
+      <span class="footer-tagline">Painkiller analytics for Amazon brands.</span>
+    </div>
+    <nav class="footer-links">
+      <a href="/revenue-risk-report">Revenue Risk Report</a>
+      <a href="/listing-accuracy">Research</a>
       <a href="/legal.html#privacy">Privacy</a>
       <a href="/legal.html#terms">Terms</a>
       <a href="mailto:hello@sentopi.com">Contact</a>
-    </div>
+    </nav>
+    <div class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</div>
   </div>
 </footer>
 

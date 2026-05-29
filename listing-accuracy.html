@@ -14,7 +14,7 @@
   <meta name="twitter:title" content="Amazon Listing Accuracy: What 3,725 Reviews Reveal | Sentopi">
   <meta name="twitter:description" content="Listing accuracy problems showed up in every product we analyzed. The fix is usually a copy change, not a product change.">
   <link rel="canonical" href="https://sentopi.com/listing-accuracy">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
@@ -140,24 +140,33 @@
       position: sticky; top: 0; z-index: 100;
       background: rgba(250,247,242,.92); backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--cream3);
-      padding: 0 32px; height: 56px;
+      padding: 0 32px; height: 58px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo {
-      font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--ink);
-      text-decoration: none; letter-spacing: -.01em;
+      font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink);
+      text-decoration: none; letter-spacing: 0.01em;
     }
-    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; }
     .nav-links a {
-      font-size: .82rem; font-weight: 500; color: var(--ink4);
-      text-decoration: none; transition: color .15s;
+      font-size: 0.85rem; font-weight: 400; color: var(--ink4);
+      text-decoration: none; transition: color 0.15s; letter-spacing: 0.01em;
     }
     .nav-links a:hover { color: var(--ink); }
     .nav-cta {
-      background: var(--ink); color: var(--white) !important;
-      padding: 7px 16px; border-radius: var(--r); font-size: .8rem !important;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--ochre); color: #fff !important;
+      font-size: 0.8125rem !important; font-weight: 500;
+      padding: 8px 18px; border-radius: var(--r);
+      border: none; cursor: pointer; transition: background 0.15s;
+      text-decoration: none;
     }
-    .nav-cta:hover { background: var(--ink2) !important; }
+    .nav-cta:hover { background: #c94d0a !important; }
+    .nav-free-badge {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 2px;
+      background: var(--forest-lt); color: var(--forest); margin-left: 5px; vertical-align: middle;
+    }
 
     /* Layout */
     .container { max-width: 1060px; margin: 0 auto; padding: 0 32px; }
@@ -529,23 +538,26 @@
     .cta-btn:hover { background: var(--forest2); }
     .cta-sub { margin-top: 12px; font-size: .78rem; color: rgba(255,255,255,.4); margin-bottom: 0; }
 
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--cream3); padding: 28px 0;
-      font-size: .78rem; color: var(--ink5);
-    }
-    .footer-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
-    }
-    footer a { color: var(--ink4); text-decoration: none; }
-    footer a:hover { color: var(--ink); }
+    /* Footer (canonical) */
+    .footer { background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04); padding: 36px 24px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+    .footer-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: rgba(255,255,255,0.85); }
+    .footer-tagline { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+    .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.85); }
+    .footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); }
 
     @media (max-width: 600px) {
       .container { padding: 0 20px; }
       .hero { padding: 44px 0 36px; }
       .cta-block { padding: 36px 24px; }
       .stats-row { gap: 8px; }
+    }
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .nav-cta { font-size: 0.78rem !important; padding: 7px 14px; }
     }
   </style>
 </head>
@@ -555,20 +567,20 @@
 
 <!-- Nav -->
 <nav class="nav">
-  <a href="https://sentopi.com/" class="nav-logo">Sentopi</a>
+  <a href="/" class="nav-logo">Sentopi</a>
   <div class="nav-links">
-    <a href="https://sentopi.com/revenue-risk-report">Revenue Risk Report</a>
-    <a href="https://sentopi.com/calculator">Star Calculator</a>
-    <a href="https://sentopi.com/#demo" class="nav-cta">Get Free Report →</a>
+    <a href="/revenue-risk-report">Revenue Risk Report <span class="nav-free-badge">Free</span></a>
+    <a href="/#pricing">Pricing</a>
   </div>
+  <a href="/#demo" class="nav-cta">Get My Free 48hr Report →</a>
 </nav>
 
 <!-- Hero -->
 <section class="hero" id="top">
   <div class="container prose">
     <span class="eyebrow">Insights · May 2026</span>
-    <h1>We analyzed 3,725 Amazon reviews across seven brands. <em>Listing accuracy problems showed up in every one.</em></h1>
-    <p class="hero-sub">A significant share of your 1-star reviews don't reflect a broken product. They reflect a gap between what your listing promised and what your customer received. And in most cases, the fix is a copy change, not a product change.</p>
+    <h1>Half of your 1-star reviews aren't about your product. <em>They're about your listing.</em></h1>
+    <p class="hero-sub">Pull your last hundred negative reviews. Two groups will jump out: buyers who got a broken product, and buyers who got the product you sell but expected a different one. The second group is usually larger, and the fix is almost always a sentence, not a SKU change. We analyzed 3,725 reviews across seven brands to show you where that gap lives.</p>
     <div class="hero-meta">
       <span><strong>3,725</strong> reviews analyzed</span>
       <span><strong>7</strong> products</span>
@@ -586,8 +598,9 @@
         <li><a href="#pet-wellness"><span class="toc-num">04</span>Case study: pet wellness</a></li>
         <li><a href="#specialty-food"><span class="toc-num">05</span>Case study: specialty food</a></li>
         <li><a href="#consumer-electronics"><span class="toc-num">06</span>Case study: consumer electronics</a></li>
-        <li><a href="#faq"><span class="toc-num">07</span>FAQ</a></li>
-        <li><a href="#takeaway"><span class="toc-num">08</span>The takeaway</a></li>
+        <li><a href="#when-not"><span class="toc-num">07</span>When this won't be your lever</a></li>
+        <li><a href="#faq"><span class="toc-num">08</span>FAQ</a></li>
+        <li><a href="#takeaway"><span class="toc-num">09</span>The takeaway</a></li>
       </ul>
     </div>
   </div>
@@ -610,8 +623,8 @@
     </div>
 
     <div class="inline-cta">
-      <p>Wondering what your number is?</p>
-      <a href="https://sentopi.com/#demo">Get a free report for your ASIN →</a>
+      <p>Curious what your split looks like?</p>
+      <a href="/#demo">Get My Free 48hr Report →</a>
     </div>
 
     <p>What makes this actionable is that expectation problems are rarely product problems. You don't need a reformulation or a new fulfillment partner. You need a better bullet point. The data is already in your reviews: you just need to read it the right way.</p>
@@ -659,14 +672,14 @@
       <div class="fw-step">
         <div class="fw-num">05</div>
         <div class="fw-title">Sales follow</div>
-        <div class="fw-sub">Higher ratings compound: better BSR, higher CVR, lower ACoS on sponsored placements.</div>
+        <div class="fw-sub">Higher ratings compound: better Best Seller Rank (BSR), higher Conversion Rate (CVR), lower Advertising Cost of Sales (ACoS) on sponsored placements.</div>
         <div class="fw-arrow" style="display:none"></div>
       </div>
     </div>
 
     <div class="prose" style="margin-top:20px;">
       <p>But it only works if you run it consistently. Customer expectations shift. Listing copy drifts from what you actually ship. New complaint patterns emerge. What was working in your listing six months ago might be misfiring today. The loop isn't a one-time audit: it's an ongoing discipline, run monthly or quarterly to keep pace with what your customers are telling you.</p>
-      <p>Before you dig into the case studies, the <a href="https://sentopi.com/revenue-risk-report">Revenue Risk Report</a> is a useful first step if you want to quantify your current exposure. It maps your review gap to a dollar figure so the fix conversation has a clear number behind it.</p>
+      <p>Before you dig into the case studies, the <a href="/revenue-risk-report">Revenue Risk Report</a> is a useful first step if you want to quantify your current exposure. It maps your review gap to a dollar figure so the fix conversation has a clear number behind it.</p>
     </div>
   </div>
 </section>
@@ -697,7 +710,7 @@
             <td>3.9 / 5</td>
             <td>Listing claims efficacy for use cases the product doesn't reliably serve</td>
             <td><span class="badge badge-green">Copy / positioning</span></td>
-            <td>Baseline product</td>
+            <td><span style="font-weight:600;color:var(--forest)">$240K / yr</span></td>
           </tr>
           <tr>
             <td class="td-label">Artisan chili crisp</td>
@@ -717,6 +730,10 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="method-note">
+      <strong>How we estimate "revenue at stake":</strong> For each brand, we take the current rating, the target rating, the trailing 30-day unit velocity, and the current ASP. We apply a conversion-rate uplift of 1.6% per 0.1-star improvement (PowerReviews benchmark for the 3.5 to 4.5 rating band), then annualize. The number is the incremental revenue captured if the rating moves from where it sits today to where a clean listing would put it. Conservative on velocity, conservative on uplift; we'd rather under-promise.
     </div>
   </div>
 </section>
@@ -802,6 +819,11 @@
         <span class="ba-label">Recommended fix</span>
         <div class="ba-text">Add onset guidance to A+ content and listing description: "Most dogs respond within 2–3 days. Give it a full week for dogs with moderate to severe anxiety." Sets accurate expectations, reduces day-1 disappointment reviews.</div>
       </div>
+    </div>
+
+    <div class="rev-callout">
+      <div class="rev-callout-num">$240K</div>
+      <div class="rev-callout-text"><strong>Estimated incremental annual revenue</strong> from closing the 3.9 to 4.2 rating gap, modeled on the current price point and trailing 30-day unit velocity. The two copy fixes above account for the majority of the contested-claim volume; neither requires a reformulation.</div>
     </div>
   </div>
 </section>
@@ -895,8 +917,8 @@
     </div>
 
     <div class="inline-cta" style="margin-top:16px;">
-      <p>Want to see your own revenue gap?</p>
-      <a href="https://sentopi.com/calculator">Model it with our star rating calculator →</a>
+      <p>Want to put a number on your own gap?</p>
+      <a href="/revenue-risk-report">Model it in the free Revenue Risk Report →</a>
     </div>
   </div>
 </section>
@@ -980,6 +1002,19 @@
   </div>
 </section>
 
+<!-- When this won't help -->
+<section class="section" id="when-not">
+  <div class="container prose">
+    <span class="eyebrow">An Honest Caveat</span>
+    <h2 class="section-h2">When a listing rewrite <em>won't</em> move your rating.</h2>
+    <p>The pattern in this analysis is real, and it shows up more often than brands expect. But it isn't universal. If your reviews tell a different story, listing copy isn't the lever. Three situations where we'd tell you not to start here:</p>
+    <p><strong>1. Quality complaints dominate the 1-stars.</strong> If "broke after a week," "leaked," "stopped working," or "wrong item shipped" together account for more than half your negatives, the bottleneck is in the product or the supply chain. A listing rewrite won't fix a unit that fails on day 12. Investigate QC and fulfillment first.</p>
+    <p><strong>2. Your contradiction rate per claim is below 15% across the board.</strong> That means buyers are arriving with reasonably calibrated expectations. The remaining 1-stars are concentrated in product or ops. Diminishing returns on copy.</p>
+    <p><strong>3. You're under 50 reviews.</strong> The sample is too small to separate signal from noise. Drive volume first; analyze second. Below that threshold, a single grumpy buyer can swing your conclusions.</p>
+    <p>The analysis tells you which category you're in. The reason we lead with listing accuracy is volume: across the products we've looked at, it has been the largest single bucket more often than any other root cause. But the diagnostic is the point, not the foregone conclusion.</p>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="section" id="faq">
   <div class="container prose">
@@ -1058,18 +1093,18 @@
     <p>That's the loop. It isn't glamorous. But it's where the compounding happens: fewer mismatched buyers, fewer 1-stars from the wrong audience, a slowly rising average that doesn't stop until your listing and your product are telling the same story.</p>
 
     <div class="cta-block">
-      <h2>See what your reviews are <em>actually</em> telling you.</h2>
-      <p>Drop your Amazon URL and we'll build your free report: top complaint drivers, root cause breakdown, and what each star improvement is worth in revenue.</p>
-      <a href="https://sentopi.com/#demo" class="cta-btn">Get My Free Report →</a>
-      <p class="cta-sub">Built from 100 of your actual reviews. Delivered within 48 hours. No commitment.</p>
+      <h2>See which of your 1-stars are <em>actually</em> about your listing.</h2>
+      <p>Paste your Amazon URL. We'll build the same breakdown you just read, against your own reviews: top complaint drivers, root cause split, and the revenue you'd recover by closing the gap.</p>
+      <a href="/#demo" class="cta-btn">Get My Free 48hr Report →</a>
+      <p class="cta-sub">Built from 100 of your actual reviews. Delivered within 48 hours. Free, no card required.</p>
     </div>
 
     <!-- Author Bio -->
     <div class="author-bio">
       <div class="author-avatar">S</div>
       <div class="author-body">
-        <div class="author-name">Sentopi Research</div>
-        <p class="author-desc">Sentopi is a review intelligence platform for e-commerce brands. We analyze Amazon, Walmart, and Reddit reviews to surface complaint root causes, competitive gaps, and the revenue impact of each fix. This analysis is based on 3,725 reviews scraped March–May 2026 across seven products. Questions or data requests: <a href="mailto:hello@sentopi.com">hello@sentopi.com</a></p>
+        <div class="author-name">Sentopi</div>
+        <p class="author-desc">Sentopi is a review intelligence platform for e-commerce brands. We read every review, map each complaint to a root cause, and price the fix in revenue. The analyses above are work we've done in the last sixty days, written up the way we'd want to read them. If you want to compare notes on what your reviews are saying, the data is one URL away: <a href="mailto:hello@sentopi.com">hello@sentopi.com</a>.</p>
       </div>
     </div>
 
@@ -1089,16 +1124,20 @@
 </section>
 
 <!-- Footer -->
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <span>Sentopi © 2026. All rights reserved.</span>
-      <div style="display:flex;gap:20px;">
-        <a href="https://sentopi.com/legal#privacy">Privacy</a>
-        <a href="https://sentopi.com/legal#terms">Terms</a>
-        <a href="mailto:hello@sentopi.com">Contact</a>
-      </div>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">Sentopi</span>
+      <span class="footer-tagline">Painkiller analytics for Amazon brands.</span>
     </div>
+    <nav class="footer-links">
+      <a href="/revenue-risk-report">Revenue Risk Report</a>
+      <a href="/listing-accuracy">Research</a>
+      <a href="/legal.html#privacy">Privacy</a>
+      <a href="/legal.html#terms">Terms</a>
+      <a href="mailto:hello@sentopi.com">Contact</a>
+    </nav>
+    <div class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</div>
   </div>
 </footer>
 

@@ -52,11 +52,13 @@ body {
 /* Nav */
 .nav {
   background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--cream3);
   padding: 0 32px;
-  height: 60px;
+  height: 58px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -68,6 +70,20 @@ body {
   text-decoration: none;
   letter-spacing: 0.01em;
 }
+.nav-back {
+  font-size: 0.8125rem; color: var(--ink4); text-decoration: none;
+  display: flex; align-items: center; gap: 5px; transition: color 0.15s;
+}
+.nav-back:hover { color: var(--ink); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ochre); color: #fff;
+  font-size: 0.8125rem; font-weight: 500;
+  padding: 8px 18px; border-radius: var(--r);
+  border: none; cursor: pointer; transition: background 0.15s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: #c94d0a; }
 
 /* Main */
 .main {
@@ -100,6 +116,7 @@ h1 {
   line-height: 1.15;
   margin-bottom: 14px;
 }
+h1 em { font-style: italic; color: var(--ochre); }
 p {
   font-size: 1rem;
   color: var(--ink4);
@@ -128,6 +145,17 @@ p {
   font-weight: 500;
 }
 .footer-note a:hover { text-decoration: underline; }
+
+/* Footer (canonical) */
+.footer { background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04); padding: 36px 24px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: rgba(255,255,255,0.85); }
+.footer-tagline { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+.footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: rgba(255,255,255,0.85); }
+.footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); }
 </style>
 </head>
 <body>
@@ -137,7 +165,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">Sentopi</a>
+  <a href="/" class="nav-logo">Sentopi</a>
+  <a href="/" class="nav-back">← Back to home</a>
+  <a href="/revenue-risk-report" class="nav-cta">See Revenue Risk Report →</a>
 </nav>
 
 <main class="main">
@@ -147,13 +177,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
-    <h1>Your fix list is on its way.</h1>
-    <p>We're analyzing 100 reviews from your product now. Your report lands in your inbox within 48 hours — top complaint drivers, priority scores, and what's actually driving your 1-stars.</p>
-    <a href="calculator.html" class="btn">Star Rating Calculator →</a>
-    <div class="footer-note">Also free: <a href="/revenue-risk-report">Revenue Risk Report →</a></div>
+    <h1>Your fix list is <em>on its way.</em></h1>
+    <p>We're analyzing 100 reviews from your product now. Your report lands in your inbox within 48 hours: top complaint drivers, priority scores, and what's actually driving your 1-stars.</p>
+    <a href="/revenue-risk-report" class="btn">See your Revenue Risk Report →</a>
+    <div class="footer-note">Free, no card required. See where your topline is leaking while you wait.</div>
     <div class="footer-note" style="margin-top:10px">Questions? Email us at <a href="mailto:hello@sentopi.com">hello@sentopi.com</a></div>
   </div>
 </main>
 
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">Sentopi</span>
+      <span class="footer-tagline">Painkiller analytics for Amazon brands.</span>
+    </div>
+    <nav class="footer-links">
+      <a href="/revenue-risk-report">Revenue Risk Report</a>
+      <a href="/listing-accuracy">Research</a>
+      <a href="/legal.html#privacy">Privacy</a>
+      <a href="/legal.html#terms">Terms</a>
+      <a href="mailto:hello@sentopi.com">Contact</a>
+    </nav>
+    <div class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</div>
+  </div>
+</footer>
 </body>
 </html>

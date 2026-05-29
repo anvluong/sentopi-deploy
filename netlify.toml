@@ -7,10 +7,30 @@
 
 [[redirects]]
   from = "/revenue-risk-report"
-  to = "/brand-health.html"
+  to = "/revenue-risk.html"
   status = 200
 
 [[redirects]]
+  from = "/brand-health.html"
+  to = "/revenue-risk.html"
+  status = 301
+
+[[redirects]]
+  from = "/brand-health"
+  to = "/revenue-risk.html"
+  status = 301
+
+[[redirects]]
   from = "/listing-accuracy"
-  to = "/listing-accuracy-v3.html"
+  to = "/listing-accuracy.html"
   status = 200
+
+[[redirects]]
+  from = "/listing-accuracy-v2.html"
+  to = "/listing-accuracy.html"
+  status = 301
+
+[[redirects]]
+  from = "/listing-accuracy-v3.html"
+  to = "/listing-accuracy.html"
+  status = 301

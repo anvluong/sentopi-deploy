@@ -496,7 +496,7 @@ const MOCK_RESPONSE = {
     },
     {
       asin: 'B0G7LGKT95',
-      title: 'TherapetMD Calming Bundle — Dog + Cat',
+      title: 'TherapetMD Calming Bundle (Dog + Cat)',
       brand: 'TherapetMD',
       reviewCount: 334,
       monthlySold: 900,

@@ -31,14 +31,30 @@ body {
   line-height: 1.6; -webkit-font-smoothing: antialiased;
 }
 .nav {
-  background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--cream3);
-  padding: 0 32px; height: 58px; display: flex; align-items: center;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--cream3);
+  padding: 0 32px; height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 100;
 }
 .nav-logo {
   font-family: 'DM Serif Display', serif; font-size: 1.15rem;
   color: var(--ink); text-decoration: none;
 }
+.nav-back {
+  font-size: 0.8125rem; color: var(--ink4); text-decoration: none;
+  display: flex; align-items: center; gap: 5px; transition: color 0.15s;
+}
+.nav-back:hover { color: var(--ink); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ochre); color: #fff;
+  font-size: 0.8125rem; font-weight: 500;
+  padding: 8px 18px; border-radius: var(--r);
+  border: none; cursor: pointer; transition: background 0.15s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: #c94d0a; }
 
 /* Tab nav */
 .tab-nav {
@@ -78,9 +94,16 @@ ul { padding-left: 20px; margin-bottom: 16px; }
 ul li { font-size: 0.9375rem; color: var(--ink3); line-height: 1.75; margin-bottom: 6px; }
 a { color: var(--forest); text-decoration: none; }
 a:hover { text-decoration: underline; }
-.footer { border-top: 1px solid var(--cream3); padding: 28px 32px; text-align: center; }
-.footer a { font-size: 0.82rem; color: var(--ink5); margin: 0 12px; }
-.footer a:hover { color: var(--ink4); }
+/* Footer (canonical) */
+.footer { background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04); padding: 36px 24px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.footer-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: rgba(255,255,255,0.85); }
+.footer-tagline { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+.footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: rgba(255,255,255,0.85); }
+.footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); }
 </style>
 </head>
 <body>
@@ -91,6 +114,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav class="nav">
   <a href="/" class="nav-logo">Sentopi</a>
+  <a href="/" class="nav-back">← Back to home</a>
+  <a href="/#demo" class="nav-cta">Get My Free 48hr Report →</a>
 </nav>
 
 <div class="tab-nav">
@@ -129,8 +154,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2>Third-Party Services</h2>
     <p>We use the following third-party services to operate the site:</p>
     <ul>
-      <li><strong>Netlify</strong> — hosts this website and processes form submissions. Netlify's privacy policy is available at netlify.com.</li>
-      <li><strong>Google Tag Manager / Google Analytics</strong> — provides anonymized web analytics. Google's privacy policy is available at policies.google.com.</li>
+      <li><strong>Netlify</strong>: hosts this website and processes form submissions. Netlify's privacy policy is available at netlify.com.</li>
+      <li><strong>Google Tag Manager / Google Analytics</strong>: provides anonymized web analytics. Google's privacy policy is available at policies.google.com.</li>
     </ul>
 
     <h2>Data Retention</h2>
@@ -193,9 +218,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <footer class="footer">
-  <a href="/">Home</a>
-  <a href="/legal.html#privacy">Privacy</a>
-  <a href="/legal.html#terms">Terms</a>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">Sentopi</span>
+      <span class="footer-tagline">Painkiller analytics for Amazon brands.</span>
+    </div>
+    <nav class="footer-links">
+      <a href="/revenue-risk-report">Revenue Risk Report</a>
+      <a href="/listing-accuracy">Research</a>
+      <a href="/legal.html#privacy">Privacy</a>
+      <a href="/legal.html#terms">Terms</a>
+      <a href="mailto:hello@sentopi.com">Contact</a>
+    </nav>
+    <div class="footer-copy">&copy; 2026 Sentopi. All rights reserved.</div>
+  </div>
 </footer>
 
 <script>
