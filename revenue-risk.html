@@ -2190,7 +2190,7 @@ function ScoreCard({ data }) {
 }
 
 // ─── Input form ───────────────────────────────────────────────────────────────
-function InputForm({ onResult, autoRun }) {
+function InputForm({ onResult, autoRun, forcedInput }) {
   const [input, setInput]     = useState(autoRun || '');
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
@@ -2236,6 +2236,10 @@ function InputForm({ onResult, autoRun }) {
   React.useEffect(() => {
     if (autoRun) runAnalysis(autoRun);
   }, []);
+
+  React.useEffect(() => {
+    if (forcedInput) setInput(forcedInput.asin);
+  }, [forcedInput]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -2329,12 +2333,16 @@ function ShareStrip({ brandName }) {
 function App() {
   const autoRun = new URLSearchParams(window.location.search).get('s') || '';
   const fixtures = window.DEMO_FIXTURES || {};
+  const chips    = window.SAMPLE_CHIPS  || [];
 
   // Single sample brand for the on-land preview. If ?s= is present in the URL,
   // the autoRun result overwrites this once the API returns.
   const SAMPLE_KEY = 'ratingSlip';
-  const [result, setResult] = useState(autoRun ? null : (fixtures[SAMPLE_KEY] || null));
-  const [isDemo, setIsDemo] = useState(!autoRun);
+  const [result,       setResult]       = useState(autoRun ? null : (fixtures[SAMPLE_KEY] || null));
+  const [isDemo,       setIsDemo]       = useState(!autoRun);
+  const [isChipResult, setIsChipResult] = useState(false);
+  const [activeChip,   setActiveChip]   = useState(null);
+  const [chipInput,    setChipInput]    = useState(null);
 
   const resultEl    = React.useRef(null);
   const scorecardEl = React.useRef(null);
@@ -2342,14 +2350,30 @@ function App() {
   function handleResult(data) {
     setResult(data);
     setIsDemo(false);
+    setIsChipResult(false);
+    setActiveChip(null);
     setTimeout(() => resultEl.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   }
 
   function handleReset() {
     setResult(fixtures[SAMPLE_KEY] || null);
     setIsDemo(true);
+    setIsChipResult(false);
+    setActiveChip(null);
+    setChipInput(null);
     window.history.pushState({}, '', window.location.pathname);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleChipClick(chip) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'sample_chip_clicked', asin: chip.asin, chip_label: chip.label, page: 'revenue-risk-report' });
+    setActiveChip(chip.key);
+    setChipInput({ asin: chip.asin, ts: Date.now() });
+    setResult(chip.data);
+    setIsDemo(false);
+    setIsChipResult(true);
+    setTimeout(() => resultEl.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   }
 
   function scrollTo(id) {
@@ -2372,7 +2396,21 @@ function App() {
           <span className="hero-input-prompt-arrow">↓</span> See your brand's report with just an ASIN.
         </div>
         <div id="hero-input" className="hero-input-wrap">
-          <InputForm onResult={handleResult} autoRun={autoRun} />
+          {chips.length > 0 && (
+            <div className="demo-pills" style={{ marginBottom: 10 }}>
+              <span className="pills-label">Try a live sample:</span>
+              {chips.map(chip => (
+                <button
+                  key={chip.key}
+                  className={`demo-pill${activeChip === chip.key ? ' active' : ''}`}
+                  onClick={() => handleChipClick(chip)}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+          )}
+          <InputForm onResult={handleResult} autoRun={autoRun} forcedInput={chipInput} />
         </div>
         <div className="hero-microcopy">
           ~30 seconds <span className="sep">·</span> No account required <span className="sep">·</span>{' '}
@@ -2405,7 +2443,7 @@ function App() {
             </div>
           )}
 
-          {!isDemo && (
+          {!isDemo && !isChipResult && (
             <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
               <div style={{ fontSize: '0.78rem', color: 'var(--ink5)' }}>
                 {result.asinCountScored} product{result.asinCountScored !== 1 ? 's' : ''} analyzed ·{' '}

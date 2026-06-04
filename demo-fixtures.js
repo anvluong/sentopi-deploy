@@ -215,3 +215,103 @@ window.DEMO_FIXTURE_LABELS = {
   buyBoxLoss: { pill: 'Buy Box loss', blurb: 'A real story: a reseller undercut by $7. Buy Box share dropped from 94% to 56% in 30 days.' },
   bsrSlip:    { pill: 'BSR slip',     blurb: 'A real story: BSR drifted from #840 to #1,420 over 90 days. Rating sits at 3.9, capping conversion the whole time.' },
 };
+
+/* ── Sample ASIN chips — real live API responses, pre-cached June 2026.
+   Refresh weekly (Monday 00:00 UTC): re-run each ASIN through /brand-health
+   and paste the JSON response into the matching data: block below.
+   cachedAt records the date for staleness alerting (>14 days). */
+window.SAMPLE_CHIPS = [
+  {
+    key:      'therapetmd',
+    asin:     'B0FB9MXHR1',
+    label:    'Pet Diffuser · 3.6★',
+    cachedAt: '2026-06-03',
+    data: {
+      success: true, entryPoint: 'asin', input: 'B0FB9MXHR1',
+      brandScore: 48.8, label: 'Critical', capReasons: [],
+      ratingDropDetails: [],
+      totalRevenueAtRiskMonthly: 0, totalRevenueAtRiskAnnual: 0,
+      asinCountScored: 1, asinCountExcluded: 0,
+      products: [
+        {
+          asin: 'B0FB9MXHR1',
+          title: 'TheraPetMD 60-Day Dog Calming Diffuser Kit - Dog Pheromone Diffuser fo',
+          brand: 'TheraPetMD',
+          reviewCount: 4518, monthlySold: 10000,
+          defaultUnits: 10000, defaultPrice: 28.49, defaultPriceSource: 'bb',
+          revenueAtRiskMonthly: null,
+          listPrice: 28.49, asp30d: 28.49, aspMoMPct: null,
+          composite: 48.8,
+          pillar_bsr:    { score: 0,    current: 519,   bsr90dAgo: 172,  delta90dPct: 201.7 },
+          pillar_rating: { score: 23.8, current: 3.6,   rating90dAgo: 4.0, rating30dAgo: 3.6, delta90d: -0.4, delta30d: 0, ratingDropped30d: false, dropDate: null, convRateBefore: 0.864, convRateNow: 0.864 },
+          pillar_buybox: { score: 25,   bbPct30d: 100,  bbMoMPts: null, lbbDetected: false, modalPriceCents: 2849, lowestCompetitorPrice: null, competitorUndercut: false, eventsIn30d: 1 },
+        },
+      ],
+      productsExcluded: [],
+      weights: { bsr: 40, rating: 35, buybox: 25 },
+    },
+  },
+  {
+    key:      'forchics',
+    asin:     'B0C35WRR24',
+    label:    'Hair Serum · 3.7★',
+    cachedAt: '2026-06-03',
+    data: {
+      success: true, entryPoint: 'asin', input: 'B0C35WRR24',
+      brandScore: 60.8, label: 'At Risk', capReasons: [],
+      ratingDropDetails: [],
+      totalRevenueAtRiskMonthly: 0, totalRevenueAtRiskAnnual: 0,
+      asinCountScored: 1, asinCountExcluded: 0,
+      products: [
+        {
+          asin: 'B0C35WRR24',
+          title: 'ForChics Hair Growth Serum for Women- Results in 4 Weeks- Hormone Free',
+          brand: 'Forchics',
+          reviewCount: 1017, monthlySold: 1000,
+          defaultUnits: 1000, defaultPrice: 29.95, defaultPriceSource: 'list',
+          revenueAtRiskMonthly: null,
+          listPrice: 29.95, asp30d: null, aspMoMPct: null,
+          composite: 60.8,
+          pillar_bsr:    { score: 10.6, current: 13340, bsr90dAgo: 7690, delta90dPct: 73.5 },
+          pillar_rating: { score: 35,   current: 3.7,   rating90dAgo: 3.7, rating30dAgo: 3.7, delta90d: 0, delta30d: 0, ratingDropped30d: false, dropDate: null, convRateBefore: 0.878, convRateNow: 0.878 },
+          pillar_buybox: { score: 13,   bbPct30d: null, bbMoMPts: null, lbbDetected: false, competitorUndercut: false, note: 'no BB data — neutral' },
+        },
+      ],
+      productsExcluded: [],
+      weights: { bsr: 40, rating: 35, buybox: 25 },
+    },
+  },
+  {
+    key:      'braload',
+    asin:     'B0GXB717TN',
+    label:    'Mini Camera · 3.9★',
+    cachedAt: '2026-06-04',
+    data: {
+      success: true, entryPoint: 'asin', input: 'B0GXB717TN',
+      brandScore: 71.6, label: 'At Risk',
+      capReasons: ['Rating dropped in the last 30 days'],
+      ratingDropDetails: [
+        { asin: 'B0GXB717TN', title: 'Braload Mini Camera Nanny Cam for Home - 2026 Update WiFi Security Cam', ratingBefore: 4.5, ratingNow: 3.9, delta: -0.6, dropDate: '2026-05-13' },
+      ],
+      totalRevenueAtRiskMonthly: 2029, totalRevenueAtRiskAnnual: 24348,
+      asinCountScored: 1, asinCountExcluded: 0,
+      products: [
+        {
+          asin: 'B0GXB717TN',
+          title: 'Braload Mini Camera Nanny Cam for Home - 2026 Update WiFi Security Cam',
+          brand: 'Braload',
+          reviewCount: 82, monthlySold: 1000,
+          defaultUnits: 1000, defaultPrice: 21.59, defaultPriceSource: 'bb',
+          revenueAtRiskMonthly: 2029,
+          listPrice: 21.59, asp30d: 23.52, aspMoMPct: -2,
+          composite: 71.6,
+          pillar_bsr:    { score: 40,   current: 2155,  bsr90dAgo: 146368, delta90dPct: -98.5 },
+          pillar_rating: { score: 6.6,  current: 3.9,   rating90dAgo: 4.7, rating30dAgo: 4.5, delta90d: -0.8, delta30d: -0.6, ratingDropped30d: true, dropDate: '2026-05-13', convRateBefore: 1.0, convRateNow: 0.906 },
+          pillar_buybox: { score: 25,   bbPct30d: 100,  bbMoMPts: 0, lbbDetected: false, modalPriceCents: 2159, lowestCompetitorPrice: null, competitorUndercut: false, eventsIn30d: 3 },
+        },
+      ],
+      productsExcluded: [],
+      weights: { bsr: 40, rating: 35, buybox: 25 },
+    },
+  },
+];
