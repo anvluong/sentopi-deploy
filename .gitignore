@@ -6,3 +6,5 @@ node_modules/
 generate_og.py
 dev-preview.html
 
+BRIEFING.md
+.claude/

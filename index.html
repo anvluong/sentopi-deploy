@@ -184,13 +184,6 @@ button, input { font-family: inherit; }
   max-width: 480px; margin-bottom: 40px; font-weight: 400;
 }
 
-.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-start; }
-.hero-cta-group { display: flex; flex-direction: column; gap: 6px; }
-.hero-cta-meta {
-  font-size: 0.72rem; color: var(--ink5); font-weight: 400;
-  letter-spacing: 0.01em; padding-left: 2px;
-}
-
 .btn-primary {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--ochre); color: #fff;
@@ -272,10 +265,10 @@ button, input { font-family: inherit; }
 }
 
 /* Breakdown section */
-.mockup-section { padding: 14px 18px 12px; }
+.mockup-section { padding: 13px 18px 2px; }
 .mockup-section-label {
   font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink5); margin-bottom: 12px;
+  color: var(--ink5); margin-bottom: 8px;
 }
 .mockup-bar-row {
   display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
@@ -314,51 +307,145 @@ button, input { font-family: inherit; }
 .mockup-priority-tag.safety { background: var(--cream2); color: var(--ink5); }
 .mockup-priority-tag.rising { background: rgba(220,38,38,0.09); color: var(--rust); }
 
-/* Revenue impact widget inside hero mockup */
-.mockup-rev-track {
-  background: var(--cream); border: 1px solid var(--cream3);
-  border-radius: var(--r); padding: 10px 14px; margin-bottom: 10px;
+/* Mini stat strip — BSR · Buy Box · Units */
+.mockup-stats {
+  display: flex; align-items: stretch;
+  padding: 8px 18px; gap: 18px;
+  background: var(--cream); border-bottom: 1px solid var(--cream2);
 }
-.mockup-rev-banner {
-  display: flex; align-items: baseline; justify-content: space-between;
-  background: rgba(234,88,12,0.08); border: 1px solid rgba(234,88,12,0.2);
-  border-radius: var(--r); padding: 10px 14px; margin-bottom: 12px;
+.mockup-stat { display: flex; flex-direction: column; gap: 1px; }
+.mockup-stat-label {
+  font-size: 0.55rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink5);
 }
-.mockup-rev-banner-label {
-  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--ochre);
+.mockup-stat-value {
+  font-size: 0.72rem; font-weight: 700; color: var(--ink2);
+  font-variant-numeric: tabular-nums;
 }
-.mockup-rev-banner-value {
+.mockup-stat-delta { font-size: 0.62rem; font-weight: 600; }
+.mockup-stat-delta.bad  { color: var(--rust); }
+.mockup-stat-delta.good { color: var(--forest); }
+
+/* Impact block — revenue at risk + recovery path.
+   Mirrors the Revenue Risk Report's .rev-hero exposure card. */
+.mockup-impact {
+  background: #fffbeb; border: 1px solid rgba(217,119,6,0.25);
+  border-radius: 6px; margin: 12px 18px; padding: 12px 14px 11px;
+}
+.mockup-impact-row {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  text-align: center;
+}
+.mockup-impact-label {
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--amber);
+}
+.mockup-impact-value {
   font-family: 'DM Serif Display', serif;
-  font-size: 1.2rem; color: var(--ochre); line-height: 1;
+  font-size: 2rem; line-height: 1; color: var(--ink);
+  white-space: nowrap;
 }
-.mockup-rev-track-inner { display: flex; align-items: center; gap: 0; }
-.mockup-rev-now, .mockup-rev-target { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.mockup-rev-target { align-items: flex-end; }
-.mockup-rev-arrow {
-  font-size: 1rem; color: var(--forest); font-weight: 600; padding: 0 8px;
+.mockup-impact-unit { font-size: 1rem; color: var(--ink4); }
+.mockup-impact-recovery {
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid rgba(0,0,0,0.07);
+  font-size: 0.73rem; font-weight: 600; color: var(--ink3);
+  text-align: center;
 }
-.mockup-rev-star {
-  font-size: 0.9rem; font-weight: 700; color: var(--ink2);
+.mockup-impact-recovery .to { color: var(--forest2); }
+.mockup-impact.protected { background: var(--forest-lt); border-color: rgba(5,150,105,0.2); }
+.mockup-impact.protected .mockup-impact-label { color: var(--forest2); }
+.mockup-impact.protected .mockup-impact-recovery { border-top-color: rgba(5,150,105,0.15); }
+
+/* Interactive demo widget — input strip */
+.mockup-try {
+  background: var(--ink); padding: 14px 18px 15px;
 }
-.mockup-rev-star-target { color: var(--forest); }
-.mockup-rev-sublabel {
-  font-size: 0.59rem; color: var(--ink5); text-transform: uppercase; letter-spacing: 0.06em;
+.mockup-try-label {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--cream3); margin-bottom: 9px;
 }
-.mockup-rev-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 5px 0; border-bottom: 1px solid var(--cream2);
+.mockup-try-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--forest3);
+  animation: blink 2.5s ease-in-out infinite;
 }
-.mockup-rev-row:last-child { border-bottom: none; }
-.mockup-rev-total {
-  padding-top: 8px; margin-top: 2px;
-  border-top: 1px solid var(--cream3) !important;
-  border-bottom: none !important;
+.mockup-try-samples {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 9px;
 }
-.mockup-rev-issue { font-size: 0.72rem; color: var(--ink4); }
-.mockup-rev-total .mockup-rev-issue { font-weight: 600; color: var(--ink2); }
-.mockup-rev-value { font-size: 0.72rem; font-weight: 600; color: var(--teal); }
-.mockup-rev-value-total { font-size: 0.78rem; color: var(--forest); font-weight: 700; }
+.mockup-try-samples-label {
+  font-size: 0.62rem; color: rgba(250,247,242,0.8);
+}
+.mockup-chip {
+  background: var(--cream); border: 1px solid var(--cream);
+  color: var(--ink); border-radius: 999px;
+  padding: 3px 11px; font-size: 0.66rem; font-weight: 600; font-family: inherit;
+  cursor: pointer; white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.12s;
+}
+.mockup-chip:hover { border-color: var(--ochre); color: var(--ochre); background: var(--white); transform: translateY(-1px); }
+.mockup-try-row { display: flex; gap: 8px; }
+.mockup-input {
+  flex: 1; min-width: 0;
+  background: var(--white); border: 1px solid var(--ink3); border-radius: var(--r);
+  padding: 9px 12px; font-size: 0.78rem; font-family: inherit; color: var(--ink);
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.mockup-input:focus { border-color: var(--ochre); box-shadow: 0 0 0 3px rgba(234,88,12,0.18); }
+.mockup-input::placeholder { color: var(--ink5); }
+.mockup-go {
+  background: var(--ochre); color: var(--white); border: none; border-radius: var(--r);
+  padding: 9px 14px; font-size: 0.74rem; font-weight: 700; font-family: inherit;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: background 0.15s, transform 0.15s;
+}
+.mockup-go:hover { background: #c94d0a; transform: translateY(-1px); }
+.mockup-go:disabled { opacity: 0.6; cursor: default; transform: none; }
+.mockup-try-error {
+  margin-top: 8px; font-size: 0.7rem; color: #fca5a5; line-height: 1.45;
+}
+
+/* Interactive demo widget — body states */
+.mockup-sample-tag {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 18px;
+  background: var(--cream2); border-bottom: 1px solid var(--cream3);
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink5);
+}
+.mockup-sample-tag.is-live { background: var(--forest-lt); color: var(--forest2); }
+.mockup-loading {
+  padding: 38px 18px; text-align: center;
+}
+.mockup-loading-spinner {
+  width: 22px; height: 22px; margin: 0 auto 12px;
+  border: 2.5px solid var(--cream3); border-top-color: var(--ochre); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.mockup-loading-text { font-size: 0.74rem; color: var(--ink4); }
+.mockup-badge-med { background: var(--amber-lt); color: #92400e; }
+.mockup-footnote {
+  padding: 9px 18px 11px; font-size: 0.66rem; color: var(--ink5); line-height: 1.5;
+  border-top: 1px solid var(--cream2);
+}
+.mockup-rating-badge.up { background: var(--forest-lt); color: var(--forest2); }
+
+/* Interactive demo widget — CTA row */
+.mockup-cta-row {
+  padding: 13px 18px 15px; border-top: 1px solid var(--cream2);
+  background: var(--cream);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.mockup-cta {
+  display: block; text-align: center;
+  background: var(--ochre); color: var(--white); text-decoration: none;
+  border-radius: var(--r); padding: 11px 14px;
+  font-size: 0.82rem; font-weight: 700;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.mockup-cta:hover { background: #c94d0a; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(234,88,12,0.3); }
+.mockup-cta-meta { font-size: 0.66rem; color: var(--ink5); text-align: center; }
 
 /* ─────────────── PROOF STRIP ─────────────── */
 .proof-strip { background: var(--cream2); border-bottom: 1px solid var(--cream3); }
@@ -821,7 +908,8 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+height="0" width="0" style="display:none;visibility:hidden"></iframe>
+<style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <!-- ══════════ NAV ══════════ -->
@@ -848,61 +936,89 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <h1>Prioritized actions<br><em>straight from your customers.</em></h1>
         <p class="hero-sub">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned.</p>
-        <div class="hero-ctas">
-          <div class="hero-cta-group">
-            <a href="#demo" class="btn-primary">Get My Free 48hr Report →</a>
-            <span class="hero-cta-meta">Custom analysis of 100 reviews · No commitment</span>
-          </div>
+        <div class="hero-calc">
+          <a href="#demo">Get the free 48hr report →</a> 100 of your reviews analyzed, no commitment.
         </div>
         <div class="hero-calc">
           <a href="/revenue-risk-report">See what your rating gap costs you →</a> 30 seconds, no sign-up required.
         </div>
       </div>
 
-      <!-- Product Mockup Card — Revenue Impact -->
-      <div class="product-mockup">
-        <!-- Product header -->
-        <div class="mockup-product-header">
-          <div class="mockup-product-name">Jenn's Kitchen: Ceramic Pour-Over Mug</div>
-          <div class="mockup-product-meta">
-            <span class="mockup-stars">★★★★☆</span>
-            <span class="mockup-rating-text">4.0 avg · 847 reviews</span>
-            <span class="mockup-rating-badge">↓ Slipping</span>
+      <!-- Interactive Demo Widget — paste an ASIN, see a personalized fix-list preview -->
+      <div class="product-mockup" id="heroWidget">
+        <div class="mockup-try">
+          <div class="mockup-try-label"><span class="mockup-try-dot"></span>Try it with your product</div>
+          <div class="mockup-try-samples" id="heroSampleChips">
+            <span class="mockup-try-samples-label">Try a live sample:</span>
           </div>
+          <div class="mockup-try-row">
+            <input class="mockup-input" id="heroAsinInput" type="text" placeholder="Paste your ASIN or Amazon URL" autocomplete="off" spellcheck="false" aria-label="Your Amazon ASIN or product URL">
+            <button class="mockup-go" id="heroAsinGo" type="button">Show my fix list</button>
+          </div>
+          <div class="mockup-try-error" id="heroWidgetError" hidden></div>
         </div>
-        <!-- Revenue impact section -->
-        <div class="mockup-section">
-          <div class="mockup-section-label">Revenue at Risk: Top Issues</div>
-          <!-- Rating recovery track -->
-          <div class="mockup-rev-track">
-            <div class="mockup-rev-track-inner">
-              <div class="mockup-rev-now">
-                <span class="mockup-rev-star">4.0 ★</span>
-                <span class="mockup-rev-sublabel">current</span>
-              </div>
-              <span class="mockup-rev-arrow">→</span>
-              <div class="mockup-rev-target">
-                <span class="mockup-rev-star mockup-rev-star-target">4.5 ★</span>
-                <span class="mockup-rev-sublabel">if top 3 fixed</span>
-              </div>
+
+        <div id="heroWidgetBody" aria-live="polite">
+          <div class="mockup-sample-tag" id="heroSampleTag">Sample · paste your ASIN above to see yours</div>
+          <!-- Product header -->
+          <div class="mockup-product-header">
+            <div class="mockup-product-name" id="heroProductName">TheraPetMD Dog Calming Diffuser Kit</div>
+            <div class="mockup-product-meta">
+              <span class="mockup-stars" id="heroStars">★★★★☆</span>
+              <span class="mockup-rating-text" id="heroRatingText">3.8 avg · 4,161 reviews</span>
+              <span class="mockup-rating-badge" id="heroRatingBadge">↓ Slipping</span>
             </div>
           </div>
-          <!-- Total revenue banner — primary anchor of the mockup -->
-          <div class="mockup-rev-banner">
-            <span class="mockup-rev-banner-label">Total at risk</span>
-            <span class="mockup-rev-banner-value">$24,600 / yr</span>
+          <!-- Mini stat strip -->
+          <div class="mockup-stats">
+            <div class="mockup-stat">
+              <span class="mockup-stat-label">BSR</span>
+              <span class="mockup-stat-value">#278 <span class="mockup-stat-delta good">↓2.5% 90d</span></span>
+            </div>
+            <div class="mockup-stat">
+              <span class="mockup-stat-label">Buy Box</span>
+              <span class="mockup-stat-value">100%</span>
+            </div>
+            <div class="mockup-stat">
+              <span class="mockup-stat-label">Est. volume</span>
+              <span class="mockup-stat-value">~10,000 units/mo</span>
+            </div>
           </div>
+          <!-- Impact block: revenue at risk + recovery path -->
+          <div class="mockup-impact">
+            <div class="mockup-impact-row">
+              <span class="mockup-impact-label">⚠️ Est. revenue at risk</span>
+              <span class="mockup-impact-value">$95,724<span class="mockup-impact-unit">/yr</span></span>
+            </div>
+            <div class="mockup-impact-recovery">3.8★ now <span class="to">→ 4.5★ if top 3 issues fixed</span></div>
+          </div>
+          <div class="mockup-section">
+            <div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>
+          </div>
+          <!-- Priority rows -->
+          <div id="heroPriorityRows">
+            <div class="mockup-priority-row">
+              <span class="mockup-badge mockup-badge-p0">P0</span>
+              <span class="mockup-priority-text">No visible effect on pet behavior</span>
+              <span class="mockup-priority-tag rising">↑ Rising</span>
+            </div>
+            <div class="mockup-priority-row">
+              <span class="mockup-badge mockup-badge-high">HIGH</span>
+              <span class="mockup-priority-text">Listing over-promises results timeline</span>
+              <span class="mockup-priority-tag rising">↑ Rising</span>
+            </div>
+            <div class="mockup-priority-row">
+              <span class="mockup-badge mockup-badge-med">MED</span>
+              <span class="mockup-priority-text">Scent / dispenser complaints</span>
+              <span class="mockup-priority-tag safety">→ Steady</span>
+            </div>
+          </div>
+          <div class="mockup-footnote" id="heroFootnote">Risk estimate based on this product's 30-day rating slip, volume, and price. Pattern preview for this category; your real list is built from your actual reviews.</div>
         </div>
-        <!-- Priority rows -->
-        <div class="mockup-priority-row">
-          <span class="mockup-badge mockup-badge-p0">P0</span>
-          <span class="mockup-priority-text">Cracking / chipping on arrival</span>
-          <span class="mockup-priority-tag rising">↑ Rising</span>
-        </div>
-        <div class="mockup-priority-row">
-          <span class="mockup-badge mockup-badge-high">HIGH</span>
-          <span class="mockup-priority-text">Listing over-promise</span>
-          <span class="mockup-priority-tag rising">↑ Rising</span>
+
+        <div class="mockup-cta-row">
+          <a href="#demo" class="mockup-cta" id="heroWidgetCta">Show me exactly what to fix first →</a>
+          <span class="mockup-cta-meta">Built from 100 of your actual reviews · 48 hours · No commitment</span>
         </div>
       </div>
 
@@ -922,7 +1038,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="proof-cell reveal d1">
         <div class="proof-cell-label">The pattern</div>
         <div class="proof-cell-value">40-55%</div>
-        <div class="proof-cell-desc">of 1-star reviews trace to listing accuracy, not product failure. Most fixes are copy changes. <em>(Sentopi analysis of 4,842 reviews across 9 brands.)</em></div>
+        <div class="proof-cell-desc">of 1-star reviews trace to listing accuracy, not product failure. Most fixes are copy changes. <em>(Sentopi analysis of 3,725 reviews across 7 brands.)</em></div>
       </div>
       <div class="proof-cell reveal d2">
         <div class="proof-cell-label">Typical revenue at risk</div>
@@ -1063,18 +1179,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="research-card reveal">
       <div>
         <span class="eyebrow">Research</span>
-        <h3 class="research-h3">What 4,842 Amazon reviews reveal about <em>listing accuracy.</em></h3>
-        <p class="research-body">Across 9 brands spanning pet wellness, specialty food, beverages, smart home, and home goods, 40-55% of 1-star reviews traced to listing accuracy problems, not product failures. The fix is usually a copy change.</p>
+        <h3 class="research-h3">What 3,725 Amazon reviews reveal about <em>listing accuracy.</em></h3>
+        <p class="research-body">Across 7 brands spanning pet wellness, specialty food, consumer electronics, and smart home, 40-55% of 1-star reviews traced to listing accuracy problems, not product failures. The fix is usually a copy change.</p>
         <a href="/listing-accuracy" class="research-link">Read the analysis →</a>
       </div>
       <div class="research-stat">
         <div class="research-stat-row">
-          <div class="research-stat-value">4,842</div>
+          <div class="research-stat-value">3,725</div>
           <div class="research-stat-label">Reviews analyzed</div>
         </div>
         <div class="research-stat-row">
-          <div class="research-stat-value">9</div>
-          <div class="research-stat-label">Brands, 5 categories</div>
+          <div class="research-stat-value">7</div>
+          <div class="research-stat-label">Brands, 4 categories</div>
         </div>
         <div class="research-stat-row">
           <div class="research-stat-value">40-55%</div>
@@ -1450,14 +1566,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/priority-templates.js"></script>
 <script>
 /* ── Scroll reveal ── */
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+if ('IntersectionObserver' in window) {
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+}
 
 /* ── Nav scroll shadow ── */
 window.addEventListener('scroll', () => {
@@ -1497,6 +1618,235 @@ function handleSubmit(e) {
   });
 }
 document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('submit', handleSubmit));
+
+/* ── Hero demo widget ── */
+(function () {
+  const input    = document.getElementById('heroAsinInput');
+  const goBtn    = document.getElementById('heroAsinGo');
+  const errEl    = document.getElementById('heroWidgetError');
+  const tagEl    = document.getElementById('heroSampleTag');
+  const bodyEl   = document.getElementById('heroWidgetBody');
+  const ctaEl    = document.getElementById('heroWidgetCta');
+  if (!input || !goBtn) return;
+
+  let lastAsin = null;
+
+  function extractAsin(raw) {
+    const s = (raw || '').trim();
+    const m = s.match(/(?:\/dp\/|\/gp\/product\/|\/product\/)(B[A-Z0-9]{9})/i)
+           || s.match(/^(B[A-Z0-9]{9})$/i);
+    return m ? m[1].toUpperCase() : null;
+  }
+
+  function starString(rating) {
+    const full = Math.round(rating || 0);
+    return '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full);
+  }
+
+  function setError(msg) {
+    errEl.textContent = msg || '';
+    errEl.hidden = !msg;
+  }
+
+  function setLoading(on) {
+    goBtn.disabled = on;
+    goBtn.textContent = on ? 'Reading product...' : 'Show my fix list';
+    if (on) {
+      bodyEl.innerHTML =
+        '<div class="mockup-loading">' +
+          '<div class="mockup-loading-spinner"></div>' +
+          '<div class="mockup-loading-text">Pulling your product from Amazon...</div>' +
+        '</div>';
+    }
+  }
+
+  function findSample(asin) {
+    return (window.HERO_SAMPLES || []).find(s => s.asin === asin) || null;
+  }
+
+  function renderResult(d, tagText) {
+    const rating  = d.rating;
+    const reviews = d.reviewCount !== null ? Number(d.reviewCount).toLocaleString() : null;
+    const delta   = d.ratingDelta30d !== null ? d.ratingDelta30d : d.ratingDelta90d;
+
+    let badge = '', badgeClass = 'mockup-rating-badge';
+    if (delta !== null && delta < 0)       { badge = '↓ Slipping'; }
+    else if (delta !== null && delta > 0)  { badge = '↑ Rising'; badgeClass += ' up'; }
+    else if (rating !== null)              { badge = '→ Flat'; }
+
+    const meta = [];
+    if (rating !== null)  meta.push('<span class="mockup-stars">' + starString(rating) + '</span>');
+    meta.push('<span class="mockup-rating-text">' + (rating !== null ? rating.toFixed(1) + ' avg' : '') + (reviews ? ' · ' + reviews + ' reviews' : '') + '</span>');
+    if (badge) meta.push('<span class="' + badgeClass + '">' + badge + '</span>');
+
+    // Mini stat strip — BSR · Buy Box · Est. volume (cells render only with data)
+    const stats = [];
+    if (d.bsr !== null && d.bsr !== undefined) {
+      let deltaHtml = '';
+      if (d.bsrDelta90dPct !== null && d.bsrDelta90dPct !== undefined && d.bsrDelta90dPct !== 0) {
+        const worse = d.bsrDelta90dPct > 0; // BSR up = rank worse
+        deltaHtml = ' <span class="mockup-stat-delta ' + (worse ? 'bad' : 'good') + '">' +
+          (worse ? '↑' : '↓') + Math.abs(Math.round(d.bsrDelta90dPct)) + '% 90d</span>';
+      }
+      stats.push('<div class="mockup-stat"><span class="mockup-stat-label">BSR</span><span class="mockup-stat-value">#' + Number(d.bsr).toLocaleString() + deltaHtml + '</span></div>');
+    }
+    if (d.bbPct30d !== null && d.bbPct30d !== undefined) {
+      stats.push('<div class="mockup-stat"><span class="mockup-stat-label">Buy Box</span><span class="mockup-stat-value">' + d.bbPct30d + '%</span></div>');
+    }
+    if (d.monthlySold) {
+      stats.push('<div class="mockup-stat"><span class="mockup-stat-label">Est. volume</span><span class="mockup-stat-value">~' + Number(d.monthlySold).toLocaleString() + ' units/mo</span></div>');
+    }
+    const statsHtml = stats.length ? '<div class="mockup-stats">' + stats.join('') + '</div>' : '';
+
+    // Impact block — revenue at risk + recovery path (RRR model, computed server-side)
+    const recoveryLine = (rating !== null && rating < 4.5)
+      ? '<div class="mockup-impact-recovery">' + rating.toFixed(1) + '★ now <span class="to">→ 4.5★ if top 3 issues fixed</span></div>'
+      : '';
+    let impactHtml = '', riskNote = '';
+    if (d.revRiskMonthly !== null && d.revRiskMonthly !== undefined) {
+      if (d.revRiskMonthly > 0) {
+        riskNote = d.revRiskBasis === 'drop'
+          ? 'Risk estimate based on your 30-day rating drop, est. monthly units, and current price.'
+          : 'Risk estimate: what sitting below the 4.5★ conversion peak costs at your current volume.';
+        impactHtml =
+          '<div class="mockup-impact">' +
+            '<div class="mockup-impact-row">' +
+              '<span class="mockup-impact-label">⚠️ Est. revenue at risk</span>' +
+              '<span class="mockup-impact-value">$' + Number(d.revRiskMonthly * 12).toLocaleString() + '<span class="mockup-impact-unit">/yr</span></span>' +
+            '</div>' +
+            recoveryLine +
+          '</div>';
+      } else {
+        riskNote = 'No active revenue risk detected. The risk is the next drop.';
+        impactHtml =
+          '<div class="mockup-impact protected">' +
+            '<div class="mockup-impact-row">' +
+              '<span class="mockup-impact-label">✅ Revenue at risk</span>' +
+              '<span class="mockup-impact-value">$0</span>' +
+            '</div>' +
+            '<div class="mockup-impact-recovery">' + (rating !== null ? rating.toFixed(1) + '★ · ' : '') + 'conversion at peak</div>' +
+          '</div>';
+      }
+    } else if (recoveryLine) {
+      // No units/price data — show the recovery path without a dollar figure
+      impactHtml =
+        '<div class="mockup-impact">' +
+          '<div class="mockup-impact-row"><span class="mockup-impact-label">Recovery path</span></div>' +
+          recoveryLine +
+        '</div>';
+    }
+
+    const tpl = window.matchPriorityTemplate ? window.matchPriorityTemplate(d.category) : null;
+    const rows = (tpl ? tpl.rows : []).map(r =>
+      '<div class="mockup-priority-row">' +
+        '<span class="mockup-badge mockup-badge-' + r.badge.toLowerCase() + '">' + r.badge + '</span>' +
+        '<span class="mockup-priority-text">' + r.text + '</span>' +
+        '<span class="mockup-priority-tag ' + (r.tag === 'rising' ? 'rising' : 'safety') + '">' + (r.tag === 'rising' ? '↑ Rising' : '→ Steady') + '</span>' +
+      '</div>'
+    ).join('');
+
+    const catLabel = d.category ? d.category : 'your category';
+
+    bodyEl.innerHTML =
+      '<div class="mockup-sample-tag is-live" id="heroSampleTag">' + (tagText || 'Your product · live data') + '</div>' +
+      '<div class="mockup-product-header">' +
+        '<div class="mockup-product-name">' + escapeHtml(d.title || d.asin) + '</div>' +
+        '<div class="mockup-product-meta">' + meta.join('') + '</div>' +
+      '</div>' +
+      statsHtml +
+      impactHtml +
+      '<div class="mockup-section">' +
+        '<div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>' +
+      '</div>' +
+      '<div>' + rows + '</div>' +
+      '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Pattern preview for ' + escapeHtml(catLabel) + '; your real list is built from your actual reviews.</div>';
+
+    ctaEl.textContent = d.revRiskBasis === 'healthy'
+      ? 'Catch the next drop early, free →'
+      : 'Show me exactly what to fix first →';
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  async function lookup() {
+    setError('');
+    const asin = extractAsin(input.value);
+    if (!asin) {
+      setError("That doesn't look like an ASIN or Amazon URL. ASINs start with B, e.g. B0FB9MXHR1.");
+      return;
+    }
+    lastAsin = asin;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'demo_widget_interaction', asin: asin, source: 'input' });
+
+    setLoading(true);
+    try {
+      const resp = await fetch('/.netlify/functions/product-lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ asin }),
+      });
+      const data = await resp.json();
+      setLoading(false);
+      if (!resp.ok || !data.success) {
+        if (!fallbackToSample(asin)) {
+          setError(data.error || 'Something went wrong. Please try again.');
+          bodyEl.innerHTML = '';
+        }
+        return;
+      }
+      renderResult(data);
+    } catch {
+      setLoading(false);
+      if (!fallbackToSample(asin)) {
+        setError('Something went wrong. Please try again.');
+        bodyEl.innerHTML = '';
+      }
+    }
+  }
+
+  /* If the lookup endpoint is unreachable but the ASIN is one of our cached
+     samples, render the cached snapshot instead of an error. */
+  function fallbackToSample(asin) {
+    const s = findSample(asin);
+    if (!s) return false;
+    renderResult(s.data, 'Sample · real Amazon data');
+    return true;
+  }
+
+  /* Sample chips — render cached real-ASIN snapshots, zero API calls */
+  const chipsEl = document.getElementById('heroSampleChips');
+  if (chipsEl && window.HERO_SAMPLES) {
+    window.HERO_SAMPLES.forEach(s => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'mockup-chip';
+      b.textContent = s.label;
+      b.addEventListener('click', () => {
+        setError('');
+        input.value = s.asin;
+        lastAsin = s.asin;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'demo_widget_interaction', asin: s.asin, source: 'sample_chip' });
+        renderResult(s.data, 'Sample · real Amazon data');
+      });
+      chipsEl.appendChild(b);
+    });
+  }
+
+  goBtn.addEventListener('click', lookup);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); lookup(); } });
+
+  /* CTA pre-fills the form's product URL field */
+  ctaEl.addEventListener('click', () => {
+    if (!lastAsin) return;
+    const urlField = document.getElementById('f-url');
+    if (urlField && !urlField.value) urlField.value = 'https://amazon.com/dp/' + lastAsin;
+  });
+})();
 </script>
 </body>
 </html>
