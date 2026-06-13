@@ -710,6 +710,60 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 .claim-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .claim-note { margin-top: 10px; text-align: center; font-size: 0.76rem; color: var(--ink5); }
 
+/* ── Compact header (label stack) ── */
+.rrr-head { text-align: center; margin-bottom: 18px; }
+.rrr-head-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 2.6vw, 1.9rem); font-weight: 400; color: var(--ink); line-height: 1.1; letter-spacing: -0.01em; margin-top: 6px; }
+
+/* ── Primary input block (on top) ── */
+.rrr-input-block { max-width: 720px; margin: 0 auto 18px; scroll-margin-top: 76px; }
+.rrr-input-block .panel { box-shadow: 0 2px 16px rgba(26,23,20,0.08); }
+.rrr-input-block .panel-body { padding: 18px 18px; }
+.rrr-input-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.rrr-input-foot .demo-pills { margin: 0; }
+.rrr-input-foot .hero-microcopy { margin: 0; }
+
+/* ── Sample result cards: Brand Score | Revenue at Risk ── */
+.summary-wrap { margin-bottom: 16px; scroll-margin-top: 16px; }
+.summary-sample-tag {
+  display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--amber); background: var(--amber-lt);
+  padding: 4px 10px; border-radius: 3px; margin-bottom: 8px;
+}
+.summary-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
+.summary-card {
+  background: var(--white); border: 1px solid var(--cream3); border-radius: 8px;
+  padding: 16px 22px; box-shadow: 0 2px 16px rgba(26,23,20,0.07); min-height: 132px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.summary-card.revenue-card.risk { background: #fffbeb; border-color: rgba(217,119,6,0.25); }
+.summary-card.revenue-card.safe { background: var(--forest-lt); border-color: rgba(5,150,105,0.2); }
+.summary-card-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink5); margin-bottom: 12px; }
+.summary-card-label.risk { color: var(--amber); }
+.summary-card-label.safe { color: var(--forest2); }
+.summary-score-row { display: flex; align-items: center; gap: 20px; }
+.summary-score-meta { min-width: 0; }
+.summary-brand { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--ink); line-height: 1.2; margin-bottom: 8px; }
+.summary-card .score-label-badge { margin-bottom: 0; }
+.summary-rev-amt { font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--ink); line-height: 1; }
+.summary-rev-per { font-size: 1.1rem; color: var(--ink4); }
+.summary-rev-sub { font-size: 0.875rem; color: var(--ink3); margin-top: 8px; }
+.summary-rev-safe { font-size: 0.9rem; color: var(--ink3); line-height: 1.5; }
+
+/* ── Skeletons (CLS-stable loading placeholders) ── */
+.skel { background: linear-gradient(90deg, var(--cream2) 25%, var(--cream3) 37%, var(--cream2) 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; border-radius: 4px; }
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+.result-skeleton { display: flex; align-items: center; gap: 22px; width: 100%; }
+.skel-ring { width: 116px; height: 116px; border-radius: 50%; flex-shrink: 0; }
+.skel-stack { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.skel-line { height: 12px; }
+.skel-line.w60 { width: 60%; } .skel-line.w50 { width: 50%; } .skel-line.w40 { width: 40%; }
+.skel-amt { height: 28px; width: 45%; margin-top: 6px; }
+.detail-skeleton { display: flex; flex-direction: column; gap: 14px; }
+.skel-block { height: 120px; border-radius: 8px; }
+
+/* Reserve space so a result swap doesn't collapse-then-grow (CLS) */
+.demo-wrap { min-height: 200px; }
+
 /* ── Mobile ── */
 @media (max-width: 720px) {
   .page { padding: 28px 18px 80px; }
@@ -717,6 +771,10 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
   .hero-v2 h1 { font-size: 1.85rem; }
   .hero-v2 .hero-sub { font-size: 0.95rem; }
   .hero-ctas { flex-direction: column; gap: 8px; }
+  .summary-cards { grid-template-columns: 1fr; }
+  .summary-card { min-height: 0; }
+  .rrr-input-foot { flex-direction: column; align-items: flex-start; }
+  .result-skeleton { flex-wrap: wrap; }
   .hero-cta-primary { width: 100%; justify-content: center; padding: 14px 20px; }
   .hero-cta-secondary { padding: 6px 0 0; }
   .demo-banner { flex-direction: column; align-items: stretch; gap: 8px; }

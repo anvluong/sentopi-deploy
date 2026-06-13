@@ -74,6 +74,24 @@ function calcBBLoss(units, price, bbPct) {
   return Math.max(0, Math.round(units * price * lossShare * 0.4));
 }
 
+// Total monthly $ exposure across all products using each product's default
+// units/price — mirrors ScoreCard's pre-edit state (see ScoreCard, ~L760-782).
+// Used by the above-fold SummaryStrip to surface a headline figure without the
+// interactive calculator.
+function defaultExposure(products) {
+  if (!products) return 0;
+  return products.reduce((sum, p) => {
+    const units = parseFloat(p.defaultUnits) || 0;
+    const price = parseFloat(p.defaultPrice) || 0;
+    const rb = p.pillar_rating?.rating30dAgo;
+    const rn = p.pillar_rating?.current;
+    const risk = p.pillar_rating?.ratingDropped30d ? calcRevenueAtRisk(units, price, rb, rn) : 0;
+    const chronic = !p.pillar_rating?.ratingDropped30d ? calcChronicGap(units, price, rn) : 0;
+    const bbLoss = calcBBLoss(units, price, p.pillar_buybox?.bbPct30d);
+    return sum + risk + chronic + bbLoss;
+  }, 0);
+}
+
 // Reviews needed to move from a → b given current review count.
 // Solves: (a*N + 5*X) / (N+X) = b   →   X = N*(b-a)/(5-b)
 function reviewsNeeded(currentRating, currentCount, targetRating) {
@@ -949,7 +967,8 @@ function ProductsTable({
 
 // ─── Score card ───────────────────────────────────────────────────────────────
 function ScoreCard({
-  data
+  data,
+  lede = true
 }) {
   const {
     brandScore,
@@ -1111,7 +1130,7 @@ function ScoreCard({
     return d !== null && d < worst ? d : worst;
   }, 0);
   const ratSub = avgRating ? worstDelta30 < 0 ? `▼${Math.abs(worstDelta30)} vs. 30d` : 'Stable last 30d' : 'No rating data';
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(HeadlineNarrative, {
+  return /*#__PURE__*/React.createElement("div", null, lede && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(HeadlineNarrative, {
     data: data,
     totalRiskMonthly: totalExposureMonthly,
     worstProduct: worstDrop || productRevs.sort((a, b) => b.computedRisk + b.computedChronic + b.computedBBLoss - (a.computedRisk + a.computedChronic + a.computedBBLoss))[0]
@@ -1223,7 +1242,7 @@ function ScoreCard({
         });
       }
     }, hasRatingDrop && worstDrop ? `Diagnose the ${monthName(worstDrop.pillar_rating.dropDate)} ratings drop with full sentiment analysis →` : anyLBB ? 'Diagnose your Buy Box loss with the full Sentopi analysis →' : 'Get the full Sentopi analysis →'));
-  })()), /*#__PURE__*/React.createElement(Recommendations, {
+  })())), /*#__PURE__*/React.createElement(Recommendations, {
     data: data,
     brandRiskMonthly: totalMonthly,
     brandBBLoss: totalBBLoss,
@@ -1729,7 +1748,9 @@ function ScoreCard({
 function InputForm({
   onResult,
   autoRun,
-  forcedInput
+  forcedInput,
+  onLoading,
+  bare
 }) {
   const [input, setInput] = useState(autoRun || '');
   const [loading, setLoading] = useState(false);
@@ -1767,6 +1788,7 @@ function InputForm({
     }
     setError('');
     setLoading(true);
+    onLoading && onLoading(true);
     try {
       const resp = await fetch('/.netlify/functions/brand-health', {
         method: 'POST',
@@ -1793,6 +1815,7 @@ function InputForm({
       setError('Network error. Check your connection and try again.');
     } finally {
       setLoading(false);
+      onLoading && onLoading(false);
     }
   }
   React.useEffect(() => {
@@ -1809,7 +1832,7 @@ function InputForm({
   }
   return /*#__PURE__*/React.createElement("div", {
     className: "panel"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, !bare && /*#__PURE__*/React.createElement("div", {
     className: "panel-header"
   }, /*#__PURE__*/React.createElement("span", {
     className: "panel-header-title"
@@ -1840,13 +1863,7 @@ function InputForm({
     className: "input-hint"
   }, "Enter your Seller ID (e.g. ", /*#__PURE__*/React.createElement("code", null, "A2YVQMS6C6QFJO"), ") or an ASIN. Results in ~30 seconds. No account required.")), error && /*#__PURE__*/React.createElement("div", {
     className: "error-box"
-  }, "\u26A0 ", error), loading && /*#__PURE__*/React.createElement("div", {
-    className: "loading-box"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "spinner"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "loading-text"
-  }, "Analyzing your brand across Amazon signals\u2026"))));
+  }, "\u26A0 ", error)));
 }
 
 // ─── Share strip ──────────────────────────────────────────────────────────────
@@ -1920,6 +1937,95 @@ function ShareStrip({
   }, "\u2193 Save as PDF"));
 }
 
+// ─── Results skeleton (CLS-stable loading placeholder) ─────────────────────────
+function ResultsSkeleton() {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "result-skeleton",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-ring"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "skel-stack"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-line w60"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-line w40"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-amt"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-line w50"
+  })));
+}
+
+// ─── Summary cards (above-the-fold sample: Brand Score | Revenue at Risk) ───────
+function SummaryStrip({
+  data,
+  isDemo,
+  loading
+}) {
+  if (loading || !data) {
+    return /*#__PURE__*/React.createElement("div", {
+      id: "rrr-summary",
+      className: "summary-wrap animate-in"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "summary-cards"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "summary-card"
+    }, /*#__PURE__*/React.createElement(ResultsSkeleton, null)), /*#__PURE__*/React.createElement("div", {
+      className: "summary-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "skel-stack",
+      style: {
+        width: '100%'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "skel skel-line w40"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "skel skel-amt"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "skel skel-line w50"
+    })))));
+  }
+  const exposure = defaultExposure(data.products);
+  const brand = data.products?.[0]?.brand || 'Your Brand';
+  const labelIcon = data.label === 'Healthy' ? '✓' : data.label === 'At Risk' ? '⚠' : '✕';
+  return /*#__PURE__*/React.createElement("div", {
+    id: "rrr-summary",
+    className: "summary-wrap animate-in"
+  }, isDemo && /*#__PURE__*/React.createElement("div", {
+    className: "summary-sample-tag"
+  }, "Sample report"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-cards"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-card score-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-card-label"
+  }, "Brand Score"), /*#__PURE__*/React.createElement("div", {
+    className: "summary-score-row"
+  }, /*#__PURE__*/React.createElement(ScoreRing, {
+    score: data.brandScore,
+    label: data.label
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "summary-score-meta"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "summary-brand"
+  }, brand), /*#__PURE__*/React.createElement("div", {
+    className: `score-label-badge ${labelClass(data.label)}`
+  }, labelIcon, " ", data.label)))), /*#__PURE__*/React.createElement("div", {
+    className: `summary-card revenue-card ${exposure > 0 ? 'risk' : 'safe'}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `summary-card-label ${exposure > 0 ? 'risk' : 'safe'}`
+  }, exposure > 0 ? '⚠ Revenue at Risk' : '✓ Revenue at Risk'), exposure > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "summary-rev-amt"
+  }, fmt$(exposure * 12), /*#__PURE__*/React.createElement("span", {
+    className: "summary-rev-per"
+  }, "/yr")), /*#__PURE__*/React.createElement("div", {
+    className: "summary-rev-sub"
+  }, fmt$(exposure), "/mo estimated exposure")) : /*#__PURE__*/React.createElement("div", {
+    className: "summary-rev-safe"
+  }, "On track \u2014 no active revenue leak detected on this brand."))));
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 function App() {
   const autoRun = new URLSearchParams(window.location.search).get('s') || '';
@@ -1934,24 +2040,33 @@ function App() {
   const [isChipResult, setIsChipResult] = useState(false);
   const [activeChip, setActiveChip] = useState(null);
   const [chipInput, setChipInput] = useState(null);
+  const [loading, setLoading] = useState(false);
   const resultEl = React.useRef(null);
   const scorecardEl = React.useRef(null);
+  function scrollToResult() {
+    // Scroll to the input block (not the cards) so the input bar stays peeking
+    // above the result cards. scroll-margin-top on .rrr-input-block clears the sticky nav.
+    setTimeout(() => document.getElementById('hero-input')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    }), 100);
+  }
   function handleResult(data) {
     setResult(data);
     setIsDemo(false);
     setIsChipResult(false);
     setActiveChip(null);
-    setTimeout(() => resultEl.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    }), 100);
+    scrollToResult();
   }
   function handleReset() {
     setResult(fixtures[SAMPLE_KEY] || null);
     setIsDemo(true);
     setIsChipResult(false);
     setActiveChip(null);
-    setChipInput(null);
+    setChipInput({
+      asin: '',
+      ts: Date.now()
+    }); // clears the input field via InputForm's forcedInput effect
     window.history.pushState({}, '', window.location.pathname);
     window.scrollTo({
       top: 0,
@@ -1974,10 +2089,7 @@ function App() {
     setResult(chip.data);
     setIsDemo(false);
     setIsChipResult(true);
-    setTimeout(() => resultEl.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    }), 100);
+    scrollToResult();
   }
   function scrollTo(id) {
     const el = document.getElementById(id);
@@ -1988,36 +2100,33 @@ function App() {
   }
   const brandName = result?.products?.[0]?.brand || '';
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "hero-v2 no-print"
+    className: "rrr-head no-print"
   }, /*#__PURE__*/React.createElement("div", {
     className: "eyebrow"
   }, /*#__PURE__*/React.createElement("span", {
     className: "eyebrow-dot"
-  }), " Free Revenue Risk Report"), /*#__PURE__*/React.createElement("h1", null, "Find the six-figure fix ", /*#__PURE__*/React.createElement("em", null, "hiding in your Amazon listing.")), /*#__PURE__*/React.createElement("p", {
-    className: "hero-sub"
-  }, "A slipping Best Seller Rank (BSR), a 0.3-star rating drop, a Buy Box you lost three weeks ago. These slow leaks quietly subtract from your topline. See yours, scored in dollars, in about 30 seconds."), /*#__PURE__*/React.createElement("div", {
-    className: "hero-input-prompt"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "hero-input-prompt-arrow"
-  }, "\u2193"), " See your brand's report with just an ASIN."), /*#__PURE__*/React.createElement("div", {
+  }), " Analyze your brand"), /*#__PURE__*/React.createElement("div", {
+    className: "rrr-head-title"
+  }, "Revenue Risk Report")), /*#__PURE__*/React.createElement("div", {
     id: "hero-input",
-    className: "hero-input-wrap"
+    className: "rrr-input-block"
+  }, /*#__PURE__*/React.createElement(InputForm, {
+    onResult: handleResult,
+    autoRun: autoRun,
+    forcedInput: chipInput,
+    onLoading: setLoading,
+    bare: true
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "rrr-input-foot"
   }, chips.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "demo-pills",
-    style: {
-      marginBottom: 10
-    }
+    className: "demo-pills"
   }, /*#__PURE__*/React.createElement("span", {
     className: "pills-label"
   }, "Try a live sample:"), chips.map(chip => /*#__PURE__*/React.createElement("button", {
     key: chip.key,
     className: `demo-pill${activeChip === chip.key ? ' active' : ''}`,
     onClick: () => handleChipClick(chip)
-  }, chip.label))), /*#__PURE__*/React.createElement(InputForm, {
-    onResult: handleResult,
-    autoRun: autoRun,
-    forcedInput: chipInput
-  })), /*#__PURE__*/React.createElement("div", {
+  }, chip.label))), /*#__PURE__*/React.createElement("div", {
     className: "hero-microcopy"
   }, "~30 seconds ", /*#__PURE__*/React.createElement("span", {
     className: "sep"
@@ -2030,25 +2139,23 @@ function App() {
       e.preventDefault();
       scrollTo('claim');
     }
-  }, "Or get the deeper 48hr Custom Report \u2192")), /*#__PURE__*/React.createElement("div", {
-    className: "hero-trust-strip no-print",
-    "aria-label": "What powers the report"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "hero-trust-chip"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "hero-trust-dot"
-  }), " Live Amazon signals"), /*#__PURE__*/React.createElement("span", {
-    className: "hero-trust-chip"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "hero-trust-dot"
-  }), " 90-day signal window"), /*#__PURE__*/React.createElement("span", {
-    className: "hero-trust-chip"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "hero-trust-dot"
-  }), " No affiliate rankings"))), result && /*#__PURE__*/React.createElement("div", {
+  }, "Or get the deeper 48hr Custom Report \u2192")))), /*#__PURE__*/React.createElement(SummaryStrip, {
+    data: result,
+    isDemo: isDemo,
+    loading: loading
+  }), (result || loading) && /*#__PURE__*/React.createElement("div", {
     ref: resultEl,
     className: "demo-wrap"
-  }, isDemo && /*#__PURE__*/React.createElement("div", {
+  }, loading ? /*#__PURE__*/React.createElement("div", {
+    className: "detail-skeleton",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-line w40"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-block"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "skel skel-block"
+  })) : /*#__PURE__*/React.createElement(React.Fragment, null, isDemo && /*#__PURE__*/React.createElement("div", {
     className: "demo-banner no-print"
   }, /*#__PURE__*/React.createElement("div", {
     className: "demo-banner-left"
@@ -2056,7 +2163,7 @@ function App() {
     className: "demo-banner-tag"
   }, "SAMPLE REPORT"), /*#__PURE__*/React.createElement("span", {
     className: "demo-banner-line1"
-  }, "A free instant read on your listings or a competitor's. Paste an ASIN or Seller ID above to run yours.")), /*#__PURE__*/React.createElement("a", {
+  }, "The full breakdown behind the sample above. Paste your ASIN or Seller ID to run yours.")), /*#__PURE__*/React.createElement("a", {
     href: "#hero-input",
     className: "demo-banner-cta",
     onClick: e => {
@@ -2064,12 +2171,12 @@ function App() {
       document.querySelector('.main-input')?.focus({
         preventScroll: false
       });
-      document.querySelector('.hero-input-wrap')?.scrollIntoView({
+      document.getElementById('hero-input')?.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
       });
     }
-  }, "Paste yours \u2191")), !isDemo && !isChipResult && /*#__PURE__*/React.createElement("div", {
+  }, "Run yours \u2191")), !isDemo && !isChipResult && /*#__PURE__*/React.createElement("div", {
     className: "no-print",
     style: {
       display: 'flex',
@@ -2098,10 +2205,29 @@ function App() {
     ref: scorecardEl
   }, /*#__PURE__*/React.createElement(ScoreCard, {
     key: isDemo ? `demo-${SAMPLE_KEY}` : result.input,
-    data: result
+    data: result,
+    lede: false
   })), !isDemo && /*#__PURE__*/React.createElement(ShareStrip, {
     brandName: brandName
-  })), /*#__PURE__*/React.createElement("section", {
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "hero-trust-strip no-print",
+    "aria-label": "What powers the report",
+    style: {
+      marginTop: 20
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero-trust-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero-trust-dot"
+  }), " Live Amazon signals"), /*#__PURE__*/React.createElement("span", {
+    className: "hero-trust-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero-trust-dot"
+  }), " 90-day signal window"), /*#__PURE__*/React.createElement("span", {
+    className: "hero-trust-chip"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero-trust-dot"
+  }), " No affiliate rankings")))), /*#__PURE__*/React.createElement("section", {
     className: "proof-section no-print"
   }, /*#__PURE__*/React.createElement("span", {
     className: "proof-eyebrow"

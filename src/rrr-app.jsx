@@ -46,6 +46,24 @@ function calcBBLoss(units, price, bbPct) {
   return Math.max(0, Math.round(units * price * lossShare * 0.4));
 }
 
+// Total monthly $ exposure across all products using each product's default
+// units/price — mirrors ScoreCard's pre-edit state (see ScoreCard, ~L760-782).
+// Used by the above-fold SummaryStrip to surface a headline figure without the
+// interactive calculator.
+function defaultExposure(products) {
+  if (!products) return 0;
+  return products.reduce((sum, p) => {
+    const units = parseFloat(p.defaultUnits) || 0;
+    const price = parseFloat(p.defaultPrice) || 0;
+    const rb = p.pillar_rating?.rating30dAgo;
+    const rn = p.pillar_rating?.current;
+    const risk    = p.pillar_rating?.ratingDropped30d ? calcRevenueAtRisk(units, price, rb, rn) : 0;
+    const chronic = !p.pillar_rating?.ratingDropped30d ? calcChronicGap(units, price, rn) : 0;
+    const bbLoss  = calcBBLoss(units, price, p.pillar_buybox?.bbPct30d);
+    return sum + risk + chronic + bbLoss;
+  }, 0);
+}
+
 // Reviews needed to move from a → b given current review count.
 // Solves: (a*N + 5*X) / (N+X) = b   →   X = N*(b-a)/(5-b)
 function reviewsNeeded(currentRating, currentCount, targetRating) {
@@ -721,7 +739,7 @@ function ProductsTable({ products, weights, noWrapper = false }) {
 }
 
 // ─── Score card ───────────────────────────────────────────────────────────────
-function ScoreCard({ data }) {
+function ScoreCard({ data, lede = true }) {
   const { brandScore, label, capReasons, ratingDropDetails, products,
           productsExcluded, weights, asinCountExcluded } = data;
 
@@ -893,6 +911,7 @@ function ScoreCard({ data }) {
 
   return (
     <div>
+      {lede && (<>
       {/* ── Headline narrative — one-sentence read of the situation ── */}
       <HeadlineNarrative
         data={data}
@@ -1011,6 +1030,7 @@ function ScoreCard({ data }) {
           );
         })()}
       </div>
+      </>)}
 
       {/* ── Per-signal recommendations ── */}
       <Recommendations
@@ -1354,7 +1374,7 @@ function ScoreCard({ data }) {
 }
 
 // ─── Input form ───────────────────────────────────────────────────────────────
-function InputForm({ onResult, autoRun, forcedInput }) {
+function InputForm({ onResult, autoRun, forcedInput, onLoading, bare }) {
   const [input, setInput]     = useState(autoRun || '');
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
@@ -1379,7 +1399,7 @@ function InputForm({ onResult, autoRun, forcedInput }) {
   async function runAnalysis(val) {
     const cached = readCache(val);
     if (cached) { onResult(cached); return; }
-    setError(''); setLoading(true);
+    setError(''); setLoading(true); onLoading && onLoading(true);
     try {
       const resp = await fetch('/.netlify/functions/brand-health', {
         method: 'POST',
@@ -1394,7 +1414,7 @@ function InputForm({ onResult, autoRun, forcedInput }) {
         window.dataLayer.push({ event: 'tool_usage', tool: 'revenue_risk_report' });
       }
     } catch { setError('Network error. Check your connection and try again.'); }
-    finally { setLoading(false); }
+    finally { setLoading(false); onLoading && onLoading(false); }
   }
 
   React.useEffect(() => {
@@ -1414,10 +1434,12 @@ function InputForm({ onResult, autoRun, forcedInput }) {
 
   return (
     <div className="panel">
-      <div className="panel-header">
-        <span className="panel-header-title">Analyze your brand</span>
-        <span className="panel-header-tag">Free · ~30s</span>
-      </div>
+      {!bare && (
+        <div className="panel-header">
+          <span className="panel-header-title">Analyze your brand</span>
+          <span className="panel-header-tag">Free · ~30s</span>
+        </div>
+      )}
       <div className="panel-body">
         <form onSubmit={handleSubmit}>
           <div className="input-row">
@@ -1438,12 +1460,6 @@ function InputForm({ onResult, autoRun, forcedInput }) {
           </p>
         </form>
         {error && <div className="error-box">⚠ {error}</div>}
-        {loading && (
-          <div className="loading-box">
-            <div className="spinner" />
-            <div className="loading-text">Analyzing your brand across Amazon signals…</div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -1493,6 +1509,76 @@ function ShareStrip({ brandName }) {
   );
 }
 
+// ─── Results skeleton (CLS-stable loading placeholder) ─────────────────────────
+function ResultsSkeleton() {
+  return (
+    <div className="result-skeleton" aria-hidden="true">
+      <div className="skel skel-ring" />
+      <div className="skel-stack">
+        <div className="skel skel-line w60" />
+        <div className="skel skel-line w40" />
+        <div className="skel skel-amt" />
+        <div className="skel skel-line w50" />
+      </div>
+    </div>
+  );
+}
+
+// ─── Summary cards (above-the-fold sample: Brand Score | Revenue at Risk) ───────
+function SummaryStrip({ data, isDemo, loading }) {
+  if (loading || !data) {
+    return (
+      <div id="rrr-summary" className="summary-wrap animate-in">
+        <div className="summary-cards">
+          <div className="summary-card"><ResultsSkeleton /></div>
+          <div className="summary-card">
+            <div className="skel-stack" style={{ width: '100%' }}>
+              <div className="skel skel-line w40" />
+              <div className="skel skel-amt" />
+              <div className="skel skel-line w50" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  const exposure  = defaultExposure(data.products);
+  const brand     = data.products?.[0]?.brand || 'Your Brand';
+  const labelIcon = data.label === 'Healthy' ? '✓' : data.label === 'At Risk' ? '⚠' : '✕';
+  return (
+    <div id="rrr-summary" className="summary-wrap animate-in">
+      {isDemo && <div className="summary-sample-tag">Sample report</div>}
+      <div className="summary-cards">
+        {/* Brand Score */}
+        <div className="summary-card score-card">
+          <div className="summary-card-label">Brand Score</div>
+          <div className="summary-score-row">
+            <ScoreRing score={data.brandScore} label={data.label} />
+            <div className="summary-score-meta">
+              <div className="summary-brand">{brand}</div>
+              <div className={`score-label-badge ${labelClass(data.label)}`}>{labelIcon} {data.label}</div>
+            </div>
+          </div>
+        </div>
+        {/* Revenue at Risk */}
+        <div className={`summary-card revenue-card ${exposure > 0 ? 'risk' : 'safe'}`}>
+          <div className={`summary-card-label ${exposure > 0 ? 'risk' : 'safe'}`}>
+            {exposure > 0 ? '⚠ Revenue at Risk' : '✓ Revenue at Risk'}
+          </div>
+          {exposure > 0 ? (
+            <>
+              <div className="summary-rev-amt">{fmt$(exposure * 12)}<span className="summary-rev-per">/yr</span></div>
+              <div className="summary-rev-sub">{fmt$(exposure)}/mo estimated exposure</div>
+            </>
+          ) : (
+            <div className="summary-rev-safe">On track — no active revenue leak detected on this brand.</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 function App() {
   const autoRun = new URLSearchParams(window.location.search).get('s') || '';
@@ -1507,16 +1593,23 @@ function App() {
   const [isChipResult, setIsChipResult] = useState(false);
   const [activeChip,   setActiveChip]   = useState(null);
   const [chipInput,    setChipInput]    = useState(null);
+  const [loading,      setLoading]      = useState(false);
 
   const resultEl    = React.useRef(null);
   const scorecardEl = React.useRef(null);
+
+  function scrollToResult() {
+    // Scroll to the input block (not the cards) so the input bar stays peeking
+    // above the result cards. scroll-margin-top on .rrr-input-block clears the sticky nav.
+    setTimeout(() => document.getElementById('hero-input')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
 
   function handleResult(data) {
     setResult(data);
     setIsDemo(false);
     setIsChipResult(false);
     setActiveChip(null);
-    setTimeout(() => resultEl.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    scrollToResult();
   }
 
   function handleReset() {
@@ -1524,7 +1617,7 @@ function App() {
     setIsDemo(true);
     setIsChipResult(false);
     setActiveChip(null);
-    setChipInput(null);
+    setChipInput({ asin: '', ts: Date.now() }); // clears the input field via InputForm's forcedInput effect
     window.history.pushState({}, '', window.location.pathname);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1537,7 +1630,7 @@ function App() {
     setResult(chip.data);
     setIsDemo(false);
     setIsChipResult(true);
-    setTimeout(() => resultEl.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    scrollToResult();
   }
 
   function scrollTo(id) {
@@ -1549,19 +1642,18 @@ function App() {
 
   return (
     <>
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div className="hero-v2 no-print">
-        <div className="eyebrow"><span className="eyebrow-dot" /> Free Revenue Risk Report</div>
-        <h1>Find the six-figure fix <em>hiding in your Amazon listing.</em></h1>
-        <p className="hero-sub">
-          A slipping Best Seller Rank (BSR), a 0.3-star rating drop, a Buy Box you lost three weeks ago. These slow leaks quietly subtract from your topline. See yours, scored in dollars, in about 30 seconds.
-        </p>
-        <div className="hero-input-prompt">
-          <span className="hero-input-prompt-arrow">↓</span> See your brand's report with just an ASIN.
-        </div>
-        <div id="hero-input" className="hero-input-wrap">
+      {/* ── Compact header (label stack, replaces the big H1) ───────────── */}
+      <div className="rrr-head no-print">
+        <div className="eyebrow"><span className="eyebrow-dot" /> Analyze your brand</div>
+        <div className="rrr-head-title">Revenue Risk Report</div>
+      </div>
+
+      {/* ── Primary action: input bar on top ────────────────────────────── */}
+      <div id="hero-input" className="rrr-input-block">
+        <InputForm onResult={handleResult} autoRun={autoRun} forcedInput={chipInput} onLoading={setLoading} bare />
+        <div className="rrr-input-foot">
           {chips.length > 0 && (
-            <div className="demo-pills" style={{ marginBottom: 10 }}>
+            <div className="demo-pills">
               <span className="pills-label">Try a live sample:</span>
               {chips.map(chip => (
                 <button
@@ -1574,57 +1666,71 @@ function App() {
               ))}
             </div>
           )}
-          <InputForm onResult={handleResult} autoRun={autoRun} forcedInput={chipInput} />
-        </div>
-        <div className="hero-microcopy">
-          ~30 seconds <span className="sep">·</span> No account required <span className="sep">·</span>{' '}
-          <a href="#claim" className="hero-microcopy-link"
-             onClick={e => { e.preventDefault(); scrollTo('claim'); }}>
-            Or get the deeper 48hr Custom Report →
-          </a>
-        </div>
-        <div className="hero-trust-strip no-print" aria-label="What powers the report">
-          <span className="hero-trust-chip"><span className="hero-trust-dot"/> Live Amazon signals</span>
-          <span className="hero-trust-chip"><span className="hero-trust-dot"/> 90-day signal window</span>
-          <span className="hero-trust-chip"><span className="hero-trust-dot"/> No affiliate rankings</span>
+          <div className="hero-microcopy">
+            ~30 seconds <span className="sep">·</span> No account required <span className="sep">·</span>{' '}
+            <a href="#claim" className="hero-microcopy-link"
+               onClick={e => { e.preventDefault(); scrollTo('claim'); }}>
+              Or get the deeper 48hr Custom Report →
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* ── Demo (auto-loaded fixture or replaced by user's real result) ── */}
-      {result && (
+      {/* ── Above the fold: sample result — Brand Score | Revenue at Risk ── */}
+      <SummaryStrip data={result} isDemo={isDemo} loading={loading} />
+
+      {/* ── Detailed results (skeleton while loading; full card otherwise) ── */}
+      {(result || loading) && (
         <div ref={resultEl} className="demo-wrap">
-          {isDemo && (
-            <div className="demo-banner no-print">
-              <div className="demo-banner-left">
-                <span className="demo-banner-tag">SAMPLE REPORT</span>
-                <span className="demo-banner-line1">A free instant read on your listings or a competitor's. Paste an ASIN or Seller ID above to run yours.</span>
-              </div>
-              <a href="#hero-input"
-                 className="demo-banner-cta"
-                 onClick={e => { e.preventDefault(); document.querySelector('.main-input')?.focus({ preventScroll: false }); document.querySelector('.hero-input-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }}>
-                Paste yours ↑
-              </a>
+          {loading ? (
+            <div className="detail-skeleton" aria-hidden="true">
+              <div className="skel skel-line w40" />
+              <div className="skel skel-block" />
+              <div className="skel skel-block" />
             </div>
-          )}
+          ) : (
+            <>
+              {isDemo && (
+                <div className="demo-banner no-print">
+                  <div className="demo-banner-left">
+                    <span className="demo-banner-tag">SAMPLE REPORT</span>
+                    <span className="demo-banner-line1">The full breakdown behind the sample above. Paste your ASIN or Seller ID to run yours.</span>
+                  </div>
+                  <a href="#hero-input"
+                     className="demo-banner-cta"
+                     onClick={e => { e.preventDefault(); document.querySelector('.main-input')?.focus({ preventScroll: false }); document.getElementById('hero-input')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }}>
+                    Run yours ↑
+                  </a>
+                </div>
+              )}
 
-          {!isDemo && !isChipResult && (
-            <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-              <div style={{ fontSize: '0.78rem', color: 'var(--ink5)' }}>
-                {result.asinCountScored} product{result.asinCountScored !== 1 ? 's' : ''} analyzed ·{' '}
-                {result.entryPoint === 'seller' ? 'Seller ID lookup' : 'ASIN + variations'}
+              {!isDemo && !isChipResult && (
+                <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--ink5)' }}>
+                    {result.asinCountScored} product{result.asinCountScored !== 1 ? 's' : ''} analyzed ·{' '}
+                    {result.entryPoint === 'seller' ? 'Seller ID lookup' : 'ASIN + variations'}
+                  </div>
+                  <button onClick={handleReset}
+                    style={{ background: 'none', border: '1px solid var(--cream3)', color: 'var(--ink4)', fontSize: '0.8rem', padding: '5px 12px', borderRadius: 'var(--r)', cursor: 'pointer', fontFamily: 'inherit' }}>
+                    ← Back to example
+                  </button>
+                </div>
+              )}
+
+              <div ref={scorecardEl}>
+                <ScoreCard key={isDemo ? `demo-${SAMPLE_KEY}` : result.input} data={result} lede={false} />
               </div>
-              <button onClick={handleReset}
-                style={{ background: 'none', border: '1px solid var(--cream3)', color: 'var(--ink4)', fontSize: '0.8rem', padding: '5px 12px', borderRadius: 'var(--r)', cursor: 'pointer', fontFamily: 'inherit' }}>
-                ← Back to example
-              </button>
-            </div>
+
+              {!isDemo && <ShareStrip brandName={brandName} />}
+
+              {/* feature chips relocated below results (was above the fold) */}
+              <div className="hero-trust-strip no-print" aria-label="What powers the report" style={{ marginTop: 20 }}>
+                <span className="hero-trust-chip"><span className="hero-trust-dot"/> Live Amazon signals</span>
+                <span className="hero-trust-chip"><span className="hero-trust-dot"/> 90-day signal window</span>
+                <span className="hero-trust-chip"><span className="hero-trust-dot"/> No affiliate rankings</span>
+              </div>
+            </>
           )}
-
-          <div ref={scorecardEl}>
-            <ScoreCard key={isDemo ? `demo-${SAMPLE_KEY}` : result.input} data={result} />
-          </div>
-
-          {!isDemo && <ShareStrip brandName={brandName} />}
         </div>
       )}
 
