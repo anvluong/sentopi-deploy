@@ -1,0 +1,15 @@
+#!/bin/sh
+# Sentopi pre-push QA gate. Runs the automated static checks before any push
+# to main and blocks the push on FAIL. Other branches push freely.
+# Install (one-time): git config core.hooksPath .githooks
+# Emergency bypass: git push --no-verify
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main)
+      echo "Sentopi QA gate (push to main)..."
+      node scripts/qa-check.mjs || exit 1
+      ;;
+  esac
+done
+exit 0
