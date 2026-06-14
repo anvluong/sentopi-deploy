@@ -1571,7 +1571,7 @@ function SummaryStrip({ data, isDemo, loading }) {
               <div className="summary-rev-sub">{fmt$(exposure)}/mo estimated exposure</div>
             </>
           ) : (
-            <div className="summary-rev-safe">On track — no active revenue leak detected on this brand.</div>
+            <div className="summary-rev-safe">On track. No active revenue leak detected on this brand.</div>
           )}
         </div>
       </div>

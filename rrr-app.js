@@ -2023,7 +2023,7 @@ function SummaryStrip({
     className: "summary-rev-sub"
   }, fmt$(exposure), "/mo estimated exposure")) : /*#__PURE__*/React.createElement("div", {
     className: "summary-rev-safe"
-  }, "On track \u2014 no active revenue leak detected on this brand."))));
+  }, "On track. No active revenue leak detected on this brand."))));
 }
 
 // ─── App ──────────────────────────────────────────────────────────────────────
