@@ -2027,6 +2027,87 @@ function SummaryStrip({
 }
 
 // ─── App ──────────────────────────────────────────────────────────────────────
+// Inline post-result email capture — renders only on a real (non-demo, non-chip) result.
+// Submits programmatically to the Netlify-registered name="demo-rrr" form (static form in revenue-risk.html).
+function InlineClaim({
+  data
+}) {
+  const brand = data?.products?.[0]?.brand || 'your brand';
+  const asin = data?.entryPoint === 'asin' ? data?.input : data?.products?.[0]?.asin || '';
+  const url = asin ? `https://amazon.com/dp/${asin}` : data?.input || '';
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | sending | done | error
+
+  React.useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'inline_capture_shown',
+      page: 'revenue-risk-report',
+      brand
+    });
+  }, []);
+  function submit(e) {
+    e.preventDefault();
+    setStatus('sending');
+    fetch('/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        'form-name': 'demo-rrr',
+        name,
+        email,
+        url
+      }).toString()
+    }).then(res => {
+      if (!res.ok) throw new Error('failed');
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'generate_lead',
+        form_name: 'demo-rrr',
+        source: 'inline_result'
+      });
+      setStatus('done');
+    }).catch(() => setStatus('error'));
+  }
+  if (status === 'done') {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "inline-claim inline-claim-done no-print"
+    }, "\u2713 You're in. Your fix list for ", brand, " is on its way, within 48 hours.");
+  }
+  return /*#__PURE__*/React.createElement("form", {
+    className: "inline-claim no-print",
+    onSubmit: submit
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "inline-claim-title"
+  }, "Get the full fix list for ", brand), /*#__PURE__*/React.createElement("div", {
+    className: "inline-claim-sub"
+  }, "Built from 100 of your actual reviews. Delivered within 48 hours."), /*#__PURE__*/React.createElement("div", {
+    className: "inline-claim-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "inline-claim-input",
+    type: "text",
+    placeholder: "Your name",
+    value: name,
+    onChange: e => setName(e.target.value),
+    required: true
+  }), /*#__PURE__*/React.createElement("input", {
+    className: "inline-claim-input",
+    type: "email",
+    placeholder: "Work email",
+    value: email,
+    onChange: e => setEmail(e.target.value),
+    required: true
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "inline-claim-submit",
+    type: "submit",
+    disabled: status === 'sending'
+  }, status === 'sending' ? 'Sending...' : 'Get your free report →'), status === 'error' && /*#__PURE__*/React.createElement("div", {
+    className: "inline-claim-err"
+  }, "Something went wrong. Try again."));
+}
 function App() {
   const autoRun = new URLSearchParams(window.location.search).get('s') || '';
   const fixtures = window.DEMO_FIXTURES || {};
@@ -2139,7 +2220,7 @@ function App() {
       e.preventDefault();
       scrollTo('claim');
     }
-  }, "Or get the deeper 48hr Custom Report \u2192")))), /*#__PURE__*/React.createElement(SummaryStrip, {
+  }, "Or get the deeper Custom Report \u2192")))), /*#__PURE__*/React.createElement(SummaryStrip, {
     data: result,
     isDemo: isDemo,
     loading: loading
@@ -2207,7 +2288,9 @@ function App() {
     key: isDemo ? `demo-${SAMPLE_KEY}` : result.input,
     data: result,
     lede: false
-  })), !isDemo && /*#__PURE__*/React.createElement(ShareStrip, {
+  })), !isDemo && !isChipResult && /*#__PURE__*/React.createElement(InlineClaim, {
+    data: result
+  }), !isDemo && /*#__PURE__*/React.createElement(ShareStrip, {
     brandName: brandName
   }), /*#__PURE__*/React.createElement("div", {
     className: "hero-trust-strip no-print",
@@ -2316,6 +2399,6 @@ function App() {
     className: "bridge-cta-btn",
     "aria-label": "Scroll to the 48hr Custom Report form",
     onClick: () => scrollTo('claim')
-  }, "Get My Free 48hr Report \u2192"))));
+  }, "Get your free report \u2192"))));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));

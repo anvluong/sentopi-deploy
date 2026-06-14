@@ -1580,6 +1580,64 @@ function SummaryStrip({ data, isDemo, loading }) {
 }
 
 // ─── App ──────────────────────────────────────────────────────────────────────
+// Inline post-result email capture — renders only on a real (non-demo, non-chip) result.
+// Submits programmatically to the Netlify-registered name="demo-rrr" form (static form in revenue-risk.html).
+function InlineClaim({ data }) {
+  const brand = data?.products?.[0]?.brand || 'your brand';
+  const asin  = data?.entryPoint === 'asin' ? data?.input : (data?.products?.[0]?.asin || '');
+  const url   = asin ? `https://amazon.com/dp/${asin}` : (data?.input || '');
+  const [name, setName]   = useState('');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | sending | done | error
+
+  React.useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'inline_capture_shown', page: 'revenue-risk-report', brand });
+  }, []);
+
+  function submit(e) {
+    e.preventDefault();
+    setStatus('sending');
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ 'form-name': 'demo-rrr', name, email, url }).toString(),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('failed');
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'generate_lead', form_name: 'demo-rrr', source: 'inline_result' });
+        setStatus('done');
+      })
+      .catch(() => setStatus('error'));
+  }
+
+  if (status === 'done') {
+    return (
+      <div className="inline-claim inline-claim-done no-print">
+        ✓ You're in. Your fix list for {brand} is on its way, within 48 hours.
+      </div>
+    );
+  }
+
+  return (
+    <form className="inline-claim no-print" onSubmit={submit}>
+      <div className="inline-claim-title">Get the full fix list for {brand}</div>
+      <div className="inline-claim-sub">Built from 100 of your actual reviews. Delivered within 48 hours.</div>
+      <div className="inline-claim-row">
+        <input className="inline-claim-input" type="text" placeholder="Your name" value={name}
+               onChange={e => setName(e.target.value)} required />
+        <input className="inline-claim-input" type="email" placeholder="Work email" value={email}
+               onChange={e => setEmail(e.target.value)} required />
+      </div>
+      <button className="inline-claim-submit" type="submit" disabled={status === 'sending'}>
+        {status === 'sending' ? 'Sending...' : 'Get your free report →'}
+      </button>
+      {status === 'error' && <div className="inline-claim-err">Something went wrong. Try again.</div>}
+    </form>
+  );
+}
+
 function App() {
   const autoRun = new URLSearchParams(window.location.search).get('s') || '';
   const fixtures = window.DEMO_FIXTURES || {};
@@ -1670,7 +1728,7 @@ function App() {
             ~30 seconds <span className="sep">·</span> No account required <span className="sep">·</span>{' '}
             <a href="#claim" className="hero-microcopy-link"
                onClick={e => { e.preventDefault(); scrollTo('claim'); }}>
-              Or get the deeper 48hr Custom Report →
+              Or get the deeper Custom Report →
             </a>
           </div>
         </div>
@@ -1720,6 +1778,8 @@ function App() {
               <div ref={scorecardEl}>
                 <ScoreCard key={isDemo ? `demo-${SAMPLE_KEY}` : result.input} data={result} lede={false} />
               </div>
+
+              {!isDemo && !isChipResult && <InlineClaim data={result} />}
 
               {!isDemo && <ShareStrip brandName={brandName} />}
 
@@ -1808,7 +1868,7 @@ function App() {
           <button type="button" className="bridge-cta-btn"
             aria-label="Scroll to the 48hr Custom Report form"
             onClick={() => scrollTo('claim')}>
-            Get My Free 48hr Report →
+            Get your free report →
           </button>
         </div>
       </section>

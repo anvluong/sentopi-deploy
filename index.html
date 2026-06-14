@@ -447,6 +447,29 @@ button, input { font-family: inherit; }
 .mockup-cta:hover { background: #c94d0a; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(234,88,12,0.3); }
 .mockup-cta-meta { font-size: 0.66rem; color: var(--ink5); text-align: center; }
 
+/* Inline post-result email capture — appears only on a real lookup */
+.mockup-claim {
+  margin-top: 14px; padding: 14px; border-radius: var(--r);
+  background: var(--cream); border: 1px solid var(--cream3);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.mockup-claim-title { font-size: 0.82rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.mockup-claim-sub { font-size: 0.68rem; color: var(--ink5); margin-top: -3px; }
+.mockup-claim-input {
+  width: 100%; padding: 9px 11px; font-size: 0.8rem; font-family: inherit;
+  border: 1px solid var(--cream3); border-radius: var(--r);
+  background: var(--white); color: var(--ink);
+}
+.mockup-claim-input:focus { outline: none; border-color: var(--ochre); }
+.mockup-claim-submit {
+  display: block; text-align: center; width: 100%;
+  background: var(--ochre); color: var(--white); border: none; cursor: pointer;
+  border-radius: var(--r); padding: 11px 14px; margin-top: 2px;
+  font-size: 0.82rem; font-weight: 700; font-family: inherit;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.mockup-claim-submit:hover { background: #c94d0a; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(234,88,12,0.3); }
+
 /* ─────────────── PROOF STRIP ─────────────── */
 .proof-strip { background: var(--cream2); border-bottom: 1px solid var(--cream3); }
 .proof-strip-inner { display: grid; grid-template-columns: repeat(4, 1fr); }
@@ -920,7 +943,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <a href="/revenue-risk-report">Revenue Risk Report <span class="nav-free-badge">Free</span></a>
       <a href="/listing-accuracy">Research</a>
     </div>
-    <a href="#demo" class="nav-cta">Get My Free 48hr Report →</a>
+    <a href="#demo" class="nav-cta">Get your free report →</a>
   </div>
 </nav>
 
@@ -935,9 +958,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           Amazon Review Intelligence
         </div>
         <h1>Prioritized actions<br><em>straight from your customers.</em></h1>
-        <p class="hero-sub">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned.</p>
+        <p class="hero-sub">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. Paste your ASIN to see yours instantly.</p>
         <div class="hero-calc">
-          <a href="#demo">Get the free 48hr report →</a> 100 of your reviews analyzed, no commitment.
+          100 of your reviews, priority-scored. No commitment.
         </div>
         <div class="hero-calc">
           <a href="/revenue-risk-report">See what your rating gap costs you →</a> 30 seconds, no sign-up required.
@@ -1087,7 +1110,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 
       <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
         <input type="hidden" name="form-name" value="demo">
-        <div class="demo-form-title">Get My Free 48hr Report</div>
+        <div class="demo-form-title">Get your free report</div>
         <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
         <div class="form-group">
           <label class="form-label" for="f-name">Name *</label>
@@ -1102,7 +1125,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <input class="form-input" type="url" id="f-url" name="url" placeholder="https://amazon.com/dp/...">
           <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
         </div>
-        <button class="form-submit" type="submit" id="submitBtn">Get My Free 48hr Report →</button>
+        <button class="form-submit" type="submit" id="submitBtn">Get your free report →</button>
         <div class="form-note">Your free report shows you the opportunity. The full analysis shows you how to get there.</div>
       </form>
     </div>
@@ -1475,7 +1498,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </div>
     <div class="how-cta reveal">
       <p>Ready to see what your rating gap is costing you?</p>
-      <a href="#demo" class="btn-primary">Get My Free 48hr Report →</a>
+      <a href="#demo" class="btn-primary">Get your free report →</a>
     </div>
   </div>
 </section>
@@ -1511,7 +1534,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         <hr class="pricing-divider">
         <div class="pricing-free-label">Your first report is free</div>
         <div class="pricing-free-desc">The free report shows you the opportunity: your top complaint drivers, what's causing 1-stars, and what each star improvement is worth in revenue. The full analysis shows you how to get there: specific actions with owner assignments, competitor benchmarks, and month-over-month trend tracking.</div>
-        <a href="#demo" class="pricing-cta">Get My Free Report →</a>
+        <a href="#demo" class="pricing-cta">Get your free report →</a>
       </div>
     </div>
   </div>
@@ -1526,7 +1549,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <p class="form-bottom-sub">Drop your Amazon link. We'll build your analysis from 100 reviews and deliver it within 48 hours. Free, no commitment.</p>
       <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
         <input type="hidden" name="form-name" value="demo">
-        <div class="demo-form-title">Get My Free 48hr Report</div>
+        <div class="demo-form-title">Get your free report</div>
         <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
         <div class="form-group">
           <label class="form-label" for="f2-name">Name *</label>
@@ -1541,7 +1564,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <input class="form-input" type="url" id="f2-url" name="url" placeholder="https://amazon.com/dp/...">
           <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
         </div>
-        <button class="form-submit" type="submit" id="submitBtn2">Get My Free 48hr Report →</button>
+        <button class="form-submit" type="submit" id="submitBtn2">Get your free report →</button>
         <div class="form-note">Your free report shows you the opportunity. The full analysis shows you how to get there.</div>
       </form>
     </div>
@@ -1600,13 +1623,13 @@ function handleSubmit(e) {
   .then(res => {
     if (!res.ok) throw new Error('Form submission failed');
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'generate_lead', form_name: 'demo' });
+    window.dataLayer.push({ event: 'generate_lead', form_name: 'demo', source: form.dataset.source || 'section' });
     btn.textContent = '✓ You\'re in. Report on its way.';
     btn.style.opacity = '1';
     btn.style.background = '#059669';
     form.querySelectorAll('.form-input').forEach(i => i.value = '');
     setTimeout(() => {
-      btn.textContent = 'Get My Free 48hr Report →';
+      btn.textContent = 'Get your free report →';
       btn.style.background = '#ea580c';
       btn.disabled = false;
     }, 5000);
@@ -1747,6 +1770,22 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
 
     const catLabel = d.category ? d.category : 'your category';
 
+    // Inline email capture — only on a real lookup (tagText is undefined); samples/chips pass a tag string
+    const isReal = (tagText === undefined);
+    const claimName = escapeHtml(d.brand || 'your product');
+    const claimAsin = escapeHtml(d.asin || lastAsin || '');
+    const captureHtml = isReal
+      ? '<form class="demo-form mockup-claim" name="demo" method="POST" action="/success.html" data-netlify="true" data-source="inline_hero">' +
+          '<input type="hidden" name="form-name" value="demo">' +
+          '<input class="form-input" type="hidden" name="url" value="https://amazon.com/dp/' + claimAsin + '">' +
+          '<div class="mockup-claim-title">Get the full fix list for ' + claimName + '</div>' +
+          '<div class="mockup-claim-sub">Built from 100 of your actual reviews. Delivered within 48 hours.</div>' +
+          '<input class="form-input mockup-claim-input" type="text" name="name" placeholder="Your name" required>' +
+          '<input class="form-input mockup-claim-input" type="email" name="email" placeholder="Work email" required>' +
+          '<button class="mockup-claim-submit" type="submit">Get your free report →</button>' +
+        '</form>'
+      : '';
+
     bodyEl.innerHTML =
       '<div class="mockup-sample-tag is-live" id="heroSampleTag">' + (tagText || 'Your product · live data') + '</div>' +
       '<div class="mockup-product-header">' +
@@ -1759,11 +1798,21 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
         '<div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>' +
       '</div>' +
       '<div>' + rows + '</div>' +
-      '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Pattern preview for ' + escapeHtml(catLabel) + '; your real list is built from your actual reviews.</div>';
+      '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Pattern preview for ' + escapeHtml(catLabel) + '; your real list is built from your actual reviews.</div>' +
+      captureHtml;
 
     ctaEl.textContent = d.revRiskBasis === 'healthy'
       ? 'Catch the next drop early, free →'
       : 'Show me exactly what to fix first →';
+
+    // On a real result the inline capture is the primary action — hide the redundant scroll-to-form CTA
+    const ctaRow = ctaEl.closest('.mockup-cta-row');
+    if (ctaRow) ctaRow.style.display = isReal ? 'none' : '';
+
+    if (isReal) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'inline_capture_shown', page: 'home', asin: d.asin || lastAsin });
+    }
   }
 
   function escapeHtml(s) {
@@ -1839,6 +1888,10 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
 
   goBtn.addEventListener('click', lookup);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); lookup(); } });
+
+  /* Inline post-result capture submits through the shared Netlify handler.
+     Delegated on bodyEl because the form is re-injected on every render. */
+  bodyEl.addEventListener('submit', handleSubmit);
 
   /* CTA pre-fills the form's product URL field */
   ctaEl.addEventListener('click', () => {
