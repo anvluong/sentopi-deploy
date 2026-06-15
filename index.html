@@ -815,6 +815,18 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 }
 .pricing-cta:hover { background: var(--forest2); }
 
+/* ─────────────── FOUNDERS ─────────────── */
+.founders { background: var(--cream2); border-bottom: 1px solid var(--cream3); padding: 72px 0; }
+.founders-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+.founders-quote {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.15rem, 2vw, 1.45rem); font-weight: 400;
+  color: var(--ink2); line-height: 1.5; letter-spacing: -0.01em; margin: 14px 0 24px;
+}
+.founders-sign { display: flex; flex-direction: column; gap: 2px; }
+.founders-names { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.founders-role { font-size: 0.82rem; color: var(--ink5); }
+
 /* ─────────────── DEMO FORM ─────────────── */
 .form-section { background: var(--ink); position: relative; overflow: hidden; }
 .form-section::before {
@@ -1077,6 +1089,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </div>
 </section>
 
+<!-- ══════════ FOUNDERS ══════════ -->
+<section class="founders">
+  <div class="container">
+    <div class="founders-inner reveal">
+      <span class="eyebrow">From the founders</span>
+      <p class="founders-quote">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first.</p>
+      <div class="founders-sign">
+        <span class="founders-names">Oliver &amp; An</span>
+        <span class="founders-role">Cofounders, Sentopi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ FORM ══════════ -->
 <section id="demo" class="section form-section">
   <div class="container">
@@ -1117,7 +1143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <input class="form-input" type="text" id="f-name" name="name" placeholder="Jane Smith" required>
         </div>
         <div class="form-group">
-          <label class="form-label" for="f-email">Work email *</label>
+          <label class="form-label" for="f-email">Email *</label>
           <input class="form-input" type="email" id="f-email" name="email" placeholder="jane@yourbrand.com" required>
         </div>
         <div class="form-group">
@@ -1126,7 +1152,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
         </div>
         <button class="form-submit" type="submit" id="submitBtn">Get your free report →</button>
-        <div class="form-note">Your free report shows you the opportunity. The full analysis shows you how to get there.</div>
+        <div class="form-note">No credit card. No commitment. Your email stays with us, never shared.</div>
       </form>
     </div>
   </div>
@@ -1556,7 +1582,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <input class="form-input" type="text" id="f2-name" name="name" placeholder="Jane Smith" required>
         </div>
         <div class="form-group">
-          <label class="form-label" for="f2-email">Work email *</label>
+          <label class="form-label" for="f2-email">Email *</label>
           <input class="form-input" type="email" id="f2-email" name="email" placeholder="jane@yourbrand.com" required>
         </div>
         <div class="form-group">
@@ -1565,7 +1591,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
         </div>
         <button class="form-submit" type="submit" id="submitBtn2">Get your free report →</button>
-        <div class="form-note">Your free report shows you the opportunity. The full analysis shows you how to get there.</div>
+        <div class="form-note">No credit card. No commitment. Your email stays with us, never shared.</div>
       </form>
     </div>
   </div>
@@ -1781,7 +1807,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
           '<div class="mockup-claim-title">Get the full fix list for ' + claimName + '</div>' +
           '<div class="mockup-claim-sub">Built from 100 of your actual reviews. Delivered within 48 hours.</div>' +
           '<input class="form-input mockup-claim-input" type="text" name="name" placeholder="Your name" required>' +
-          '<input class="form-input mockup-claim-input" type="email" name="email" placeholder="Work email" required>' +
+          '<input class="form-input mockup-claim-input" type="email" name="email" placeholder="Email" required>' +
           '<button class="mockup-claim-submit" type="submit">Get your free report →</button>' +
         '</form>'
       : '';
