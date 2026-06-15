@@ -130,6 +130,20 @@ button, input { font-family: inherit; }
 }
 .nav-cta:hover { background: #c94d0a; }
 
+/* Sticky mobile CTA bar — hidden on desktop, shown ≤600px */
+.sticky-cta {
+  display: none;
+  position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 250;
+  align-items: center; justify-content: center; gap: 8px;
+  background: var(--ochre); color: #fff;
+  font-weight: 600; font-size: 0.95rem;
+  padding: 15px 18px; border-radius: var(--r);
+  border: none; cursor: pointer; text-decoration: none;
+  box-shadow: 0 8px 26px rgba(234,88,12,0.42);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.sticky-cta.hidden { opacity: 0; transform: translateY(120%); pointer-events: none; }
+
 /* ─────────────── HERO — CREAM/LIGHT ─────────────── */
 .hero {
   background: var(--cream);
@@ -155,8 +169,16 @@ button, input { font-family: inherit; }
 
 .hero-inner {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: 1fr 400px; gap: 72px; align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  grid-template-areas:
+    "headline widget"
+    "support  widget";
+  column-gap: 72px; row-gap: 0; align-items: center;
 }
+.hero-headline { grid-area: headline; }
+.hero-support { grid-area: support; }
+.product-mockup { grid-area: widget; }
 
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 9px;
@@ -922,8 +944,16 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 /* ─────────────── RESPONSIVE ─────────────── */
 @media (max-width: 960px) {
   .nav-links { display: none; }
-  .hero-inner { grid-template-columns: 1fr; gap: 52px; }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "headline"
+      "widget"
+      "support";
+    column-gap: 0; row-gap: 32px;
+  }
   .product-mockup { max-width: 420px; }
+  .hero-support { margin-top: 4px; }
   .problem-grid { grid-template-columns: 1fr; gap: 40px; }
   .pv-card { top: 0; }
   .output-cols { grid-template-columns: 1fr; }
@@ -934,11 +964,16 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   .proof-cell:last-child { border-bottom: none; }
 }
 @media (max-width: 600px) {
-  .hero { padding: 120px 0 80px; }
+  .hero { padding: 92px 0 64px; }
   .section { padding: 72px 0; }
   .container { padding: 0 20px; }
-  .hero h1 { font-size: 2.6rem; }
+  .hero h1 { font-size: 2.4rem; margin-bottom: 18px; }
+  .hero-eyebrow { margin-bottom: 18px; }
+  .hero-inner { row-gap: 22px; }
   .pricing-price { font-size: 2.2rem; }
+  /* Keep footer/content clear of the fixed mobile CTA bar */
+  body { padding-bottom: 78px; }
+  .sticky-cta { display: flex; }
 }
 </style>
 </head>
@@ -958,7 +993,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <a href="/listing-accuracy">Research</a>
       <a href="/pricing.html">Pricing</a>
     </div>
-    <a href="#demo" class="nav-cta">Get your free report →</a>
+    <a href="#demo" class="nav-cta">See your revenue risk →</a>
   </div>
 </nav>
 
@@ -967,12 +1002,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   <div class="container">
     <div class="hero-inner">
 
-      <div class="hero-left">
+      <div class="hero-headline">
         <div class="hero-eyebrow">
           <span class="hero-eyebrow-dot"></span>
           Amazon Review Intelligence
         </div>
         <h1>Prioritized actions<br><em>straight from your customers.</em></h1>
+      </div>
+
+      <div class="hero-support">
         <p class="hero-sub">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. Paste your ASIN to see yours instantly.</p>
         <div class="hero-calc">
           100 of your reviews, priority-scored. No commitment.
@@ -1497,7 +1535,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           <input class="form-input" type="url" id="f2-url" name="url" placeholder="https://amazon.com/dp/...">
           <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
         </div>
-        <button class="form-submit" type="submit" id="submitBtn2">Get your free report →</button>
+        <button class="form-submit" type="submit" id="submitBtn2">See what your reviews are costing you →</button>
         <div class="form-note">No credit card. No commitment. Your email stays with us, never shared.</div>
       </form>
     </div>
@@ -1523,8 +1561,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </div>
 </footer>
 
+<!-- Sticky mobile CTA — shown ≤600px, auto-hides over the form section -->
+<a href="#demo" class="sticky-cta" id="stickyCta">See what your reviews are costing you →</a>
+
 <script src="/priority-templates.js"></script>
 <script>
+/* ── Sticky mobile CTA: hide while a form section is in view ── */
+(function () {
+  const cta = document.getElementById('stickyCta');
+  if (!cta || !('IntersectionObserver' in window)) return;
+  const targets = ['#demo', '.form-section-bottom'].map(s => document.querySelector(s)).filter(Boolean);
+  if (!targets.length) return;
+  const visible = new Set();
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { e.isIntersecting ? visible.add(e.target) : visible.delete(e.target); });
+    cta.classList.toggle('hidden', visible.size > 0);
+  }, { threshold: 0, rootMargin: '0px 0px -25% 0px' });
+  targets.forEach(t => obs.observe(t));
+})();
+
 /* ── Scroll reveal ── */
 if ('IntersectionObserver' in window) {
   const ro = new IntersectionObserver(entries => {
@@ -1563,7 +1618,7 @@ function handleSubmit(e) {
     btn.style.background = '#059669';
     form.querySelectorAll('.form-input').forEach(i => i.value = '');
     setTimeout(() => {
-      btn.textContent = 'Get your free report →';
+      btn.textContent = 'See what your reviews are costing you →';
       btn.style.background = '#ea580c';
       btn.disabled = false;
     }, 5000);
@@ -1716,7 +1771,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
           '<div class="mockup-claim-sub">Built from 100 of your actual reviews. Delivered within 48 hours.</div>' +
           '<input class="form-input mockup-claim-input" type="text" name="name" placeholder="Your name" required>' +
           '<input class="form-input mockup-claim-input" type="email" name="email" placeholder="Email" required>' +
-          '<button class="mockup-claim-submit" type="submit">Get your free report →</button>' +
+          '<button class="mockup-claim-submit" type="submit">See what your reviews are costing you →</button>' +
         '</form>'
       : '';
 

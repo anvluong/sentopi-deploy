@@ -1631,7 +1631,7 @@ function InlineClaim({ data }) {
                onChange={e => setEmail(e.target.value)} required />
       </div>
       <button className="inline-claim-submit" type="submit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending...' : 'Get your free report →'}
+        {status === 'sending' ? 'Sending...' : 'See what your reviews are costing you →'}
       </button>
       {status === 'error' && <div className="inline-claim-err">Something went wrong. Try again.</div>}
     </form>
@@ -1868,7 +1868,7 @@ function App() {
           <button type="button" className="bridge-cta-btn"
             aria-label="Scroll to the 48hr Custom Report form"
             onClick={() => scrollTo('claim')}>
-            Get your free report →
+            See what your reviews are costing you →
           </button>
         </div>
       </section>

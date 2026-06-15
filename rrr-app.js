@@ -2104,7 +2104,7 @@ function InlineClaim({
     className: "inline-claim-submit",
     type: "submit",
     disabled: status === 'sending'
-  }, status === 'sending' ? 'Sending...' : 'Get your free report →'), status === 'error' && /*#__PURE__*/React.createElement("div", {
+  }, status === 'sending' ? 'Sending...' : 'See what your reviews are costing you →'), status === 'error' && /*#__PURE__*/React.createElement("div", {
     className: "inline-claim-err"
   }, "Something went wrong. Try again."));
 }
@@ -2399,6 +2399,6 @@ function App() {
     className: "bridge-cta-btn",
     "aria-label": "Scroll to the 48hr Custom Report form",
     onClick: () => scrollTo('claim')
-  }, "Get your free report \u2192"))));
+  }, "See what your reviews are costing you \u2192"))));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
