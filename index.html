@@ -825,6 +825,8 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 }
 .founders-sign { display: flex; flex-direction: column; gap: 2px; }
 .founders-names { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.founders-names a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--cream3); transition: text-decoration-color 0.15s; }
+.founders-names a:hover { text-decoration-color: var(--forest); }
 .founders-role { font-size: 0.82rem; color: var(--ink5); }
 
 /* ─────────────── DEMO FORM ─────────────── */
@@ -954,6 +956,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <div class="nav-links">
       <a href="/revenue-risk-report">Revenue Risk Report <span class="nav-free-badge">Free</span></a>
       <a href="/listing-accuracy">Research</a>
+      <a href="/pricing.html">Pricing</a>
     </div>
     <a href="#demo" class="nav-cta">Get your free report →</a>
   </div>
@@ -1096,64 +1099,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <span class="eyebrow">From the founders</span>
       <p class="founders-quote">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first.</p>
       <div class="founders-sign">
-        <span class="founders-names">Oliver &amp; An</span>
+        <span class="founders-names"><a href="https://www.linkedin.com/in/oliversilen" target="_blank" rel="noopener">Oliver</a> &amp; <a href="https://www.linkedin.com/in/an-luong/" target="_blank" rel="noopener">An</a></span>
         <span class="founders-role">Cofounders, Sentopi</span>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ FORM ══════════ -->
-<section id="demo" class="section form-section">
-  <div class="container">
-    <div class="form-grid">
-      <div class="form-left reveal">
-        <h2>Get your free<br><em>fix list.</em></h2>
-        <p class="form-sub">Drop your Amazon product link and we'll build your rating report from 100 reviews: the top complaint categories, priority scores, and what's actually driving your 1-stars.</p>
-        <div class="trust-list">
-          <div class="trust-item">
-            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            Built from 100 of your actual reviews
-          </div>
-          <div class="trust-item">
-            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            Priority-scored issues, ranked by impact
-          </div>
-          <div class="trust-item">
-            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            Complaint categories broken into product, ops, and marketing
-          </div>
-          <div class="trust-item">
-            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            No commitment, delivered within 48 hours
-          </div>
-          <div class="trust-item">
-            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            Your email stays with us. No third-party sharing, ever.
-          </div>
-        </div>
-      </div>
-
-      <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
-        <input type="hidden" name="form-name" value="demo">
-        <div class="demo-form-title">Get your free report</div>
-        <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
-        <div class="form-group">
-          <label class="form-label" for="f-name">Name *</label>
-          <input class="form-input" type="text" id="f-name" name="name" placeholder="Jane Smith" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-email">Email *</label>
-          <input class="form-input" type="email" id="f-email" name="email" placeholder="jane@yourbrand.com" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-url">Amazon product URL</label>
-          <input class="form-input" type="url" id="f-url" name="url" placeholder="https://amazon.com/dp/...">
-          <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
-        </div>
-        <button class="form-submit" type="submit" id="submitBtn">Get your free report →</button>
-        <div class="form-note">No credit card. No commitment. Your email stays with us, never shared.</div>
-      </form>
     </div>
   </div>
 </section>
@@ -1529,45 +1477,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </div>
 </section>
 
-<!-- ══════════ PRICING ══════════ -->
-<section id="pricing" class="section pricing-section">
-  <div class="container">
-    <div class="pricing-inner">
-      <span class="eyebrow reveal">Pricing</span>
-      <h2 class="section-h2 reveal">Simple pricing,<br>serious insights.</h2>
-      <p class="section-sub reveal">Everything your team needs to turn reviews into a higher rating.</p>
-      <div class="pricing-card reveal d1">
-        <div class="pricing-starting">Plans starting at</div>
-        <div class="pricing-price">$149 <span>/month</span></div>
-        <div class="pricing-features">
-          <div class="pricing-feat">
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Priority-scored action plan
-          </div>
-          <div class="pricing-feat">
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Full review dataset (exportable)
-          </div>
-          <div class="pricing-feat">
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Revenue impact modeling
-          </div>
-          <div class="pricing-feat">
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Month-over-month trend tracking
-          </div>
-        </div>
-        <hr class="pricing-divider">
-        <div class="pricing-free-label">Your first report is free</div>
-        <div class="pricing-free-desc">The free report shows you the opportunity: your top complaint drivers, what's causing 1-stars, and what each star improvement is worth in revenue. The full analysis shows you how to get there: specific actions with owner assignments, competitor benchmarks, and month-over-month trend tracking.</div>
-        <a href="#demo" class="pricing-cta">Get your free report →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══════════ SECOND FORM ══════════ -->
-<section class="section form-section-bottom">
+<section id="demo" class="section form-section-bottom">
   <div class="container">
     <div class="form-bottom-inner">
       <span class="eyebrow">Get Started</span>
@@ -1607,6 +1518,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <nav class="footer-links">
       <a href="/revenue-risk-report">Revenue Risk Report</a>
       <a href="/listing-accuracy">Research</a>
+      <a href="/pricing.html">Pricing</a>
       <a href="/legal.html#privacy">Privacy</a>
       <a href="/legal.html#terms">Terms</a>
       <a href="mailto:hello@sentopi.com">Contact</a>
@@ -1922,7 +1834,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
   /* CTA pre-fills the form's product URL field */
   ctaEl.addEventListener('click', () => {
     if (!lastAsin) return;
-    const urlField = document.getElementById('f-url');
+    const urlField = document.getElementById('f2-url');
     if (urlField && !urlField.value) urlField.value = 'https://amazon.com/dp/' + lastAsin;
   });
 })();
