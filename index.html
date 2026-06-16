@@ -144,6 +144,9 @@ button, input { font-family: inherit; }
 }
 .sticky-cta.hidden { opacity: 0; transform: translateY(120%); pointer-events: none; }
 
+/* Mobile-only short copy: hidden by default, swapped in at ≤600px */
+.only-mobile { display: none; }
+
 /* ─────────────── HERO — CREAM/LIGHT ─────────────── */
 .hero {
   background: var(--cream);
@@ -964,7 +967,9 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   .proof-cell:last-child { border-bottom: none; }
 }
 @media (max-width: 600px) {
-  .hero { padding: 92px 0 64px; }
+  /* Nav scrolls away on mobile — the bottom sticky CTA is the persistent button */
+  .nav { position: static; }
+  .hero { padding: 28px 0 56px; }
   .section { padding: 72px 0; }
   .container { padding: 0 20px; }
   .hero h1 { font-size: 2.4rem; margin-bottom: 18px; }
@@ -974,6 +979,19 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   /* Keep footer/content clear of the fixed mobile CTA bar */
   body { padding-bottom: 78px; }
   .sticky-cta { display: flex; }
+  /* Mobile-only short copy */
+  .only-desktop { display: none; }
+  .only-mobile { display: block; }
+  /* Trend chart fits the screen instead of horizontal-scrolling */
+  .chart-card-trend .chart-body { overflow-x: visible; }
+  .chart-card-trend .trend-svg { min-width: 0; }
+  /* SVG text scales with the viewBox; enlarge so labels stay legible at ~300px wide */
+  .chart-card-trend .trend-axis text { font-size: 26px; }
+  /* Hide the floating annotation callout on mobile — it overflows at small scale */
+  .chart-card-trend .trend-annotation-line,
+  .chart-card-trend .trend-annotation-box,
+  .chart-card-trend .trend-annotation-text { display: none; }
+  .chart-card-trend .chart-legend { font-size: 0.8rem; }
 }
 </style>
 </head>
@@ -1010,7 +1028,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       </div>
 
       <div class="hero-support">
-        <p class="hero-sub">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. Paste your ASIN to see yours instantly.</p>
+        <p class="hero-sub only-desktop">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. Paste your ASIN to see yours instantly.</p>
+        <p class="hero-sub only-mobile">Every Amazon review, scored by revenue impact, turned into a ranked fix list. Paste your ASIN to see yours.</p>
         <div class="hero-calc">
           100 of your reviews, priority-scored. No commitment.
         </div>
@@ -1129,12 +1148,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </div>
 </section>
 
+<!-- ══════════ GET STARTED — TOP FORM (dark, fast capture) ══════════ -->
+<section id="demo" class="section form-section">
+  <div class="container">
+    <div class="form-grid">
+      <div class="form-left reveal">
+        <h2>Get your free<br><em>fix list.</em></h2>
+        <p class="form-sub only-desktop">Drop your Amazon product link and we'll build your rating report from 100 reviews: the top complaint categories, priority scores, and what's actually driving your 1-stars.</p>
+        <p class="form-sub only-mobile">Drop your Amazon link. We'll build your report from 100 reviews: top complaints, priority scores, and what's driving your 1-stars.</p>
+        <div class="trust-list">
+          <div class="trust-item">
+            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Built from 100 of your actual reviews
+          </div>
+          <div class="trust-item">
+            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Priority-scored issues, ranked by impact
+          </div>
+          <div class="trust-item">
+            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Complaint categories broken into product, ops, and marketing
+          </div>
+          <div class="trust-item">
+            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            No commitment, delivered within 48 hours
+          </div>
+          <div class="trust-item">
+            <div class="trust-check"><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Your email stays with us. No third-party sharing, ever.
+          </div>
+        </div>
+      </div>
+
+      <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
+        <input type="hidden" name="form-name" value="demo">
+        <div class="demo-form-title">Get your free report</div>
+        <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
+        <div class="form-group">
+          <label class="form-label" for="f-name">Name *</label>
+          <input class="form-input" type="text" id="f-name" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-email">Work email *</label>
+          <input class="form-input" type="email" id="f-email" name="email" placeholder="jane@yourbrand.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-url">Amazon product URL</label>
+          <input class="form-input" type="url" id="f-url" name="url" placeholder="https://amazon.com/dp/...">
+          <div class="form-url-hint">We'll build your rating report from 100 reviews of this product.</div>
+        </div>
+        <button class="form-submit" type="submit" id="submitBtn">See what your reviews are costing you →</button>
+        <div class="form-note">Your free report shows you the opportunity. The full analysis shows you how to get there.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ FOUNDERS ══════════ -->
 <section class="founders">
   <div class="container">
     <div class="founders-inner reveal">
       <span class="eyebrow">From the founders</span>
-      <p class="founders-quote">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first.</p>
+      <p class="founders-quote only-desktop">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first.</p>
+      <p class="founders-quote only-mobile">We spent 10+ years in retail and ecommerce at Amazon and Walmart, watching strong products lose sales to problems hiding in their own reviews. Sentopi reads every review and ranks exactly what to fix first.</p>
       <div class="founders-sign">
         <span class="founders-names"><a href="https://www.linkedin.com/in/oliversilen" target="_blank" rel="noopener">Oliver</a> &amp; <a href="https://www.linkedin.com/in/an-luong/" target="_blank" rel="noopener">An</a></span>
         <span class="founders-role">Cofounders, Sentopi</span>
@@ -1304,7 +1380,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             </ul>
           </div>
         </div>
-        <p class="chart-caption">Marketing-fixable issues (listing copy, claim accuracy, onset guidance) consistently accounted for 40-55% of negative reviews across our 7-brand sample. The product itself usually didn't change.</p>
+        <p class="chart-caption only-desktop">Marketing-fixable issues (listing copy, claim accuracy, onset guidance) consistently accounted for 40-55% of negative reviews across our 7-brand sample. The product itself usually didn't change.</p>
+        <p class="chart-caption only-mobile">Marketing-fixable copy issues drove 40-55% of negative reviews across our 7-brand sample.</p>
       </div>
     </div>
 
@@ -1386,7 +1463,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             <text class="trend-annotation-text" x="317" y="26">Ops spike: damaged packaging (3×)</text>
           </g>
         </svg>
-        <p class="chart-caption">Listing accuracy stays roughly constant; ops spikes appear in the month they happen. The April packaging spike was traced to a new 3PL and resolved by July.</p>
+        <p class="chart-caption only-desktop">Listing accuracy stays roughly constant; ops spikes appear in the month they happen. The April packaging spike was traced to a new 3PL and resolved by July.</p>
+        <p class="chart-caption only-mobile">Listing accuracy stays steady; ops issues spike the month they happen.</p>
       </div>
     </div>
 
@@ -1511,12 +1589,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </section>
 
 <!-- ══════════ SECOND FORM ══════════ -->
-<section id="demo" class="section form-section-bottom">
+<section class="section form-section-bottom">
   <div class="container">
     <div class="form-bottom-inner">
       <span class="eyebrow">Get Started</span>
       <h2 class="form-bottom-heading">Ready to see what's driving your 1-stars?</h2>
-      <p class="form-bottom-sub">Drop your Amazon link. We'll build your analysis from 100 reviews and deliver it within 48 hours. Free, no commitment.</p>
+      <p class="form-bottom-sub only-desktop">Drop your Amazon link. We'll build your analysis from 100 reviews and deliver it within 48 hours. Free, no commitment.</p>
+      <p class="form-bottom-sub only-mobile">Drop your Amazon link. Free analysis from 100 reviews, delivered in 48 hours.</p>
       <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
         <input type="hidden" name="form-name" value="demo">
         <div class="demo-form-title">Get your free report</div>
