@@ -1176,6 +1176,25 @@ document.addEventListener('DOMContentLoaded', function() {
     rustLt:  'rgba(220,38,38,.12)',
   };
 
+  // Wrap long y-axis category labels so they don't clip on narrow (mobile) charts.
+  // Desktop charts are wide enough to render each label on one line, so leave those untouched.
+  // Long labels split into AT MOST two balanced lines; three lines would overlap
+  // neighbours given the fixed per-category height.
+  function wrapTick(value) {
+    const label = this.getLabelForValue(value);
+    if (this.chart.width >= 520 || label.length <= 18) return label;
+    const words = label.split(' ');
+    if (words.length < 2) return label;
+    const mid = label.length / 2;
+    let best = 1, bestDiff = Infinity, len = 0;
+    for (let i = 0; i < words.length - 1; i++) {
+      len += words[i].length + 1;
+      const diff = Math.abs(len - mid);
+      if (diff < bestDiff) { bestDiff = diff; best = i + 1; }
+    }
+    return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
+  }
+
   // Chart 1: Pet Wellness — Claim Accuracy
   const petCtx = document.getElementById('chart-pet').getContext('2d');
   new Chart(petCtx, {
@@ -1220,7 +1239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         y: {
           grid: { display: false },
-          ticks: { font: { size: 11 }, color: '#4a443c' }
+          ticks: { font: { size: 11 }, color: '#4a443c', callback: wrapTick, autoSkip: false }
         }
       }
     }
@@ -1270,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         y: {
           grid: { display: false },
-          ticks: { font: { size: 11 }, color: '#4a443c' }
+          ticks: { font: { size: 11 }, color: '#4a443c', callback: wrapTick, autoSkip: false }
         }
       }
     }
@@ -1320,7 +1339,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         y: {
           grid: { display: false },
-          ticks: { font: { size: 11 }, color: '#4a443c' }
+          ticks: { font: { size: 11 }, color: '#4a443c', callback: wrapTick, autoSkip: false }
         }
       }
     }

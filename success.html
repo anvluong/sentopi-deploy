@@ -86,6 +86,12 @@ body {
 }
 .nav-cta:hover { background: #c94d0a; }
 
+@media (max-width: 600px) {
+  /* Logo already links home; drop the redundant back link so the nav doesn't crowd */
+  .nav { padding: 0 20px; }
+  .nav-back { display: none; }
+}
+
 /* Main */
 .main {
   flex: 1;
