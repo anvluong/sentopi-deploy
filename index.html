@@ -994,6 +994,34 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   .chart-card-trend .trend-annotation-text { display: none; }
   .chart-card-trend .chart-legend { font-size: 0.8rem; }
 }
+
+/* ─────────────── FAQ ─────────────── */
+.faq-section { background: var(--cream2); }
+.faq-header { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+.faq-header .section-sub { margin-top: 14px; }
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--cream3); }
+.faq-item summary {
+  list-style: none; cursor: pointer; position: relative;
+  padding: 24px 48px 24px 0;
+  font-family: 'DM Sans', sans-serif; font-size: 1.075rem; font-weight: 600;
+  color: var(--ink); line-height: 1.5;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+'; position: absolute; right: 6px; top: 20px;
+  font-size: 1.6rem; font-weight: 400; color: var(--forest); line-height: 1;
+  transition: transform 0.2s ease;
+}
+.faq-item[open] summary { color: var(--forest2); }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; border-radius: var(--r); }
+.faq-a { padding: 0 48px 26px 0; max-width: 700px; color: var(--ink4); font-size: 1.0rem; line-height: 1.72; }
+@media (max-width: 600px) {
+  .faq-item summary { font-size: 1.0rem; padding: 20px 40px 20px 0; }
+  .faq-item summary::after { top: 17px; }
+  .faq-a { padding: 0 8px 22px 0; }
+}
 </style>
 
 <!-- Structured data: Organization, WebSite, SoftwareApplication -->
@@ -1029,6 +1057,55 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
         "price": "0",
         "priceCurrency": "USD",
         "description": "Free analysis for your first product."
+      }
+    }
+  ]
+}
+</script>
+<!-- Structured data: FAQ (matches the visible FAQ section) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does Sentopi do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sentopi reads every Amazon review for your product, maps each complaint to a root cause (listing accuracy, product, or operations), and returns a priority-scored fix list with an estimated revenue impact on each item. You get a ranked to-do list: what to fix first, who owns it, and what it is worth in annual revenue."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Sentopi different from Helium 10 or other review tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most review tools stop at sentiment and mention frequency; they tell you what people said. Sentopi connects each theme to a root cause, ties it to a dollar impact, and ranks the fixes by what moves your rating fastest. You leave with an action plan, not another dashboard to interpret."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your first product analysis is free. Paste your Amazon link and we build a report from 100 of your reviews: top complaint categories, priority-scored issues, and what your rating gap is costing you. No credit card, delivered within 48 hours. Paid plans start at $149 per month for ongoing monitoring."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do I need to give you to get started?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Just your Amazon product URL. Sentopi collects the full written review set automatically, so there is nothing to export and no Seller Central login required. Every source we use is public Amazon data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How fast do I get results, and how accurate are they?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The free report lands within 48 hours. Findings are built from your actual reviews and public Amazon data, not vibes or a small sample. Each issue is scored by volume, severity, and fixability, so the ranking reflects real impact rather than how loud a single complaint is."
       }
     }
   ]
@@ -1568,6 +1645,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         <p>Every fix comes out pre-assigned to product, ops, or marketing with a revenue number attached. No interpretation needed; your team knows exactly what to do and what it's worth.</p>
         <span class="how-tag">No interpretation needed</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section id="faq" class="section faq-section">
+  <div class="container">
+    <div class="faq-header">
+      <span class="eyebrow reveal">Common Questions</span>
+      <h2 class="section-h2 reveal">What Amazon sellers<br>ask before starting.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>What does Sentopi do?</summary>
+        <div class="faq-a">Sentopi reads every Amazon review for your product, maps each complaint to a root cause (listing accuracy, product, or operations), and returns a priority-scored fix list with an estimated revenue impact on each item. You get a ranked to-do list: what to fix first, who owns it, and what it is worth in annual revenue.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How is Sentopi different from Helium 10 or other review tools?</summary>
+        <div class="faq-a">Most review tools stop at sentiment and mention frequency; they tell you what people said. Sentopi connects each theme to a root cause, ties it to a dollar impact, and ranks the fixes by what moves your rating fastest. You leave with an action plan, not another dashboard to interpret.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is it really free?</summary>
+        <div class="faq-a">Your first product analysis is free. Paste your Amazon link and we build a report from 100 of your reviews: top complaint categories, priority-scored issues, and what your rating gap is costing you. No credit card, delivered within 48 hours. Paid plans start at $149 per month for ongoing monitoring.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What do I need to give you to get started?</summary>
+        <div class="faq-a">Just your Amazon product URL. Sentopi collects the full written review set automatically, so there is nothing to export and no Seller Central login required. Every source we use is public Amazon data.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How fast do I get results, and how accurate are they?</summary>
+        <div class="faq-a">The free report lands within 48 hours. Findings are built from your actual reviews and public Amazon data, not vibes or a small sample. Each issue is scored by volume, severity, and fixability, so the ranking reflects real impact rather than how loud a single complaint is.</div>
+      </details>
     </div>
   </div>
 </section>
