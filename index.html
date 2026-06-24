@@ -518,6 +518,10 @@ button, input { font-family: inherit; }
   font-size: 1.5rem; color: var(--ink); line-height: 1.1;
 }
 .proof-cell-desc { font-size: 0.82rem; color: var(--ink4); line-height: 1.45; }
+/* Clickable affordance added by JS only (progressive enhancement): routes WBR-confirmed dead clicks into the ASIN lookup */
+.proof-cell.is-clickable { cursor: pointer; transition: transform .15s ease, background .15s ease; }
+.proof-cell.is-clickable:hover { transform: translateY(-2px); background: var(--cream3); }
+.proof-cell.is-clickable:focus-visible { outline: 2px solid var(--forest2); outline-offset: -2px; }
 
 /* ─────────────── PROBLEM ─────────────── */
 .problem-section { background: var(--cream); }
@@ -2082,6 +2086,29 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     const urlField = document.getElementById('f-url');
     if (urlField && !urlField.value) urlField.value = 'https://amazon.com/dp/' + lastAsin;
   });
+
+  /* Proof-strip cells read as clickable cards and draw ~10-11% dead clicks (Clarity, WBR Wk26):
+     users tap "Typical revenue at risk" and the stat cards expecting their own numbers. Route that
+     intent into the lookup instead of dead-ending it. JS-only enhancement, so no-JS users are unaffected. */
+  const proofCells = document.querySelectorAll('.proof-cell');
+  // Scroll the input's labeled row (not the tall widget) so the ASIN field lands visible, then focus it.
+  const lookupTarget = input.closest('.mockup-try') || input;
+  if (proofCells.length && input) {
+    const goToLookup = () => {
+      lookupTarget.scrollIntoView({ behavior: 'instant', block: 'center' });
+      try { input.focus({ preventScroll: true }); } catch { input.focus(); }
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'proof_cell_to_lookup', source: 'proof_strip' });
+    };
+    proofCells.forEach(cell => {
+      cell.classList.add('is-clickable');
+      cell.setAttribute('role', 'button');
+      cell.setAttribute('tabindex', '0');
+      cell.setAttribute('aria-label', 'See your own numbers: jump to the ASIN lookup');
+      cell.addEventListener('click', goToLookup);
+      cell.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToLookup(); } });
+    });
+  }
 })();
 </script>
 </body>
