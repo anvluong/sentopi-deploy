@@ -10,15 +10,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revenue Risk Report | Sentopi</title>
+<title>Free Amazon Revenue Risk Report | Sentopi</title>
 <meta name="description" content="Free Amazon Revenue Risk Report. See where your brand is losing revenue across Best Seller Rank (BSR), rating trajectory, and Buy Box, with an estimated dollar impact. Results in ~30 seconds.">
+<link rel="canonical" href="https://sentopi.com/revenue-risk-report">
 <!-- Open Graph -->
 <meta property="og:title" content="Free Amazon Revenue Risk Report | Sentopi">
 <meta property="og:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk: Best Seller Rank, rating trajectory, Buy Box, plus an estimated dollar impact. No account required.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sentopi.com/revenue-risk-report">
 <!-- Twitter -->
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Free Amazon Revenue Risk Report | Sentopi">
 <meta name="twitter:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk, plus an estimated dollar impact. Results in ~30 seconds.">
 <meta property="og:image" content="https://sentopi.com/og-image.png">
@@ -727,6 +728,7 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 /* ── Compact header (label stack) ── */
 .rrr-head { text-align: center; margin-bottom: 18px; }
 .rrr-head-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 2.6vw, 1.9rem); font-weight: 400; color: var(--ink); line-height: 1.1; letter-spacing: -0.01em; margin-top: 6px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 /* ── Primary input block (on top) ── */
 .rrr-input-block { max-width: 720px; margin: 0 auto 18px; scroll-margin-top: 76px; }
@@ -875,6 +877,66 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 }
 @media (max-width: 560px) { .inline-claim-row { flex-direction: column; } }
 </style>
+
+<!-- Structured data: WebApplication + breadcrumb -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Amazon Revenue Risk Report",
+      "url": "https://sentopi.com/revenue-risk-report",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "browserRequirements": "Requires JavaScript.",
+      "description": "Free Amazon Revenue Risk Report. Paste any ASIN or Seller ID to see where your brand is losing revenue across Best Seller Rank, rating trajectory, and Buy Box, with an estimated dollar impact. Results in about 30 seconds.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Sentopi",
+        "url": "https://sentopi.com/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sentopi.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Revenue Risk Report", "item": "https://sentopi.com/revenue-risk-report" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is the data real?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Live Amazon signals on every run. The numbers match what your paid analyst tools already show. No estimates, no scraping, no AI-fabricated figures."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does it cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nothing for the first report. No card, no trial timer. The free version is the report; the paid version is monthly tracking and recommendations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will I get spammed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "One email when your report is ready. Your address stays with us, no third-party sharing, unsubscribe in one click."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -891,6 +953,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>
 
 <div class="page">
+  <h1 class="sr-only">Free Amazon Revenue Risk Report</h1>
   <div id="root"></div>
 
   <!-- ══════════ INLINE CLAIM FORM (Netlify Forms) ══════════ -->

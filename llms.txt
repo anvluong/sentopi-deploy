@@ -1,0 +1,15 @@
+# Sentopi
+
+> Sentopi is a review intelligence platform for Amazon brands. It reads every review, maps each complaint to a root cause (listing accuracy, product, or operations), and delivers a priority-scored fix list with estimated revenue impact.
+
+Sentopi turns Amazon customer reviews into a ranked action plan: which issues to fix first, who should own them, and what each fix is worth in annual revenue. The differentiator is financial context: every insight is tied to a revenue impact estimate, not just a sentiment score.
+
+## Core pages
+
+- [Homepage](https://sentopi.com/): What Sentopi does and how to get a free analysis for your first product.
+- [Revenue Risk Report](https://sentopi.com/revenue-risk-report): Free instant tool. Paste an ASIN or Seller ID to see where a brand is losing revenue across Best Seller Rank, rating trajectory, and Buy Box, with an estimated dollar impact.
+- [Listing Accuracy Research](https://sentopi.com/listing-accuracy): Original study of 3,725 Amazon reviews across 7 brands in 4 categories, finding that 40-55% of 1-star reviews trace to listing accuracy problems rather than product failures.
+
+## Legal
+
+- [Privacy Policy and Terms](https://sentopi.com/legal.html)

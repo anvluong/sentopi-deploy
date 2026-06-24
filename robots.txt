@@ -1,4 +1,28 @@
+# Sentopi: all crawlers welcome, including AI search and retrieval bots.
+# Retrieval/citation bots are explicitly allowed so Sentopi can be cited in
+# AI answers (ChatGPT, Perplexity, Claude, Google AI). Change a group to
+# "Disallow: /" to opt that crawler out.
+
 User-agent: *
+Allow: /
+
+# AI retrieval / citation crawlers
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://sentopi.com/sitemap.xml

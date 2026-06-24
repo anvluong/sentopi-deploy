@@ -13,6 +13,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="google-site-verification" content="7ijdi72mjm65BeZDHOcGuCKrUnMccBPhlX0DO24Fw8c" />
 <title>Sentopi | Prioritized Actions from Your Customer Reviews</title>
 <meta name="description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
+<link rel="canonical" href="https://sentopi.com/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -994,6 +995,45 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   .chart-card-trend .chart-legend { font-size: 0.8rem; }
 }
 </style>
+
+<!-- Structured data: Organization, WebSite, SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://sentopi.com/#organization",
+      "name": "Sentopi",
+      "url": "https://sentopi.com/",
+      "logo": "https://sentopi.com/og-image.png",
+      "description": "Sentopi is a review intelligence platform for Amazon brands. It reads every review, maps each complaint to a root cause, and delivers a priority-scored fix list with revenue impact modeling."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://sentopi.com/#website",
+      "url": "https://sentopi.com/",
+      "name": "Sentopi",
+      "publisher": { "@id": "https://sentopi.com/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Sentopi",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": "https://sentopi.com/",
+      "description": "Sentopi reads every Amazon review, scores every issue, and hands you a ranked fix list with owner assignments and estimated revenue impact.",
+      "publisher": { "@id": "https://sentopi.com/#organization" },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free analysis for your first product."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1930,7 +1970,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
   /* CTA pre-fills the form's product URL field */
   ctaEl.addEventListener('click', () => {
     if (!lastAsin) return;
-    const urlField = document.getElementById('f2-url');
+    const urlField = document.getElementById('f-url');
     if (urlField && !urlField.value) urlField.value = 'https://amazon.com/dp/' + lastAsin;
   });
 })();

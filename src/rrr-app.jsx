@@ -1700,7 +1700,7 @@ function App() {
 
   return (
     <>
-      {/* ── Compact header (label stack, replaces the big H1) ───────────── */}
+      {/* ── Compact header (label stack; page H1 is static in revenue-risk.html) ── */}
       <div className="rrr-head no-print">
         <div className="eyebrow"><span className="eyebrow-dot" /> Analyze your brand</div>
         <div className="rrr-head-title">Revenue Risk Report</div>
