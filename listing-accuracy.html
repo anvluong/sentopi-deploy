@@ -41,7 +41,7 @@
       "url": "https://sentopi.com"
     },
     "datePublished": "2026-05-20",
-    "dateModified": "2026-05-20",
+    "dateModified": "2026-06-26",
     "image": "https://sentopi.com/og-image.png",
     "url": "https://sentopi.com/listing-accuracy",
     "mainEntityOfPage": {
@@ -271,6 +271,27 @@
       color: var(--forest); line-height: 1; margin-bottom: 6px;
     }
     .pull-stat-label { font-size: .88rem; color: var(--ink4); line-height: 1.5; }
+
+    /* Key findings (front-loaded summary) */
+    .key-findings {
+      background: var(--white); border: 1px solid var(--cream3);
+      border-top: 3px solid var(--forest); border-radius: var(--r);
+      padding: 24px 28px;
+    }
+    .kf-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--forest); margin-bottom: 14px;
+    }
+    .key-findings ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .key-findings li {
+      position: relative; padding-left: 22px;
+      font-size: .92rem; color: var(--ink3); line-height: 1.6;
+    }
+    .key-findings li::before {
+      content: ''; position: absolute; left: 0; top: 9px;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--forest);
+    }
+    .key-findings li strong { color: var(--ink); font-weight: 600; }
 
     /* Inline CTA */
     .inline-cta {
@@ -614,6 +635,22 @@
         <li><a href="#when-not"><span class="toc-num">07</span>When this won't be your lever</a></li>
         <li><a href="#faq"><span class="toc-num">08</span>FAQ</a></li>
         <li><a href="#takeaway"><span class="toc-num">09</span>The takeaway</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Key Findings (front-loaded summary) -->
+<section class="section" id="key-findings" style="padding:40px 0 0;">
+  <div class="container prose">
+    <div class="key-findings">
+      <div class="kf-label">Key findings · the short version</div>
+      <ul>
+        <li>Across <strong>3,725 Amazon reviews</strong> spanning 7 brands in 4 categories, <strong>40–55% of 1-star reviews traced to listing accuracy problems, not product failures.</strong></li>
+        <li>The fix is usually a <strong>copy change, not a product change</strong>: a clearer claim, an added onset timeline, or a disclosed subscription requirement.</li>
+        <li>Expectation gaps, buyers who got the product described but expected a different one, outnumbered genuine product failures in every product we analyzed.</li>
+        <li><strong>Contradiction rate per claim</strong> is the diagnostic: a claim that more than 25% of reviews explicitly contradict is a high-priority listing fix. One product carried a 52.2% contradiction rate on its top claim.</li>
+        <li>Closing a listing-driven rating gap modeled to <strong>$167K to $627K in incremental annual revenue</strong> per brand, depending on price and unit volume.</li>
       </ul>
     </div>
   </div>
