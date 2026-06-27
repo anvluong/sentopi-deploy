@@ -133,16 +133,57 @@ window.HERO_SAMPLES = [
   },
 ];
 
-/* Match a Keepa root-category name to a template bucket. */
-window.matchPriorityTemplate = function (categoryName) {
-  const c = (categoryName || '').toLowerCase();
+/* Human-readable label per bucket, used in the preview footnote so the copy
+   matches the rows we actually show (not the raw Keepa category, which can be a
+   poor descriptor of the product). */
+const TEMPLATE_LABELS = {
+  pet: 'pet supplies', kitchen: 'home & kitchen', beauty: 'beauty & personal care',
+  electronics: 'consumer electronics', outdoor: 'tools & outdoor',
+  grocery: 'grocery & gourmet', toys: 'toys & baby', apparel: 'apparel',
+  general: 'your category',
+};
+Object.keys(TEMPLATE_LABELS).forEach(function (k) {
+  if (window.PRIORITY_TEMPLATES[k]) window.PRIORITY_TEMPLATES[k].label = TEMPLATE_LABELS[k];
+});
+
+/* High-precision signals that a product is a connected/electronic device.
+   Corrects Keepa miscategorizations (a wifi nanny cam filed under "Baby
+   Products", a video doorbell under "Tools & Home Improvement"): when the TITLE
+   reads as a device, we prefer the electronics pattern so the preview never
+   shows toy or weather complaints for a camera. Kept tight to avoid false
+   positives (e.g. no bare "tablet", which collides with pill tablets). */
+window.DEVICE_TITLE_SIGNALS = [
+  'camera', 'webcam', 'doorbell', 'headphone', 'earbud', 'bluetooth',
+  'wi-fi', 'wifi', 'smart home', 'smart plug', 'smart bulb', 'thermostat',
+  'soundbar', 'smartwatch', 'smart watch', 'security cam', 'baby monitor',
+];
+
+/* Match a product to a template bucket.
+   1. Title device-signal wins (fixes miscategorized electronics).
+   2. Else score category buckets by the LONGEST matching token, so a specific
+      bucket ("tools & home improvement" -> outdoor) beats a loose short token
+      ("home" -> kitchen, the original bug).
+   3. Else the always-plausible "general" bucket. */
+window.matchPriorityTemplate = function (categoryName, title) {
+  const t = (title || '').toLowerCase();
+  if (t) {
+    const rx = new RegExp('\\b(' + window.DEVICE_TITLE_SIGNALS
+      .map(function (s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); })
+      .join('|') + ')\\b', 'i');
+    if (rx.test(t)) return window.PRIORITY_TEMPLATES.electronics;
+  }
+  const c = (categoryName || '').toLowerCase().trim();
+  let best = null, bestScore = 0;
   if (c) {
     for (const key of Object.keys(window.PRIORITY_TEMPLATES)) {
       if (key === 'general') continue;
-      if (window.PRIORITY_TEMPLATES[key].match.some(m => c.includes(m) || m.includes(c))) {
-        return window.PRIORITY_TEMPLATES[key];
+      for (const m of window.PRIORITY_TEMPLATES[key].match) {
+        if (m && c.includes(m) && m.length > bestScore) {
+          best = window.PRIORITY_TEMPLATES[key];
+          bestScore = m.length;
+        }
       }
     }
   }
-  return window.PRIORITY_TEMPLATES.general;
+  return best || window.PRIORITY_TEMPLATES.general;
 };

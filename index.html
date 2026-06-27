@@ -1228,7 +1228,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
               <span class="mockup-priority-tag safety">→ Steady</span>
             </div>
           </div>
-          <div class="mockup-footnote" id="heroFootnote">Risk estimate based on this product's 30-day rating slip, volume, and price. Pattern preview for this category; your real list is built from your actual reviews.</div>
+          <div class="mockup-footnote" id="heroFootnote">Risk estimate based on this product's 30-day rating slip, volume, and price. Example issues common in this category, ranked the way we would prioritize them. Your real fix list is built from your actual reviews.</div>
         </div>
 
         <div class="mockup-cta-row">
@@ -1946,7 +1946,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
         '</div>';
     }
 
-    const tpl = window.matchPriorityTemplate ? window.matchPriorityTemplate(d.category) : null;
+    const tpl = window.matchPriorityTemplate ? window.matchPriorityTemplate(d.category, d.title) : null;
     const rows = (tpl ? tpl.rows : []).map(r =>
       '<div class="mockup-priority-row">' +
         '<span class="mockup-badge mockup-badge-' + r.badge.toLowerCase() + '">' + r.badge + '</span>' +
@@ -1955,7 +1955,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
       '</div>'
     ).join('');
 
-    const catLabel = d.category ? d.category : 'your category';
+    const catLabel = (tpl && tpl.label) ? tpl.label : 'your category';
 
     // Inline email capture — only on a real lookup (tagText is undefined); samples/chips pass a tag string
     const isReal = (tagText === undefined);
@@ -1985,7 +1985,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
         '<div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>' +
       '</div>' +
       '<div>' + rows + '</div>' +
-      '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Pattern preview for ' + escapeHtml(catLabel) + '; your real list is built from your actual reviews.</div>' +
+      '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Example issues common in ' + escapeHtml(catLabel) + ', ranked the way we would prioritize them. Your real fix list is built from this product\'s actual reviews.</div>' +
       captureHtml;
 
     ctaEl.textContent = d.revRiskBasis === 'healthy'
