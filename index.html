@@ -2027,10 +2027,27 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  function looksLikeEmail(s) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((s || '').trim());
+  }
+
   async function lookup() {
     setError('');
-    const asin = extractAsin(input.value);
+    const raw = input.value;
+    const asin = extractAsin(raw);
     if (!asin) {
+      // Observed failure (WBR Wk26): the one engaged visitor of the week pasted an
+      // email into this ASIN box and clicked "Show my fix list" repeatedly with no
+      // result. Detect the email shape, pre-fill it into the report form below, and
+      // tell them where to finish, instead of dead-ending on a generic error.
+      if (looksLikeEmail(raw)) {
+        const emailField = document.getElementById('f-email');
+        if (emailField && !emailField.value) emailField.value = raw.trim();
+        setError('That looks like an email. This box takes your Amazon link or ASIN (starts with B, like B0FB9MXHR1). Want your free report by email instead? We added your email to the report form just below; scroll down to finish.');
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'hero_email_misfire', page: 'home' });
+        return;
+      }
       setError("That doesn't look like an ASIN or Amazon URL. ASINs start with B, e.g. B0FB9MXHR1.");
       return;
     }
