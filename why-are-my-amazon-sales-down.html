@@ -54,6 +54,21 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to diagnose a sudden Amazon sales drop",
+  "description": "A five-minute diagnostic that finds which lever broke when Amazon sales fall: check sessions versus conversion first, follow the fork to a lever, run the specific check, then read the reviews when the cause is ratings.",
+  "totalTime": "PT5M",
+  "step": [
+    {"@type":"HowToStep","name":"Check sessions versus conversion first","text":"Pull your sessions and conversion rate (unit session percentage) from Seller Central Business Reports, under Detail Page Sales and Traffic. Compare each to the same window a month ago and a year ago. Whichever number moved tells you which half of the funnel broke."},
+    {"@type":"HowToStep","name":"Follow the fork to a lever","text":"If sessions fell but conversion held, your Visibility slipped: rank or traffic. If both fell at once, suspect Operations, since a stockout takes down traffic and conversion together. If conversion fell but sessions held, look at Pricing, Assortment, or Ratings: same traffic, fewer buyers."},
+    {"@type":"HowToStep","name":"Run the specific check for the likely cause","text":"Confirm the lever with one number: Buy Box (Featured Offer) percentage by day for a lost Buy Box, organic rank on your top three terms for a ranking slip, your price versus the comparable listing today for a pricing gap, and in-stock rate for a recent stockout."},
+    {"@type":"HowToStep","name":"Read the reviews when the cause is ratings","text":"A rating slide from 4.3 to 3.9 comes with no alert and converts a little worse every week. Read your recent reviews and map each complaint to its root cause, listing accuracy, product, or operations, to find the specific fix behind the number."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sentopi.com/" },
