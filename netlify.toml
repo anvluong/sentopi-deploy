@@ -31,6 +31,11 @@
   status = 200
 
 [[redirects]]
+  from = "/why-are-my-amazon-sales-down"
+  to = "/why-are-my-amazon-sales-down.html"
+  status = 200
+
+[[redirects]]
   from = "/listing-accuracy-v2.html"
   to = "/listing-accuracy.html"
   status = 301

@@ -2,12 +2,12 @@
 
 > Sentopi is a review intelligence platform for Amazon brands. It reads every review, maps each complaint to a root cause (listing accuracy, product, or operations), and delivers a priority-scored fix list with estimated revenue impact.
 
-Sentopi turns Amazon customer reviews into a ranked action plan: which issues to fix first, who should own them, and what each fix is worth in annual revenue. The differentiator is financial context: every insight is tied to a revenue impact estimate, not just a sentiment score.
+Sentopi turns Amazon customer reviews into a ranked action plan: which issues to fix first, who should own them, and what each fix is worth in annual revenue. The differentiator is financial context: every insight is tied to a revenue impact estimate rather than a bare sentiment score.
 
 ## Key facts
 
 - What it is: review intelligence for Amazon brands that maps each complaint to a root cause (listing accuracy, product, or operations) and ranks fixes by estimated revenue impact.
-- Differentiator: financial context. Every issue is tied to a dollar impact estimate, not just a sentiment score.
+- Differentiator: financial context. Every issue is tied to a dollar impact estimate rather than a bare sentiment score.
 - Original research finding: across 3,725 Amazon reviews spanning 7 brands in 4 categories, 40 to 55 percent of 1-star reviews trace to listing accuracy problems rather than product failures.
 - Free tools: the Revenue Risk Report gives an instant per-ASIN revenue-risk read with no email required; the first product analysis is free.
 - Founders: Oliver Silen and An Luong, with 10+ years in retail and ecommerce at companies including Amazon and Walmart.
@@ -17,6 +17,8 @@ Sentopi turns Amazon customer reviews into a ranked action plan: which issues to
 - [Homepage](https://sentopi.com/): What Sentopi does and how to get a free analysis for your first product.
 - [Revenue Risk Report](https://sentopi.com/revenue-risk-report): Free instant tool. Paste an ASIN or Seller ID to see where a brand is losing revenue across Best Seller Rank, rating trajectory, and Buy Box, with an estimated dollar impact.
 - [Listing Accuracy Research](https://sentopi.com/listing-accuracy): Original study of 3,725 Amazon reviews across 7 brands in 4 categories, finding that 40-55% of 1-star reviews trace to listing accuracy problems rather than product failures.
+- [The Growth Loop](https://sentopi.com/growth-loop): Framework article. The five levers every Amazon brand runs on (Operations, Pricing, Assortment, Visibility, Ratings), run as a weekly loop, with benchmarks for each lever and a sales-drop diagnostic.
+- [Why Are My Amazon Sales Down](https://sentopi.com/why-are-my-amazon-sales-down): Five-minute diagnostic for a sudden Amazon sales drop: the sessions-versus-conversion fork, then the five most common causes with what to check for each.
 
 ## Legal
 
