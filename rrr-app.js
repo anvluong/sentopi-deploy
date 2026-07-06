@@ -1745,6 +1745,9 @@ function ScoreCard({
 }
 
 // ─── Input form ───────────────────────────────────────────────────────────────
+// Staged progress: honest descriptions of the lookup, shown while it runs
+// (labor-perception pattern; a silent 30s wait undersells the work).
+const ANALYZE_STAGES = ['Pulling 90-day price and rank history…', 'Reading rating trajectory…', 'Checking Buy Box and velocity…', 'Weighing the three pillars…', 'Building your report…'];
 function InputForm({
   onResult,
   autoRun,
@@ -1755,6 +1758,17 @@ function InputForm({
   const [input, setInput] = useState(autoRun || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [stage, setStage] = useState(0);
+  React.useEffect(() => {
+    if (!loading) {
+      setStage(0);
+      return;
+    }
+    const t = setInterval(() => {
+      setStage(s => Math.min(s + 1, ANALYZE_STAGES.length - 1));
+    }, 4000);
+    return () => clearInterval(t);
+  }, [loading]);
   const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
   function cacheKey(v) {
     return `bh:${v.toLowerCase().trim()}`;
@@ -1859,7 +1873,10 @@ function InputForm({
     type: "submit",
     className: "btn-analyze",
     disabled: loading || !input.trim()
-  }, loading ? 'Analyzing…' : 'Analyze Brand →')), /*#__PURE__*/React.createElement("p", {
+  }, loading ? 'Analyzing…' : 'Analyze Brand →')), loading ? /*#__PURE__*/React.createElement("p", {
+    className: "input-hint",
+    "aria-live": "polite"
+  }, ANALYZE_STAGES[stage]) : /*#__PURE__*/React.createElement("p", {
     className: "input-hint"
   }, "Enter your Seller ID (e.g. ", /*#__PURE__*/React.createElement("code", null, "A2YVQMS6C6QFJO"), ") or an ASIN. Results in ~30 seconds. No account required.")), error && /*#__PURE__*/React.createElement("div", {
     className: "error-box"

@@ -1374,10 +1374,29 @@ function ScoreCard({ data, lede = true }) {
 }
 
 // ─── Input form ───────────────────────────────────────────────────────────────
+// Staged progress: honest descriptions of the lookup, shown while it runs
+// (labor-perception pattern; a silent 30s wait undersells the work).
+const ANALYZE_STAGES = [
+  'Pulling 90-day price and rank history…',
+  'Reading rating trajectory…',
+  'Checking Buy Box and velocity…',
+  'Weighing the three pillars…',
+  'Building your report…',
+];
+
 function InputForm({ onResult, autoRun, forcedInput, onLoading, bare }) {
   const [input, setInput]     = useState(autoRun || '');
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
+  const [stage, setStage]     = useState(0);
+
+  React.useEffect(() => {
+    if (!loading) { setStage(0); return; }
+    const t = setInterval(() => {
+      setStage(s => Math.min(s + 1, ANALYZE_STAGES.length - 1));
+    }, 4000);
+    return () => clearInterval(t);
+  }, [loading]);
 
   const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
   function cacheKey(v) { return `bh:${v.toLowerCase().trim()}`; }
@@ -1454,10 +1473,12 @@ function InputForm({ onResult, autoRun, forcedInput, onLoading, bare }) {
               {loading ? 'Analyzing…' : 'Analyze Brand →'}
             </button>
           </div>
-          <p className="input-hint">
-            Enter your Seller ID (e.g. <code>A2YVQMS6C6QFJO</code>) or an ASIN.
-            Results in ~30 seconds. No account required.
-          </p>
+          {loading
+            ? <p className="input-hint" aria-live="polite">{ANALYZE_STAGES[stage]}</p>
+            : <p className="input-hint">
+                Enter your Seller ID (e.g. <code>A2YVQMS6C6QFJO</code>) or an ASIN.
+                Results in ~30 seconds. No account required.
+              </p>}
         </form>
         {error && <div className="error-box">⚠ {error}</div>}
       </div>

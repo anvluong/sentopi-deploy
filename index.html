@@ -616,8 +616,31 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   font-size: 0.7rem; color: var(--ink5); font-weight: 500;
   letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px;
 }
+.research-cases {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px;
+}
+.case-card {
+  display: block; background: var(--white); border: 1px solid var(--cream3);
+  border-radius: 6px; padding: 22px 20px;
+  transition: border-color 0.15s, transform 0.12s;
+}
+.case-card:hover { border-color: var(--forest); transform: translateY(-2px); }
+.case-card-cat {
+  font-size: 0.68rem; font-weight: 600; color: var(--ink5);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px;
+}
+.case-card-finding { font-size: 0.85rem; color: var(--ink3); line-height: 1.55; margin-bottom: 14px; }
+.case-card-stake {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem; color: var(--forest); line-height: 1;
+}
+.case-card-stake-label {
+  font-size: 0.68rem; color: var(--ink5); font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px;
+}
 @media (max-width: 760px) {
   .research-card { grid-template-columns: 1fr; gap: 28px; padding: 28px; }
+  .research-cases { grid-template-columns: 1fr; }
 }
 
 /* ─────────────── SAMPLE INSIGHTS ─────────────── */
@@ -925,6 +948,29 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
 .footer-links a:hover { color: rgba(255,255,255,0.85); }
 .footer-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); }
+
+/* ─────────────── REPORT EXCERPT (dark form section) ─────────────── */
+.report-excerpt {
+  margin-top: 28px; padding: 18px 20px;
+  background: rgba(250,247,242,0.04); border: 1px solid rgba(250,247,242,0.12);
+  border-radius: 6px;
+}
+.report-excerpt-label {
+  font-size: 0.68rem; font-weight: 600; color: rgba(250,247,242,0.5);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
+}
+.report-excerpt-row {
+  font-size: 0.84rem; color: rgba(250,247,242,0.75); line-height: 1.5;
+  padding: 5px 0;
+}
+.report-excerpt-num {
+  font-family: 'DM Serif Display', serif;
+  color: var(--cream); font-size: 0.95rem; margin-right: 4px;
+}
+.report-excerpt-note {
+  margin-top: 12px; font-size: 0.74rem; font-style: italic;
+  color: rgba(250,247,242,0.5);
+}
 
 /* ─────────────── FORM SECTION CONTRAST FIX ─────────────── */
 /* ink4 (#6b6358) on ink (#1a1714) = ~2.5:1 — below readable threshold */
@@ -1394,6 +1440,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         </div>
       </div>
     </div>
+    <div class="research-cases reveal">
+      <a class="case-card" href="/listing-accuracy#pet-wellness">
+        <div class="case-card-cat">Pet wellness · 1,638 reviews</div>
+        <div class="case-card-finding">Listing claimed use cases the product couldn't reliably serve. Top claim contradicted by 52% of reviews that tested it.</div>
+        <div class="case-card-stake">$240K/yr</div>
+        <div class="case-card-stake-label">Revenue at stake</div>
+      </a>
+      <a class="case-card" href="/listing-accuracy#specialty-food">
+        <div class="case-card-cat">Specialty food · 798 reviews</div>
+        <div class="case-card-finding">Premium story missing from the listing, so buyers judged it against a $5 pantry staple. 47% of negatives were listing-fixable.</div>
+        <div class="case-card-stake">$167K/yr</div>
+        <div class="case-card-stake-label">Revenue at stake</div>
+      </a>
+      <a class="case-card" href="/listing-accuracy#consumer-electronics">
+        <div class="case-card-cat">Smart home · 645 reviews</div>
+        <div class="case-card-finding">Subscription requirement never disclosed. 29% of negatives from a single omission; the fix was one sentence.</div>
+        <div class="case-card-stake">$627K/yr</div>
+        <div class="case-card-stake-label">Revenue at stake</div>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -1736,6 +1802,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             Your email stays with us. No third-party sharing, ever.
           </div>
         </div>
+        <div class="report-excerpt only-desktop">
+          <div class="report-excerpt-label">From a real report · pet wellness pilot, March 2026</div>
+          <div class="report-excerpt-row"><span class="report-excerpt-num">1,040</span> reviews read; 22% were 1-star</div>
+          <div class="report-excerpt-row"><span class="report-excerpt-num">53%</span> of negatives traced to the listing, not the product</div>
+          <div class="report-excerpt-row"><span class="report-excerpt-num">90-day</span> targets set: 3.9&#9733; to 4.10+, 1-star rate under 18%</div>
+          <div class="report-excerpt-note">Yours is built the same way, from 100 of your reviews.</div>
+        </div>
       </div>
 
       <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
@@ -1880,15 +1953,33 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     errEl.hidden = !msg;
   }
 
+  /* Staged progress: showing the work during the wait raises perceived value
+     (labor-perception pattern). Stages are honest descriptions of the lookup. */
+  const LOADING_STAGES = [
+    'Pulling your product from Amazon...',
+    'Reading 90-day price and rank history...',
+    'Checking rating trajectory and Buy Box...',
+    'Scoring complaint themes by revenue impact...',
+    'Building your fix list...'
+  ];
+  let loadingTimer = null;
   function setLoading(on) {
     goBtn.disabled = on;
     goBtn.textContent = on ? 'Reading product...' : 'Show my fix list';
+    if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
     if (on) {
       bodyEl.innerHTML =
         '<div class="mockup-loading">' +
           '<div class="mockup-loading-spinner"></div>' +
-          '<div class="mockup-loading-text">Pulling your product from Amazon...</div>' +
+          '<div class="mockup-loading-text">' + LOADING_STAGES[0] + '</div>' +
         '</div>';
+      let stage = 0;
+      loadingTimer = setInterval(() => {
+        stage = Math.min(stage + 1, LOADING_STAGES.length - 1);
+        const txt = bodyEl.querySelector('.mockup-loading-text');
+        if (txt) txt.textContent = LOADING_STAGES[stage];
+        if (stage === LOADING_STAGES.length - 1) { clearInterval(loadingTimer); loadingTimer = null; }
+      }, 1400);
     }
   }
 
