@@ -36,6 +36,11 @@
   status = 200
 
 [[redirects]]
+  from = "/guides"
+  to = "/guides.html"
+  status = 200
+
+[[redirects]]
   from = "/listing-accuracy-v2.html"
   to = "/listing-accuracy.html"
   status = 301

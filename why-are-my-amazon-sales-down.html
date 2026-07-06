@@ -51,6 +51,17 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sentopi.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://sentopi.com/guides" },
+    { "@type": "ListItem", "position": 3, "name": "Why Are My Amazon Sales Down?" }
+  ]
+}
+</script>
 <style>
   :root{
     --ink:#0f1b2d; --slate:#334155; --body:#27313f; --muted:#6b7787; --line:#e6ebf1;
@@ -129,6 +140,9 @@
   .art-foot nav{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
   .art-foot a{color:var(--muted);text-decoration:none}
   .art-foot a:hover{color:var(--accent-d)}
+  .art-top .art-links{display:flex;gap:18px;align-items:baseline}
+  .art-top .art-link{font-size:14px;font-weight:600;color:var(--muted);text-decoration:none}
+  .art-top .art-link:hover{color:var(--accent-d)}
   @media (max-width:520px){
     .gl-wrap h1{font-size:27px}
     .gl-wrap .dek{font-size:18px}
@@ -140,7 +154,7 @@
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<header class="art-top"><a class="art-brand" href="/">Sentopi</a><a class="art-cta" href="/revenue-risk-report">Free Revenue Risk Report &#8594;</a></header>
+<header class="art-top"><a class="art-brand" href="/">Sentopi</a><span class="art-links"><a class="art-link" href="/guides">All guides</a><a class="art-cta" href="/revenue-risk-report">Free Revenue Risk Report &#8594;</a></span></header>
 <article class="gl-wrap">
   <p class="eyebrow">Diagnostic</p>
   <h1>Why Are My Amazon Sales Down? Find the Leaking Lever in Five Minutes</h1>
@@ -265,7 +279,7 @@
   <p class="endnote">Diagnostic guidance here is general, drawn from public benchmarks and firsthand marketplace experience. Recovery times, Buy Box behavior, and rank effects vary by category and account.</p>
 </article>
 <footer class="art-foot">
-  <nav><a href="/">Home</a><a href="/revenue-risk-report">Revenue Risk Report</a><a href="/listing-accuracy">Research</a><a href="/growth-loop">Growth Loop</a><a href="/why-are-my-amazon-sales-down">Sales Drop Diagnostic</a><a href="/legal.html#privacy">Privacy</a><a href="mailto:hello@sentopi.com">Contact</a></nav>
+  <nav><a href="/">Home</a><a href="/revenue-risk-report">Revenue Risk Report</a><a href="/guides">Guides</a><a href="/listing-accuracy">Research</a><a href="/growth-loop">Growth Loop</a><a href="/why-are-my-amazon-sales-down">Sales Drop Diagnostic</a><a href="/legal.html#privacy">Privacy</a><a href="mailto:hello@sentopi.com">Contact</a></nav>
   <div>&copy; 2026 Sentopi. All rights reserved.</div>
 </footer>
 </body>
