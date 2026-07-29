@@ -179,13 +179,8 @@ function App() {
     };
   }, [cr, rc, tr, mr, cvr, whatIf]);
   const maxSlider = out.needed && out.needed !== Infinity ? Math.max(out.needed * 2, 100) : 500;
+  {/* Hero renders statically in calculator.html; the app owns only the grid. */}
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "page"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "calc-hero"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "calc-eyebrow"
-  }, "Free Tool"), /*#__PURE__*/React.createElement("h1", null, "What is your next star worth?"), /*#__PURE__*/React.createElement("p", null, "Enter your product data and see the revenue impact of improving your Amazon star rating.")), /*#__PURE__*/React.createElement("div", {
     className: "main-grid"
   }, /*#__PURE__*/React.createElement("div", {
     className: "panel"
@@ -510,6 +505,6 @@ function App() {
       textDecoration: "none",
       transition: "background 0.15s"
     }
-  }, "Get your free report \u2192")))))));
+  }, "Get your free report \u2192"))))));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
