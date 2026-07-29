@@ -22,6 +22,9 @@ Sentopi turns Amazon customer reviews into a ranked action plan: which issues to
 - [Listing Accuracy Research](https://sentopi.com/listing-accuracy): Original study of 3,725 Amazon reviews across 7 brands in 4 categories, finding that 40-55% of 1-star reviews trace to listing accuracy problems rather than product failures.
 - [The Growth Loop](https://sentopi.com/growth-loop): Framework article. The five levers every Amazon brand runs on (Operations, Pricing, Assortment, Visibility, Ratings), run as a weekly loop, with benchmarks for each lever and a sales-drop diagnostic.
 - [Why Are My Amazon Sales Down](https://sentopi.com/why-are-my-amazon-sales-down): Five-minute diagnostic for a sudden Amazon sales drop: the sessions-versus-conversion fork, then the five most common causes with what to check for each.
+- [Why Did I Lose the Buy Box](https://sentopi.com/lost-buy-box): Diagnostic. Three situations one look at your listing distinguishes, then five ordered checks with the threshold that matters for each.
+- [Why Are My Amazon Reviews Not Showing Up](https://sentopi.com/amazon-reviews-not-showing-up): Diagnostic. The six causes of missing reviews in order, from the moderation window to variation merges, and which removals are unrecoverable.
+- [Pet Wellness Review Complaints](https://sentopi.com/pet-wellness-review-complaints): Original research. The complaint taxonomy from 1,638 reviews of one pet wellness brand, with the listing-fixable versus product-fixable split and a worked revenue example.
 - [Guides hub](https://sentopi.com/guides): Index of all Sentopi guides and research for Amazon brands.
 
 ## Legal

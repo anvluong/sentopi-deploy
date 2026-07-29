@@ -41,6 +41,21 @@
   status = 200
 
 [[redirects]]
+  from = "/lost-buy-box"
+  to = "/lost-buy-box.html"
+  status = 200
+
+[[redirects]]
+  from = "/amazon-reviews-not-showing-up"
+  to = "/amazon-reviews-not-showing-up.html"
+  status = 200
+
+[[redirects]]
+  from = "/pet-wellness-review-complaints"
+  to = "/pet-wellness-review-complaints.html"
+  status = 200
+
+[[redirects]]
   from = "/guides"
   to = "/guides.html"
   status = 200
