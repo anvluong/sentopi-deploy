@@ -27,7 +27,9 @@ function tracked(glob = '') {
 }
 const read = (f) => { try { return readFileSync(join(ROOT, f), 'utf8'); } catch { return ''; } };
 
-const html = tracked("'*.html'").filter((f) => !/google[0-9a-f]+\.html$/.test(f));
+const html = tracked("'*.html'")
+  .filter((f) => !/google[0-9a-f]+\.html$/.test(f))
+  .filter((f) => f !== '_template-article.html');
 const jsx  = tracked("'src/*.jsx'");
 const js   = tracked("'*.js'").filter((f) => !f.includes('node_modules'));
 const allCode = [...html, ...jsx, ...js];
@@ -157,6 +159,73 @@ const secretPat = /(api[_-]?key|secret|password|token)\s*[:=]\s*["'][A-Za-z0-9_\
 for (const f of tracked()) {
   if (/\.(png|jpe?g|gif|webp|ico|svg|woff2?|ttf|pdf)$/i.test(f) || f.includes('node_modules') || f.endsWith('qa-check.mjs')) continue;
   if (secretPat.test(read(f))) fail(`Possible secret committed in ${f}. Move it to an env var / gitignored .env.`);
+}
+
+/* ── 10. Page contract: canonical + meta description ─────────────────── */
+// Every page (success.html included, it carries both for hygiene) must have a
+// canonical URL and a meta description. Length is advisory only.
+for (const f of html) {
+  const c = read(f);
+  const canon = c.match(/<link\s+rel="canonical"\s+href="([^"]+)"/);
+  if (!canon) fail(`${f}: missing <link rel="canonical">.`);
+  const desc = c.match(/<meta\s+name="description"\s+content="([^"]*)"/);
+  if (!desc) fail(`${f}: missing <meta name="description">.`);
+  else if (desc[1].length < 70 || desc[1].length > 165)
+    warn(`${f}: meta description is ${desc[1].length} chars (aim for 70-165).`);
+}
+
+/* ── 11. JSON-LD blocks must parse ───────────────────────────────────── */
+for (const f of html) {
+  const c = read(f);
+  let n = 0;
+  for (const m of c.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    n += 1;
+    try { JSON.parse(m[1]); }
+    catch (e) { fail(`${f}: JSON-LD block #${n} does not parse (${e.message.slice(0, 60)}).`); }
+  }
+}
+
+/* ── 12. Freshness + sitemap consistency ─────────────────────────────── */
+// Article dateModified must equal the page's sitemap lastmod (the drift class
+// behind the July merge conflicts). Every sitemap loc must resolve to a file;
+// every indexable page must appear in the sitemap.
+const sitemap = read('sitemap.xml');
+const lastmods = {};
+for (const m of sitemap.matchAll(/<loc>https:\/\/sentopi\.com(\/[^<]*)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g))
+  lastmods[m[1]] = m[2];
+const sitemapFiles = new Set();
+for (const loc of Object.keys(lastmods)) {
+  const resolved = resolvePath(loc);
+  if (!resolved) fail(`sitemap.xml: <loc> ${loc} does not resolve to a file or redirect.`);
+  else sitemapFiles.add(resolved);
+}
+for (const f of html) {
+  const c = read(f);
+  const canon = c.match(/<link\s+rel="canonical"\s+href="https:\/\/sentopi\.com(\/[^"]*)"/);
+  const dm = c.match(/"dateModified":\s*"([^"]+)"/);
+  if (dm && canon && lastmods[canon[1]] && lastmods[canon[1]] !== dm[1])
+    fail(`${f}: dateModified "${dm[1]}" != sitemap lastmod "${lastmods[canon[1]]}". Update both together.`);
+  if (!sitemapFiles.has(f) && f !== 'success.html')
+    warn(`${f}: not reachable from sitemap.xml (add an entry or note why).`);
+}
+
+/* ── 13. Article footer link set + price consistency ─────────────────── */
+const FOOT_LINKS = ['/', '/revenue-risk-report', '/guides'];
+for (const f of html) {
+  const c = read(f);
+  const foot = c.match(/<footer\s+class="art-foot">([\s\S]*?)<\/footer>/);
+  if (foot) for (const req of FOOT_LINKS)
+    if (!new RegExp(`href="${req}"`).test(foot[1]))
+      warn(`${f}: article footer is missing the "${req}" link (copy the canonical art-foot nav).`);
+}
+// The one monthly price on this site is $149. Any other "$X per month / $X/mo"
+// string is a regression (the old $49/$149 discrepancy class).
+for (const f of [...html, ...jsx]) {
+  blankComments(read(f)).split('\n').forEach((ln, i) => {
+    for (const m of ln.matchAll(/\$\s?(\d[\d,]*)\s*(?:\/\s*mo(?:nth)?\b|per\s+month\b)/gi)) {
+      if (m[1] !== '149') fail(`Price drift ${f}:${i + 1}: "$${m[1]}" monthly price found; the canonical price is $149/mo.`);
+    }
+  });
 }
 
 /* ── Report ──────────────────────────────────────────────────────────── */
