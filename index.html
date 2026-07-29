@@ -339,6 +339,78 @@ button, input { font-family: inherit; }
   padding: 8px 18px; gap: 18px;
   background: var(--cream); border-bottom: 1px solid var(--cream2);
 }
+
+/* ═══════════ COCKPIT REGISTER ═══════════
+   Dense instrument styling for tool surfaces only. Marketing sections keep the
+   editorial register. Numbers are tabular so columns align as values change.
+   Status vocabulary is shared with the flywheel payload contract:
+   strong / watch / leaking / unmeasured. An unmeasured lever is drawn as
+   deliberately absent (dashed, no number) and never as a zero. */
+.fw { border-bottom: 1px solid var(--cream2); font-variant-numeric: tabular-nums; }
+.fw-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 11px 18px; background: var(--cream); border-bottom: 1px solid var(--cream2);
+}
+.fw-head-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.fw-head-label {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--ink5);
+}
+.fw-head-score {
+  font-family: 'DM Serif Display', serif; font-size: 1.6rem; line-height: 1; color: var(--ink);
+}
+.fw-head-score .fw-out { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--ink5); }
+.fw-chip {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; white-space: nowrap;
+}
+.fw-chip.strong     { background: var(--forest-lt); color: var(--forest2); }
+.fw-chip.watch      { background: #fef3c7;          color: #92400e; }
+.fw-chip.leaking    { background: #fee2e2;          color: #991b1b; }
+.fw-chip.unmeasured { background: var(--cream2);    color: var(--ink5); }
+.fw-head-risk { text-align: right; flex-shrink: 0; }
+.fw-head-risk-label { font-size: 0.62rem; color: var(--ink5); letter-spacing: 0.04em; }
+.fw-head-risk-val { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--ink); line-height: 1.2; }
+
+.fw-grid { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--cream3); gap: 1px; }
+.fw-tile {
+  background: var(--white); padding: 11px 10px 12px;
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.fw-tile.is-weak { background: #fffbf7; box-shadow: inset 0 -2px 0 var(--ochre); }
+.fw-tile.is-unmeasured { background: repeating-linear-gradient(-45deg, var(--white), var(--white) 6px, var(--cream) 6px, var(--cream) 12px); }
+.fw-lever {
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink5);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.fw-score { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.05; color: var(--ink); }
+.fw-score.strong  { color: var(--forest); }
+.fw-score.watch   { color: #b45309; }
+.fw-score.leaking { color: var(--rust); }
+.fw-score.unmeasured { color: var(--parchment); font-size: 1.2rem; }
+.fw-metric { font-size: 0.7rem; color: var(--ink3); line-height: 1.35; }
+.fw-delta { font-size: 0.67rem; font-weight: 600; }
+.fw-delta.up   { color: var(--forest); }
+.fw-delta.down { color: var(--rust); }
+.fw-delta.flat { color: var(--ink5); }
+.fw-note { font-size: 0.63rem; color: var(--ink5); line-height: 1.35; font-style: italic; }
+
+.fw-weak { display: flex; gap: 11px; padding: 12px 18px; background: var(--ochre-lt); border-top: 1px solid rgba(234,88,12,0.16); }
+.fw-weak-mark { flex-shrink: 0; font-size: 0.85rem; line-height: 1.4; }
+.fw-weak-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #9a3412; margin-bottom: 3px; }
+.fw-weak-read { font-size: 0.83rem; color: var(--ink2); line-height: 1.6; }
+.fw-conf { font-size: 0.63rem; color: var(--ink5); padding: 7px 18px; background: var(--cream); border-top: 1px solid var(--cream2); line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .fw-grid { grid-template-columns: repeat(3, 1fr); }
+  .fw-tile:nth-child(4), .fw-tile:nth-child(5) { grid-column: span 1; }
+}
+@media (max-width: 460px) {
+  .fw-grid { grid-template-columns: repeat(2, 1fr); }
+  .fw-head { flex-wrap: wrap; gap: 8px; }
+  .fw-score { font-size: 1.3rem; }
+}
 .mockup-stat { display: flex; flex-direction: column; gap: 1px; }
 .mockup-stat-label {
   font-size: 0.55rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
@@ -2114,6 +2186,86 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     return (window.HERO_SAMPLES || []).find(s => s.asin === asin) || null;
   }
 
+  /* Renders the five-lever Retail Flywheel from the payload described in
+     skills/sentopi-qa/FLYWHEEL-CONTRACT.md. Returns '' when the payload is
+     absent so an older response still renders the legacy stat strip. */
+  function renderFlywheel(fw, riskAnnual) {
+    if (!fw || !Array.isArray(fw.levers) || !fw.levers.length) return '';
+
+    const scoreLabel = fw.compositeScore === null || fw.compositeScore === undefined
+      ? null
+      : (fw.compositeScore >= 75 ? 'strong' : fw.compositeScore >= 50 ? 'watch' : 'leaking');
+    const scoreWord = { strong: 'Healthy', watch: 'At risk', leaking: 'Leaking' };
+
+    const headScore = scoreLabel
+      ? '<span class="fw-head-score">' + Math.round(fw.compositeScore) + '<span class="fw-out">/100</span></span>' +
+        '<span class="fw-chip ' + scoreLabel + '">' + scoreWord[scoreLabel] + '</span>'
+      : '<span class="fw-chip unmeasured">Not enough data to score</span>';
+
+    const riskHtml = (riskAnnual !== null && riskAnnual !== undefined && riskAnnual > 0)
+      ? '<div class="fw-head-risk">' +
+          '<div class="fw-head-risk-label">Revenue at risk</div>' +
+          '<div class="fw-head-risk-val">$' + Number(riskAnnual).toLocaleString() + '<span class="fw-out">/yr</span></div>' +
+        '</div>'
+      : '';
+
+    const tiles = fw.levers.map(l => {
+      const un = l.status === 'unmeasured' || l.score === null || l.score === undefined;
+      const cls = ['fw-tile'];
+      if (un) cls.push('is-unmeasured');
+      else if (l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking')) cls.push('is-weak');
+
+      const scoreHtml = un
+        ? '<div class="fw-score unmeasured">&ndash;&ndash;</div>'
+        : '<div class="fw-score ' + l.status + '">' + Math.round(l.score) + '</div>';
+
+      const m = l.metric || {};
+      const metricHtml = un
+        ? '<div class="fw-note">' + escapeHtml(l.dataNote || 'Not measured') + '</div>'
+        : '<div class="fw-metric">' + escapeHtml(m.value || '') + '</div>' +
+          (m.delta ? '<div class="fw-delta ' + (m.deltaDir || 'flat') + '">' + escapeHtml(m.delta) + '</div>' : '') +
+          (m.label ? '<div class="fw-note">' + escapeHtml(m.label) + '</div>' : '');
+
+      return '<div class="' + cls.join(' ') + '">' +
+        '<div class="fw-lever">' + escapeHtml(l.label || l.key) + '</div>' +
+        scoreHtml + metricHtml +
+      '</div>';
+    }).join('');
+
+    /* Only raise the alarm when the weakest lever is actually leaking or on
+       watch. Flagging a "weakest lever" on a healthy brand trains the reader to
+       ignore the callout on the day it matters. */
+    const weak = fw.levers.find(l =>
+      l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking'));
+    const weakHtml = weak
+      ? '<div class="fw-weak">' +
+          '<span class="fw-weak-mark">&#9888;</span>' +
+          '<div><div class="fw-weak-title">Weakest lever: ' + escapeHtml(weak.label) + '</div>' +
+          '<div class="fw-weak-read">' + escapeHtml(weak.read || weak.headline || '') + '</div></div>' +
+        '</div>'
+      : '';
+
+    /* Surface every caveat the scorer attached rather than burying it. A score
+       shown without the strength of the evidence behind it is the thing this
+       product exists to stop. */
+    const caveats = fw.levers
+      .filter(l => l.dataNote && l.status !== 'unmeasured')
+      .map(l => l.label + ': ' + l.dataNote);
+    const unmeasured = fw.levers.filter(l => l.status === 'unmeasured').map(l => l.label);
+    const confBits = [];
+    if (unmeasured.length) confBits.push('Not measured from public data: ' + unmeasured.join(', ') + '.');
+    if (caveats.length) confBits.push(caveats.join(' '));
+    const confHtml = confBits.length ? '<div class="fw-conf">' + escapeHtml(confBits.join(' ')) + '</div>' : '';
+
+    return '<div class="fw">' +
+      '<div class="fw-head"><div class="fw-head-left">' +
+        '<span class="fw-head-label">Flywheel</span>' + headScore +
+      '</div>' + riskHtml + '</div>' +
+      '<div class="fw-grid">' + tiles + '</div>' +
+      weakHtml + confHtml +
+    '</div>';
+  }
+
   function renderResult(d, tagText) {
     const rating  = d.rating;
     const reviews = d.reviewCount !== null ? Number(d.reviewCount).toLocaleString() : null;
@@ -2213,16 +2365,22 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
         '</form>'
       : '';
 
+    /* The flywheel supersedes the legacy stat strip and impact block: BSR lives
+       in Visibility and Buy Box in Operations, so showing both repeats itself. */
+    const riskAnnual = (d.revRiskMonthly !== null && d.revRiskMonthly !== undefined)
+      ? d.revRiskMonthly * 12 : null;
+    const flywheelHtml = renderFlywheel(d.flywheel, riskAnnual);
+    const bodyTop = flywheelHtml || (statsHtml + impactHtml);
+
     bodyEl.innerHTML =
       '<div class="mockup-sample-tag is-live" id="heroSampleTag">' + (tagText || 'Your product · live data') + '</div>' +
       '<div class="mockup-product-header">' +
         '<div class="mockup-product-name">' + escapeHtml(d.title || d.asin) + '</div>' +
         '<div class="mockup-product-meta">' + meta.join('') + '</div>' +
       '</div>' +
-      statsHtml +
-      impactHtml +
+      bodyTop +
       '<div class="mockup-section">' +
-        '<div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>' +
+        '<div class="mockup-section-label">Ratings lever · what the reviews are saying</div>' +
       '</div>' +
       '<div>' + rows + '</div>' +
       '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Example issues common in ' + escapeHtml(catLabel) + ', ranked the way we would prioritize them. Your real fix list is built from this product\'s actual reviews.</div>' +
