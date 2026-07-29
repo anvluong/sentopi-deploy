@@ -374,15 +374,18 @@ button, input { font-family: inherit; }
 
 .fw-grid { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--cream3); gap: 1px; }
 .fw-tile {
-  background: var(--white); padding: 11px 10px 12px;
+  background: var(--white); padding: 11px 7px 12px;
   display: flex; flex-direction: column; gap: 3px; min-width: 0;
 }
 .fw-tile.is-weak { background: #fffbf7; box-shadow: inset 0 -2px 0 var(--ochre); }
 .fw-tile.is-unmeasured { background: repeating-linear-gradient(-45deg, var(--white), var(--white) 6px, var(--cream) 6px, var(--cream) 12px); }
+/* Labels wrap rather than truncate: "Assortment" ellipsed to "Assortm..." in the
+   narrow hero column, and a lever nobody can read is a lever nobody acts on.
+   min-height keeps the score row aligned across one- and two-line labels. */
 .fw-lever {
-  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.07em;
+  font-size: 0.55rem; font-weight: 600; letter-spacing: 0.02em;
   text-transform: uppercase; color: var(--ink5);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.25; min-height: 1.3em; overflow-wrap: normal; hyphens: none;
 }
 .fw-score { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.05; color: var(--ink); }
 .fw-score.strong  { color: var(--forest); }
@@ -1378,31 +1381,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
               <span class="mockup-rating-badge" id="heroRatingBadge">↓ Slipping</span>
             </div>
           </div>
-          <!-- Mini stat strip -->
-          <div class="mockup-stats">
-            <div class="mockup-stat">
-              <span class="mockup-stat-label">BSR</span>
-              <span class="mockup-stat-value">#278 <span class="mockup-stat-delta good">↓2.5% 90d</span></span>
+          <!-- Landing-state flywheel. Mirrors exactly what renderFlywheel()
+               produces for this sample so a real lookup does not restyle the
+               card, only repopulate it. Values track the mock fixture. -->
+          <div class="fw">
+            <div class="fw-head">
+              <div class="fw-head-left">
+                <span class="fw-head-label">Flywheel</span>
+                <span class="fw-head-score">70<span class="fw-out">/100</span></span>
+                <span class="fw-chip watch">At risk</span>
+              </div>
+              <div class="fw-head-risk">
+                <div class="fw-head-risk-label">Revenue at risk</div>
+                <div class="fw-head-risk-val">$95,724<span class="fw-out">/yr</span></div>
+              </div>
             </div>
-            <div class="mockup-stat">
-              <span class="mockup-stat-label">Buy Box</span>
-              <span class="mockup-stat-value">100%</span>
+            <div class="fw-grid">
+              <div class="fw-tile">
+                <div class="fw-lever">Operations</div>
+                <div class="fw-score strong">92</div>
+                <div class="fw-metric">100%</div>
+                <div class="fw-note">Buy Box share, 30d</div>
+              </div>
+              <div class="fw-tile">
+                <div class="fw-lever">Pricing</div>
+                <div class="fw-score watch">64</div>
+                <div class="fw-metric">$31.25</div>
+                <div class="fw-delta down">-5.8%</div>
+                <div class="fw-note">Avg selling price, MoM</div>
+              </div>
+              <div class="fw-tile">
+                <div class="fw-lever">Assortment</div>
+                <div class="fw-score watch">70</div>
+                <div class="fw-metric">2 variants</div>
+                <div class="fw-note">Family coverage</div>
+              </div>
+              <div class="fw-tile">
+                <div class="fw-lever">Visibility</div>
+                <div class="fw-score strong">83</div>
+                <div class="fw-metric">#278</div>
+                <div class="fw-delta up">+2.5%</div>
+                <div class="fw-note">Best Seller Rank, 90d</div>
+              </div>
+              <div class="fw-tile is-weak">
+                <div class="fw-lever">Ratings</div>
+                <div class="fw-score leaking">41</div>
+                <div class="fw-metric">3.8</div>
+                <div class="fw-delta down">-0.2</div>
+                <div class="fw-note">Star rating, 30d</div>
+              </div>
             </div>
-            <div class="mockup-stat">
-              <span class="mockup-stat-label">Est. volume</span>
-              <span class="mockup-stat-value">~10,000 units/mo</span>
+            <div class="fw-weak">
+              <span class="fw-weak-mark">&#9888;</span>
+              <div>
+                <div class="fw-weak-title">Weakest lever: Ratings</div>
+                <div class="fw-weak-read">The rating fell from 4.0 to 3.8 in the last 30 days while rank held. At this volume that gap is the largest single drag on conversion, so the reviews get the deep read.</div>
+              </div>
             </div>
-          </div>
-          <!-- Impact block: revenue at risk + recovery path -->
-          <div class="mockup-impact">
-            <div class="mockup-impact-row">
-              <span class="mockup-impact-label">⚠️ Est. revenue at risk</span>
-              <span class="mockup-impact-value">$95,724<span class="mockup-impact-unit">/yr</span></span>
-            </div>
-            <div class="mockup-impact-recovery">3.8★ now <span class="to">→ 4.5★ if top 3 issues fixed</span></div>
           </div>
           <div class="mockup-section">
-            <div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>
+            <div class="mockup-section-label">Ratings lever · what the reviews are saying</div>
           </div>
           <!-- Priority rows -->
           <div id="heroPriorityRows">
@@ -1530,19 +1568,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <div class="problem-grid">
       <div>
         <span class="eyebrow reveal">The Problem</span>
-        <h2 class="section-h2 reveal">You already know<br>something is off.</h2>
+        <h2 class="section-h2 reveal">You already know<br>something is off.<br>You just don't know which lever.</h2>
         <div class="problem-list" style="margin-top:32px">
           <div class="problem-item reveal">
             <div class="problem-x-icon">
               <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </div>
-            <p class="problem-text"><strong>Your star rating is stuck</strong> and you don't know which complaint categories are actually driving 1-stars.</p>
+            <p class="problem-text"><strong>Sales slipped and the cause is unclear.</strong> Rank, price, stock, and rating all moved a little. Nothing tells you which one actually cost you the units.</p>
           </div>
           <div class="problem-item reveal d1">
             <div class="problem-x-icon">
               <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </div>
-            <p class="problem-text"><strong>You know there are listing accuracy issues.</strong> Reading hundreds of reviews to find them isn't how you're spending your week.</p>
+            <p class="problem-text"><strong>The answer is buried in your own reviews.</strong> Reading hundreds of them to find it is not how you are spending your week.</p>
           </div>
           <div class="problem-item reveal d2">
             <div class="problem-x-icon">
@@ -2131,6 +2169,9 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
 (function () {
   const input    = document.getElementById('heroAsinInput');
   const goBtn    = document.getElementById('heroAsinGo');
+  /* Single source of truth for the button label: the markup. Restoring a
+     hardcoded string after loading silently reverted a copy change once. */
+  const goBtnLabel = goBtn.textContent;
   const errEl    = document.getElementById('heroWidgetError');
   const tagEl    = document.getElementById('heroSampleTag');
   const bodyEl   = document.getElementById('heroWidgetBody');
@@ -2168,7 +2209,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
   let loadingTimer = null;
   function setLoading(on) {
     goBtn.disabled = on;
-    goBtn.textContent = on ? 'Reading product...' : 'Show my fix list';
+    goBtn.textContent = on ? 'Reading product...' : goBtnLabel;
     if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
     if (on) {
       bodyEl.innerHTML =
@@ -2225,7 +2266,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
 
       const m = l.metric || {};
       const metricHtml = un
-        ? '<div class="fw-note">' + escapeHtml(l.dataNote || 'Not measured') + '</div>'
+        ? '<div class="fw-note">Not measured</div>'
         : '<div class="fw-metric">' + escapeHtml(m.value || '') + '</div>' +
           (m.delta ? '<div class="fw-delta ' + (m.deltaDir || 'flat') + '">' + escapeHtml(m.delta) + '</div>' : '') +
           (m.label ? '<div class="fw-note">' + escapeHtml(m.label) + '</div>' : '');
@@ -2255,9 +2296,10 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     const caveats = fw.levers
       .filter(l => l.dataNote && l.status !== 'unmeasured')
       .map(l => l.label + ': ' + l.dataNote);
-    const unmeasured = fw.levers.filter(l => l.status === 'unmeasured').map(l => l.label);
+    const unmeasured = fw.levers.filter(l => l.status === 'unmeasured')
+      .map(l => l.label + (l.dataNote ? ': ' + l.dataNote : '.'));
     const confBits = [];
-    if (unmeasured.length) confBits.push('Not measured from public data: ' + unmeasured.join(', ') + '.');
+    if (unmeasured.length) confBits.push('Not measured from public data. ' + unmeasured.join(' '));
     if (caveats.length) confBits.push(caveats.join(' '));
     const confHtml = confBits.length ? '<div class="fw-conf">' + escapeHtml(confBits.join(' ')) + '</div>' : '';
 
@@ -2418,7 +2460,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     const asin = extractAsin(raw);
     if (!asin) {
       // Observed failure (WBR Wk26): the one engaged visitor of the week pasted an
-      // email into this ASIN box and clicked "Show my fix list" repeatedly with no
+      // email into this ASIN box and clicked the lookup button repeatedly with no
       // result. Detect the email shape, pre-fill it into the report form below, and
       // tell them where to finish, instead of dead-ending on a generic error.
       if (looksLikeEmail(raw)) {

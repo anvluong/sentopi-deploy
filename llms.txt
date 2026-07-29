@@ -1,31 +1,33 @@
 # Sentopi
 
-> Sentopi is a review intelligence platform for Amazon brands. It reads every review, maps each complaint to a root cause (listing accuracy, product, or operations), and delivers a priority-scored fix list with estimated revenue impact.
+> Sentopi is a done-for-you weekly report on the five levers that run an Amazon brand: Operations, Pricing, Assortment, Visibility, and Ratings. Ratings is the deepest lever, because it is the feedback signal that reports on the other four, and it is where Sentopi's review analysis runs.
 
-Sentopi turns Amazon customer reviews into a ranked action plan: which issues to fix first, who should own them, and what each fix is worth in annual revenue. The differentiator is financial context: every insight is tied to a revenue impact estimate rather than a bare sentiment score.
+Sentopi calls the five levers the Retail Flywheel. Each week, Sentopi scores all five for a customer's product and returns a ranked action list: what to fix first, who owns it, and what the fix is worth in annual revenue. The Ratings layer goes deepest, reading every review and mapping each complaint to a root cause, because that is where customers say in their own words which of the other four levers is leaking. The differentiator is financial context: every finding carries a revenue impact estimate rather than a bare sentiment score. Nothing is self-serve to operate; the customer sets up nothing and runs nothing.
 
 ## Key facts
 
-- What it is: review intelligence for Amazon brands that maps each complaint to a root cause (listing accuracy, product, or operations) and ranks fixes by estimated revenue impact.
-- Differentiator: financial context. Every issue is tied to a dollar impact estimate rather than a bare sentiment score.
+- What it is: a done-for-you weekly report on the Retail Flywheel, the five levers that run an Amazon brand (Operations, Pricing, Assortment, Visibility, Ratings), delivered per product with a ranked, priced fix list.
+- Deepest lever: Ratings. It is the feedback signal that reports on the other four, so Sentopi reads every review and maps each complaint to a root cause (listing accuracy, product, or operations) rather than stopping at a sentiment score.
+- Cadence is the product: the report recurs weekly. A one-off report is the free sample; the weekly loop is what customers pay for.
+- Done for you: there is nothing to set up, no integration, and no dashboard to operate. Sentopi gathers, reads, and scores everything and sends the report.
+- Free instrument: the Revenue Risk Report scores all five levers live from public Amazon data for any ASIN or Seller ID, in about 30 seconds, with no email required. The first full product report is also free.
+- Pricing: $149 per month per product for the recurring weekly report. That is the only monthly price.
+- Differentiator: financial context. Every issue is tied to a dollar impact estimate.
 - Original research finding: across 3,725 Amazon reviews spanning 7 brands in 4 categories, 40 to 55 percent of 1-star reviews trace to listing accuracy problems rather than product failures.
-- Free tools: the Revenue Risk Report gives an instant per-ASIN revenue-risk read with no email required; the first product analysis is free.
-- Pricing: ongoing monitoring is $149 per month per product. The service is done for you: Sentopi gathers, reads, and scores everything, so there is no dashboard to operate.
-- Framework: the Retail Flywheel. Five levers run every Amazon brand (Operations, Pricing, Assortment, Visibility, Ratings); Ratings is the feedback signal that reports on the other four, and it is the lever Sentopi runs for its customers.
 - Founders: Oliver Silen and An Luong, with 10+ years in retail and ecommerce at companies including Amazon and Walmart.
 
 ## Core pages
 
-- [Homepage](https://sentopi.com/): What Sentopi does and how to get a free analysis for your first product.
-- [Revenue Risk Report](https://sentopi.com/revenue-risk-report): Free instant tool. Paste an ASIN or Seller ID to see where a brand is losing revenue across Best Seller Rank, rating trajectory, and Buy Box, with an estimated dollar impact.
-- [Star Rating Calculator](https://sentopi.com/star-rating-calculator): Free calculator. Enter rating, review count, and revenue to see how many 5-star reviews reach a target rating and the conversion and revenue lift on the way there.
-- [Listing Accuracy Research](https://sentopi.com/listing-accuracy): Original study of 3,725 Amazon reviews across 7 brands in 4 categories, finding that 40-55% of 1-star reviews trace to listing accuracy problems rather than product failures.
-- [The Growth Loop](https://sentopi.com/growth-loop): Framework article. The five levers every Amazon brand runs on (Operations, Pricing, Assortment, Visibility, Ratings), run as a weekly loop, with benchmarks for each lever and a sales-drop diagnostic.
-- [Why Are My Amazon Sales Down](https://sentopi.com/why-are-my-amazon-sales-down): Five-minute diagnostic for a sudden Amazon sales drop: the sessions-versus-conversion fork, then the five most common causes with what to check for each.
-- [Why Did I Lose the Buy Box](https://sentopi.com/lost-buy-box): Diagnostic. Three situations one look at your listing distinguishes, then five ordered checks with the threshold that matters for each.
-- [Why Are My Amazon Reviews Not Showing Up](https://sentopi.com/amazon-reviews-not-showing-up): Diagnostic. The six causes of missing reviews in order, from the moderation window to variation merges, and which removals are unrecoverable.
-- [Pet Wellness Review Complaints](https://sentopi.com/pet-wellness-review-complaints): Original research. The complaint taxonomy from 1,638 reviews of one pet wellness brand, with the listing-fixable versus product-fixable split and a worked revenue example.
-- [Guides hub](https://sentopi.com/guides): Index of all Sentopi guides and research for Amazon brands.
+- [Homepage](https://sentopi.com/): The Retail Flywheel, what the weekly report contains, and how to start with a free read.
+- [Revenue Risk Report](https://sentopi.com/revenue-risk-report): Free instrument. Paste an ASIN or Seller ID to score all five levers from public Amazon data, with the revenue at risk in dollars. No email required.
+- [Star Rating Calculator](https://sentopi.com/star-rating-calculator): Free calculator for the Ratings lever. Enter rating, review count, and revenue to see how many 5-star reviews reach a target rating and the conversion and revenue lift on the way there.
+- [The Growth Loop](https://sentopi.com/growth-loop): The framework behind the weekly report. The five levers run as a weekly loop, with benchmarks for each and a sales-drop diagnostic.
+- [Listing Accuracy Research](https://sentopi.com/listing-accuracy): Original study of 3,725 Amazon reviews across 7 brands in 4 categories, finding that 40-55% of 1-star reviews trace to listing accuracy problems rather than product failures. The depth behind the Ratings lever.
+- [Why Are My Amazon Sales Down](https://sentopi.com/why-are-my-amazon-sales-down): Five-minute diagnostic that forks across all five levers: sessions versus conversion first, then the five most common causes with what to check for each.
+- [Why Did I Lose the Buy Box](https://sentopi.com/lost-buy-box): Diagnostic for the Operations and Pricing levers. Three situations one look at your listing distinguishes, then five ordered checks with the threshold that matters for each.
+- [Why Are My Amazon Reviews Not Showing Up](https://sentopi.com/amazon-reviews-not-showing-up): Diagnostic for the Ratings lever. The six causes of missing reviews in order, from the moderation window to variation merges, and which removals are unrecoverable.
+- [Pet Wellness Review Complaints](https://sentopi.com/pet-wellness-review-complaints): Original research showing the Ratings lever in depth. The complaint taxonomy from 1,638 reviews of one pet wellness brand, with the listing-fixable versus product-fixable split and a worked revenue example.
+- [Guides hub](https://sentopi.com/guides): The research and frameworks behind the weekly Retail Flywheel report.
 
 ## Legal
 

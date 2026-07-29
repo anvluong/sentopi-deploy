@@ -9,6 +9,7 @@
  */
 
 const { daysAgoKeepa, parseCSV, parseBBTriplets, fetchProductData } = require('./_keepa-utils');
+const { computeFlywheel } = require('./_flywheel');
 
 // ─── REVENUE AT RISK MODEL ───────────────────────────────────────────────────
 // Same conversion model as the Revenue Risk Report (revenue-risk.html):
@@ -139,6 +140,9 @@ function buildSnapshot(p) {
     bbPct30d,
     revRiskMonthly,
     revRiskBasis,
+    // Retail Flywheel: five levers off the same raw Keepa series.
+    // See skills/sentopi-qa/FLYWHEEL-CONTRACT.md.
+    flywheel: computeFlywheel([p]),
   };
 }
 
@@ -165,6 +169,95 @@ const MOCK_SNAPSHOT = {
   bbPct30d: 100,
   revRiskMonthly: 7977,   // 10000 × 28.49 × (conv(4.0) − conv(3.8))
   revRiskBasis: 'drop',
+  // Retail Flywheel fixture for the single-ASIN widget path. Numbers follow the
+  // snapshot above (rating 3.8 dropping, BSR 278, Buy Box 100%, price $28.49).
+  // This fixture carries all four render paths: strong, watch, leaking, and the
+  // unmeasured assortment lever a single listing produces.
+  flywheel: {
+    compositeScore: 63.6,
+    measuredCount: 4,
+    weakestKey: 'pricing',
+    levers: [
+      {
+        key: 'operations',
+        label: 'Operations',
+        score: 100,
+        status: 'strong',
+        headline: 'Buy Box held 100% of the last 30 days',
+        metric: { label: 'Buy Box share, 30d', value: '100%', delta: '+3.6 pts', deltaDir: 'up' },
+        read: 'You held the Buy Box on 100% of recorded events in the last 30 days. Hold the offer and stock position where they are.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Buy Box events, 30d', value: '132' },
+          { label: 'Events with Buy Box held', value: '132' },
+          { label: 'Out of stock, 30d', value: '0%' },
+          { label: 'Buy Box share, prior 30d', value: '96.4%' },
+        ],
+      },
+      {
+        key: 'pricing',
+        label: 'Pricing',
+        score: 33.7,
+        status: 'leaking',
+        headline: 'Average selling price is $28.49, -5.8% month over month',
+        metric: { label: 'Average selling price, 30d', value: '$28.49', delta: '-5.8% MoM', deltaDir: 'down' },
+        read: 'Average selling price fell 5.8% month over month to $28.49. That is margin coming out of the same unit volume. You are selling 29% below list, so the reference price on the listing is doing little work. 3 sellers are competing on this listing.',
+        confidence: 'medium',
+        dataNote: 'Competing offer count comes from the current Keepa offer snapshot, not from 90 days of offer history.',
+        detail: [
+          { label: 'Price position in 90d range', value: '21.4%' },
+          { label: '90d price range', value: '$26.99 to $33.99' },
+          { label: 'Discount off list', value: '28.8%' },
+          { label: 'Competing offers', value: '3' },
+        ],
+      },
+      {
+        key: 'assortment',
+        label: 'Assortment',
+        score: null,
+        status: 'unmeasured',
+        headline: 'Single listing with no variant family.',
+        metric: { label: 'Listings in family', value: 'No data', delta: null, deltaDir: null },
+        read: 'This ASIN has no variation family in Keepa, so there is no variant coverage to score. A single listing is not a failing assortment; there is simply nothing here to measure.',
+        confidence: 'low',
+        dataNote: 'Single listing with no variation data, so variant coverage cannot be scored.',
+        detail: [],
+      },
+      {
+        key: 'visibility',
+        label: 'Visibility',
+        score: 74.7,
+        status: 'watch',
+        headline: 'Sales rank improved 2.5% over 90 days',
+        metric: { label: 'Sales rank, 90d change', value: '-2.5%', delta: '-1.4% in 30d', deltaDir: 'up' },
+        read: 'Sales rank improved 2.5% over 90 days. Visibility is working; the gains show up in units before they show up in reviews.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Sales rank now', value: '#278' },
+          { label: 'Sales rank 90d ago', value: '#285' },
+          { label: 'Rank points in window', value: '490' },
+        ],
+      },
+      {
+        key: 'ratings',
+        label: 'Ratings',
+        score: 47,
+        status: 'leaking',
+        headline: 'Rating is 3.8 stars, -0.20 over 30 days',
+        metric: { label: 'Rating now', value: '3.8', delta: '-0.20 in 30d', deltaDir: 'down' },
+        read: 'Rating is 3.8 stars and down 0.20 in the last 30 days. Every tenth of a star costs conversion on traffic you already paid for. 508 new reviews landed in the last 30 days.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Rating change, 90d', value: '-0.20' },
+          { label: 'New reviews, 30d', value: '508' },
+          { label: 'Total reviews', value: '4,161' },
+        ],
+      },
+    ],
+  },
 };
 
 // ─── HANDLER ─────────────────────────────────────────────────────────────────
