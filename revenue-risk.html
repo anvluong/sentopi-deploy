@@ -962,7 +962,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="page">
   <h1 class="sr-only">Free Amazon Revenue Risk Report</h1>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Static pre-mount skeleton: React replaces this on mount; it reserves the
+         input block's space so initial load doesn't pop in (CLS). -->
+    <div class="rrr-head">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Analyze your brand</div>
+      <div class="rrr-head-title">Revenue Risk Report</div>
+    </div>
+    <div class="rrr-input-block" aria-hidden="true">
+      <div class="detail-skeleton">
+        <div class="skel skel-line w60"></div>
+        <div class="skel" style="height:48px"></div>
+        <div class="skel skel-line w40"></div>
+      </div>
+    </div>
+    <div class="demo-wrap"></div>
+  </div>
 
   <!-- ══════════ INLINE CLAIM FORM (Netlify Forms) ══════════ -->
   <section id="claim" class="claim-section">
