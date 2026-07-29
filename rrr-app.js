@@ -213,6 +213,27 @@ function RatingSparkline({
 }
 
 // ─── Score ring ───────────────────────────────────────────────────────────────
+function headlineScore(data) {
+  /* The flywheel composite is the headline whenever it exists. The pillar
+     brandScore uses a different weighting, so rendering both as "the score"
+     put two different numbers for one brand on the same screen. The pillar
+     figures survive below as signal detail. */
+  const fw = data && data.flywheel;
+  if (fw && fw.compositeScore !== null && fw.compositeScore !== undefined) {
+    const score = Math.round(fw.compositeScore);
+    const label = score >= 75 ? 'Healthy' : score >= 50 ? 'At Risk' : 'Critical';
+    return {
+      score,
+      label,
+      isFlywheel: true
+    };
+  }
+  return {
+    score: data ? data.brandScore : 0,
+    label: data ? data.label : 'At Risk',
+    isFlywheel: false
+  };
+}
 function ScoreRing({
   score,
   label
@@ -799,7 +820,7 @@ function Methodology() {
     className: "chev"
   }, "\u25B8")), open && /*#__PURE__*/React.createElement("div", {
     className: "meth-body"
-  }, /*#__PURE__*/React.createElement("h4", null, "Data sources"), /*#__PURE__*/React.createElement("p", null, "Best Seller Rank, star rating history, review count, list price, Buy Box ownership, and average sale price are pulled from live Amazon signals over a 90-day window. Updated daily."), /*#__PURE__*/React.createElement("h4", null, "Brand Score (0\u2013100)"), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "BSR Health (40 pts):"), " 90-day rank trajectory. Each 10% deterioration costs 4 points."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Rating Health (35 pts):"), " Penalizes both the absolute drop and the recency. A drop in the last 30 days hurts more than a drop 60 days ago."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Buy Box Health (25 pts):"), " % of time you held the Buy Box in the last 30 days. Extra penalty when competitors undercut.")), /*#__PURE__*/React.createElement("h4", null, "Revenue at risk"), /*#__PURE__*/React.createElement("p", null, "For each product where the rating dropped, we apply a conversion-rate index by star rating (based on Spiegel Research Center 2017, PowerReviews, and Pattern.com). Conversion peaks around 4.5\u2605 and declines toward 5.0\u2605 (\"too good to be true\" skepticism)."), /*#__PURE__*/React.createElement("p", null, "Monthly risk = ", /*#__PURE__*/React.createElement("code", null, "units \xD7 price \xD7 (conv@oldRating \u2212 conv@newRating)"), ". We default units to the Amazon monthly-sold estimate and price to your Buy Box modal price. Override either for a sharper number."), /*#__PURE__*/React.createElement("h4", null, "Chronic gap & Buy Box loss"), /*#__PURE__*/React.createElement("p", null, "We also surface (a) chronic underperformance: revenue left on the table by sitting below the 4.5\u2605 peak, even without a recent drop, and (b) Buy Box loss: assuming a 40% capture rate by competing sellers during the windows you don't hold the Buy Box. The rest is split between brand-loyal direct buys, off-Amazon purchase, and no purchase at all."), /*#__PURE__*/React.createElement("h4", null, "Limitations"), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, "Estimates are observational, not causal. Actual lift varies by category, price point, and competitive density."), /*#__PURE__*/React.createElement("li", null, "Brand score caps at \"At Risk\" when an active rating drop or lost Buy Box is detected, even if the underlying pillar math is otherwise high."), /*#__PURE__*/React.createElement("li", null, "Products under 25 reviews are excluded from the brand-score rollup. They appear in the Watch List instead."))));
+  }, /*#__PURE__*/React.createElement("h4", null, "Data sources"), /*#__PURE__*/React.createElement("p", null, "Best Seller Rank, star rating history, review count, list price, Buy Box ownership, and average sale price are pulled from live Amazon signals over a 90-day window. Updated daily."), /*#__PURE__*/React.createElement("h4", null, "Flywheel Score (0\u2013100)"), /*#__PURE__*/React.createElement("p", null, "The headline number is a weighted mean of the five levers, over the levers we could actually measure from public data. Weights: Operations 22, Pricing 22, Assortment 14, Visibility 20, Ratings 22."), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Operations:"), " share of the last 30 days you held the Buy Box, plus time out of stock."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Pricing:"), " where your price sits in its own 90-day range, the month-over-month move in average selling price, discount against list, and how many sellers compete on the listing."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Assortment:"), " how many listings are in the variant family and how many of them carry reviews and the Buy Box."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Visibility:"), " Best Seller Rank trajectory over 90 and 30 days."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Ratings:"), " current rating, the 30 and 90 day move, and review velocity.")), /*#__PURE__*/React.createElement("p", null, "A lever we cannot measure is reported as not measured, with the reason stated. It is never given a score, and it is left out of the mean rather than counted as a zero. When fewer than three levers can be measured we show the levers without a headline score, because an average of two is not a brand score."), /*#__PURE__*/React.createElement("h4", null, "Signal detail (0\u2013100)"), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "BSR Health (40 pts):"), " 90-day rank trajectory. Each 10% deterioration costs 4 points."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Rating Health (35 pts):"), " Penalizes both the absolute drop and the recency. A drop in the last 30 days hurts more than a drop 60 days ago."), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("strong", null, "Buy Box Health (25 pts):"), " % of time you held the Buy Box in the last 30 days. Extra penalty when competitors undercut.")), /*#__PURE__*/React.createElement("p", null, "These three readings sit underneath the levers and use their own weighting, so the detail score and the Flywheel Score answer different questions and will not match."), /*#__PURE__*/React.createElement("h4", null, "Revenue at risk"), /*#__PURE__*/React.createElement("p", null, "For each product where the rating dropped, we apply a conversion-rate index by star rating (based on Spiegel Research Center 2017, PowerReviews, and Pattern.com). Conversion peaks around 4.5\u2605 and declines toward 5.0\u2605 (\"too good to be true\" skepticism)."), /*#__PURE__*/React.createElement("p", null, "Monthly risk = ", /*#__PURE__*/React.createElement("code", null, "units \xD7 price \xD7 (conv@oldRating \u2212 conv@newRating)"), ". We default units to the Amazon monthly-sold estimate and price to your Buy Box modal price. Override either for a sharper number."), /*#__PURE__*/React.createElement("h4", null, "Chronic gap & Buy Box loss"), /*#__PURE__*/React.createElement("p", null, "We also surface (a) chronic underperformance: revenue left on the table by sitting below the 4.5\u2605 peak, even without a recent drop, and (b) Buy Box loss: assuming a 40% capture rate by competing sellers during the windows you don't hold the Buy Box. The rest is split between brand-loyal direct buys, off-Amazon purchase, and no purchase at all."), /*#__PURE__*/React.createElement("h4", null, "Limitations"), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, "Estimates are observational, not causal. Actual lift varies by category, price point, and competitive density."), /*#__PURE__*/React.createElement("li", null, "Brand score caps at \"At Risk\" when an active rating drop or lost Buy Box is detected, even if the underlying pillar math is otherwise high."), /*#__PURE__*/React.createElement("li", null, "Products under 25 reviews are excluded from the brand-score rollup. They appear in the Watch List instead."))));
 }
 
 // ─── Pillar cards ─────────────────────────────────────────────────────────────
@@ -835,6 +856,102 @@ function PillarCard({
     key: i,
     className: `pillar-flag ${f.color}`
   }, f.icon, " ", f.text)));
+}
+
+// ─── Retail Flywheel ──────────────────────────────────────────────────────────
+// Renders the five-lever payload described in skills/sentopi-qa/FLYWHEEL-CONTRACT.md.
+// This is the React twin of renderFlywheel() in index.html: same class names, same
+// order, same rules, so the homepage cockpit and this page read identically.
+// Returns null when the payload is absent, so an older cached response still
+// renders the signal detail below it on its own.
+function Flywheel({
+  fw,
+  riskAnnual
+}) {
+  if (!fw || !Array.isArray(fw.levers) || !fw.levers.length) return null;
+  const composite = fw.compositeScore === null || fw.compositeScore === undefined ? null : fw.compositeScore;
+  const scoreLabel = composite === null ? null : composite >= 75 ? 'strong' : composite >= 50 ? 'watch' : 'leaking';
+  const scoreWord = {
+    strong: 'Healthy',
+    watch: 'At risk',
+    leaking: 'Leaking'
+  };
+
+  // Only raise the alarm when the weakest lever is actually leaking or on watch.
+  // Flagging a "weakest lever" on a healthy brand trains the reader to ignore the
+  // callout on the day it matters.
+  const weak = fw.levers.find(l => l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking'));
+
+  // Surface every caveat the scorer attached rather than burying it. A score shown
+  // without the strength of the evidence behind it is the thing this product exists
+  // to stop.
+  const caveats = fw.levers.filter(l => l.dataNote && l.status !== 'unmeasured').map(l => l.label + ': ' + l.dataNote);
+  const unmeasured = fw.levers.filter(l => l.status === 'unmeasured').map(l => l.label + (l.dataNote ? ': ' + l.dataNote : '.'));
+  const confBits = [];
+  if (unmeasured.length) confBits.push('Not measured from public data. ' + unmeasured.join(' '));
+  if (caveats.length) confBits.push(caveats.join(' '));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fw-card animate-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-head-left"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fw-head-label"
+  }, "Flywheel"), scoreLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    className: "fw-head-score"
+  }, Math.round(composite), /*#__PURE__*/React.createElement("span", {
+    className: "fw-out"
+  }, "/100")), /*#__PURE__*/React.createElement("span", {
+    className: `fw-chip ${scoreLabel}`
+  }, scoreWord[scoreLabel])) : /*#__PURE__*/React.createElement("span", {
+    className: "fw-chip unmeasured"
+  }, "Not enough data to score")), riskAnnual !== null && riskAnnual !== undefined && riskAnnual > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "fw-head-risk"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-head-risk-label"
+  }, "Revenue at risk"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-head-risk-val"
+  }, "$", Number(riskAnnual).toLocaleString(), /*#__PURE__*/React.createElement("span", {
+    className: "fw-out"
+  }, "/yr")))), /*#__PURE__*/React.createElement("div", {
+    className: "fw-grid"
+  }, fw.levers.map(l => {
+    const un = l.status === 'unmeasured' || l.score === null || l.score === undefined;
+    const cls = ['fw-tile'];
+    if (un) cls.push('is-unmeasured');else if (l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking')) cls.push('is-weak');
+    const m = l.metric || {};
+    return /*#__PURE__*/React.createElement("div", {
+      key: l.key,
+      className: cls.join(' ')
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "fw-lever"
+    }, l.label || l.key), un ? /*#__PURE__*/React.createElement("div", {
+      className: "fw-score unmeasured"
+    }, '––') : /*#__PURE__*/React.createElement("div", {
+      className: `fw-score ${l.status}`
+    }, Math.round(l.score)), un ? /*#__PURE__*/React.createElement("div", {
+      className: "fw-note"
+    }, "Not measured") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "fw-metric"
+    }, m.value || ''), m.delta && /*#__PURE__*/React.createElement("div", {
+      className: `fw-delta ${m.deltaDir || 'flat'}`
+    }, m.delta), m.label && /*#__PURE__*/React.createElement("div", {
+      className: "fw-note"
+    }, m.label)));
+  })), weak && /*#__PURE__*/React.createElement("div", {
+    className: "fw-weak"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fw-weak-mark"
+  }, '⚠'), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "fw-weak-title"
+  }, "Weakest lever: ", weak.label), /*#__PURE__*/React.createElement("div", {
+    className: "fw-weak-read"
+  }, weak.read || weak.headline || ''))), confBits.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "fw-conf"
+  }, confBits.join(' '))));
 }
 
 // ─── Shared colgroup — both tables use identical widths for column alignment ──
@@ -980,6 +1097,7 @@ function ScoreCard({
     weights,
     asinCountExcluded
   } = data;
+  const head = headlineScore(data);
   const hasRatingDrop = ratingDropDetails && ratingDropDetails.length > 0;
 
   // ── Revenue state (shared between hero card + deep dive table) ───────────────
@@ -1130,7 +1248,14 @@ function ScoreCard({
     return d !== null && d < worst ? d : worst;
   }, 0);
   const ratSub = avgRating ? worstDelta30 < 0 ? `▼${Math.abs(worstDelta30)} vs. 30d` : 'Stable last 30d' : 'No rating data';
-  return /*#__PURE__*/React.createElement("div", null, lede && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(HeadlineNarrative, {
+
+  // Flywheel head carries the same exposure figure the hero and calculator use,
+  // so one lookup never shows two different dollar numbers.
+  const fwRiskAnnual = totalExposureMonthly > 0 ? Math.round(totalExposureMonthly * 12) : null;
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Flywheel, {
+    fw: data.flywheel,
+    riskAnnual: fwRiskAnnual
+  }), lede && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(HeadlineNarrative, {
     data: data,
     totalRiskMonthly: totalExposureMonthly,
     worstProduct: worstDrop || productRevs.sort((a, b) => b.computedRisk + b.computedChronic + b.computedBBLoss - (a.computedRisk + a.computedChronic + a.computedBBLoss))[0]
@@ -1141,18 +1266,18 @@ function ScoreCard({
   }, /*#__PURE__*/React.createElement("div", {
     className: "hero-score-inner"
   }, /*#__PURE__*/React.createElement(ScoreRing, {
-    score: brandScore,
-    label: label
+    score: head.score,
+    label: head.label
   }), /*#__PURE__*/React.createElement("div", {
     className: "score-meta"
   }, /*#__PURE__*/React.createElement("div", {
     className: "score-brand-name"
-  }, lead.brand || 'Your Brand', " Brand Score"), /*#__PURE__*/React.createElement("div", {
-    className: `score-label-badge ${labelClass(label)}`,
+  }, lead.brand || 'Your Brand', " ", head.isFlywheel ? 'Flywheel Score' : 'Brand Score'), /*#__PURE__*/React.createElement("div", {
+    className: `score-label-badge ${labelClass(head.label)}`,
     style: {
       marginTop: 6
     }
-  }, label === 'Healthy' ? '✓' : label === 'At Risk' ? '⚠' : '✕', " ", label), capReasons.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, head.label === 'Healthy' ? '✓' : head.label === 'At Risk' ? '⚠' : '✕', " ", head.label), capReasons.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -1262,7 +1387,9 @@ function ScoreCard({
     }, d.text, "% MoM") : null;
   })(), avgListPrice != null && /*#__PURE__*/React.createElement("div", {
     className: "asp-strip-list"
-  }, "\xB7 Avg List $", avgListPrice.toFixed(2))), /*#__PURE__*/React.createElement("div", {
+  }, "\xB7 Avg List $", avgListPrice.toFixed(2))), data.flywheel && /*#__PURE__*/React.createElement("div", {
+    className: "fw-detail-head"
+  }, "Signal detail", /*#__PURE__*/React.createElement("span", null, "The rank, rating, and Buy Box readings behind the levers above.")), /*#__PURE__*/React.createElement("div", {
     className: "pillars-grid"
   }, /*#__PURE__*/React.createElement(PillarCard, {
     name: "Best Seller Rank",
@@ -1747,7 +1874,7 @@ function ScoreCard({
 // ─── Input form ───────────────────────────────────────────────────────────────
 // Staged progress: honest descriptions of the lookup, shown while it runs
 // (labor-perception pattern; a silent 30s wait undersells the work).
-const ANALYZE_STAGES = ['Pulling 90-day price and rank history…', 'Reading rating trajectory…', 'Checking Buy Box and velocity…', 'Weighing the three pillars…', 'Building your report…'];
+const ANALYZE_STAGES = ['Pulling 90-day price and rank history…', 'Reading rating trajectory…', 'Checking Buy Box and velocity…', 'Scoring the five levers…', 'Building your report…'];
 function InputForm({
   onResult,
   autoRun,
@@ -2005,7 +2132,8 @@ function SummaryStrip({
   }
   const exposure = defaultExposure(data.products);
   const brand = data.products?.[0]?.brand || 'Your Brand';
-  const labelIcon = data.label === 'Healthy' ? '✓' : data.label === 'At Risk' ? '⚠' : '✕';
+  const summaryHead = headlineScore(data);
+  const labelIcon = summaryHead.label === 'Healthy' ? '✓' : summaryHead.label === 'At Risk' ? '⚠' : '✕';
   return /*#__PURE__*/React.createElement("div", {
     id: "rrr-summary",
     className: "summary-wrap animate-in"
@@ -2017,18 +2145,18 @@ function SummaryStrip({
     className: "summary-card score-card"
   }, /*#__PURE__*/React.createElement("div", {
     className: "summary-card-label"
-  }, "Brand Score"), /*#__PURE__*/React.createElement("div", {
+  }, summaryHead.isFlywheel ? 'Flywheel Score' : 'Brand Score'), /*#__PURE__*/React.createElement("div", {
     className: "summary-score-row"
   }, /*#__PURE__*/React.createElement(ScoreRing, {
-    score: data.brandScore,
-    label: data.label
+    score: summaryHead.score,
+    label: summaryHead.label
   }), /*#__PURE__*/React.createElement("div", {
     className: "summary-score-meta"
   }, /*#__PURE__*/React.createElement("div", {
     className: "summary-brand"
   }, brand), /*#__PURE__*/React.createElement("div", {
-    className: `score-label-badge ${labelClass(data.label)}`
-  }, labelIcon, " ", data.label)))), /*#__PURE__*/React.createElement("div", {
+    className: `score-label-badge ${labelClass(summaryHead.label)}`
+  }, labelIcon, " ", summaryHead.label)))), /*#__PURE__*/React.createElement("div", {
     className: `summary-card revenue-card ${exposure > 0 ? 'risk' : 'safe'}`
   }, /*#__PURE__*/React.createElement("div", {
     className: `summary-card-label ${exposure > 0 ? 'risk' : 'safe'}`
@@ -2339,17 +2467,17 @@ function App() {
     className: "proof-card-num"
   }, "90 days"), /*#__PURE__*/React.createElement("div", {
     className: "proof-card-title"
-  }, "Of BSR, rating, and Buy Box history."), /*#__PURE__*/React.createElement("div", {
+  }, "Of stock, price, rank, and rating history."), /*#__PURE__*/React.createElement("div", {
     className: "proof-card-body"
   }, "The same Amazon signals your paid analyst tools surface, scored against revenue impact instead of vanity charts.")), /*#__PURE__*/React.createElement("div", {
     className: "proof-card"
   }, /*#__PURE__*/React.createElement("div", {
     className: "proof-card-num"
-  }, "3 pillars"), /*#__PURE__*/React.createElement("div", {
+  }, "5 levers"), /*#__PURE__*/React.createElement("div", {
     className: "proof-card-title"
-  }, "BSR (40%), rating (35%), Buy Box (25%)."), /*#__PURE__*/React.createElement("div", {
+  }, "Operations, pricing, assortment, visibility, ratings."), /*#__PURE__*/React.createElement("div", {
     className: "proof-card-body"
-  }, "Each weighted by how much it actually moves topline. A 0.3-star slip on a high-volume SKU outranks a small BSR wobble on a long-tail one.")), /*#__PURE__*/React.createElement("div", {
+  }, "Every lever scored on your own data, the weakest one named. A lever public data cannot measure is reported as unmeasured rather than scored anyway.")), /*#__PURE__*/React.createElement("div", {
     className: "proof-card"
   }, /*#__PURE__*/React.createElement("div", {
     className: "proof-card-num"
@@ -2411,7 +2539,7 @@ function App() {
     className: "bridge-cta"
   }, /*#__PURE__*/React.createElement("div", {
     className: "bridge-cta-text"
-  }, /*#__PURE__*/React.createElement("strong", null, "The Revenue Risk Report tells you where the leak is."), /*#__PURE__*/React.createElement("span", null, " The 48hr Custom Report tells you why and what to fix.")), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("strong", null, "The Revenue Risk Report names the lever that is leaking."), /*#__PURE__*/React.createElement("span", null, " The 48hr Custom Report reads your reviews and tells you why, and what to fix.")), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "bridge-cta-btn",
     "aria-label": "Scroll to the 48hr Custom Report form",
