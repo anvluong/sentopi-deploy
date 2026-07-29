@@ -34,21 +34,21 @@ const jsx  = tracked("'src/*.jsx'");
 const js   = tracked("'*.js'").filter((f) => !f.includes('node_modules'));
 const allCode = [...html, ...jsx, ...js];
 
-/* ── 1. Compiled rrr-app.js in sync with src/rrr-app.jsx ─────────────── */
-(() => {
-  if (!existsSync(join(ROOT, 'src/rrr-app.jsx')) || !existsSync(join(ROOT, 'rrr-app.js'))) return;
+/* ── 1. Compiled apps in sync with their src/*.jsx sources ───────────── */
+for (const [srcF, outF] of [['src/rrr-app.jsx', 'rrr-app.js'], ['src/calc-app.jsx', 'calc-app.js']]) {
+  if (!existsSync(join(ROOT, srcF)) || !existsSync(join(ROOT, outF))) continue;
   let out;
   try {
-    out = execSync('npx --no-install babel src/rrr-app.jsx --presets @babel/preset-react',
+    out = execSync(`npx --no-install babel ${srcF} --presets @babel/preset-react`,
       { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString();
   } catch {
-    warn('Could not run babel to verify rrr-app.js is in sync (run `npm i`). Compile check skipped.');
-    return;
+    warn(`Could not run babel to verify ${outF} is in sync (run \`npm i\`). Compile check skipped.`);
+    continue;
   }
   const norm = (s) => s.replace(/\r\n/g, '\n').trimEnd();
-  if (norm(out) !== norm(read('rrr-app.js')))
-    fail('rrr-app.js is OUT OF SYNC with src/rrr-app.jsx. Recompile: npx babel src/rrr-app.jsx --presets @babel/preset-react -o rrr-app.js');
-})();
+  if (norm(out) !== norm(read(outF)))
+    fail(`${outF} is OUT OF SYNC with ${srcF}. Recompile: npx babel ${srcF} --presets @babel/preset-react -o ${outF}`);
+}
 
 /* ── 2. JS syntax (parse-only) ───────────────────────────────────────── */
 for (const f of js) {

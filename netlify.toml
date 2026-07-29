@@ -21,6 +21,11 @@
   status = 301
 
 [[redirects]]
+  from = "/star-rating-calculator"
+  to = "/calculator.html"
+  status = 200
+
+[[redirects]]
   from = "/listing-accuracy"
   to = "/listing-accuracy.html"
   status = 200
