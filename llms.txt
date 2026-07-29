@@ -18,6 +18,7 @@ Sentopi turns Amazon customer reviews into a ranked action plan: which issues to
 
 - [Homepage](https://sentopi.com/): What Sentopi does and how to get a free analysis for your first product.
 - [Revenue Risk Report](https://sentopi.com/revenue-risk-report): Free instant tool. Paste an ASIN or Seller ID to see where a brand is losing revenue across Best Seller Rank, rating trajectory, and Buy Box, with an estimated dollar impact.
+- [Star Rating Calculator](https://sentopi.com/star-rating-calculator): Free calculator. Enter rating, review count, and revenue to see how many 5-star reviews reach a target rating and the conversion and revenue lift on the way there.
 - [Listing Accuracy Research](https://sentopi.com/listing-accuracy): Original study of 3,725 Amazon reviews across 7 brands in 4 categories, finding that 40-55% of 1-star reviews trace to listing accuracy problems rather than product failures.
 - [The Growth Loop](https://sentopi.com/growth-loop): Framework article. The five levers every Amazon brand runs on (Operations, Pricing, Assortment, Visibility, Ratings), run as a weekly loop, with benchmarks for each lever and a sales-drop diagnostic.
 - [Why Are My Amazon Sales Down](https://sentopi.com/why-are-my-amazon-sales-down): Five-minute diagnostic for a sudden Amazon sales drop: the sessions-versus-conversion fork, then the five most common causes with what to check for each.

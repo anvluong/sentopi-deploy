@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MLF5DHCH');</script>
+<!-- End Google Tag Manager -->
+<title>Amazon Star Rating Calculator: What Your Next Star Is Worth | Sentopi</title>
+<meta name="description" content="Free calculator: enter your rating, review count, and revenue to see what improving your Amazon star rating is worth, and how many 5-star reviews it takes.">
+<link rel="canonical" href="https://sentopi.com/star-rating-calculator">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sentopi.com/star-rating-calculator">
+<meta property="og:title" content="Amazon Star Rating Calculator: What Your Next Star Is Worth">
+<meta property="og:description" content="Free calculator: enter your rating, review count, and revenue to see what improving your Amazon star rating is worth, and how many 5-star reviews it takes.">
+<meta property="og:site_name" content="Sentopi">
+<meta property="og:image" content="https://sentopi.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Amazon Star Rating Calculator: What Your Next Star Is Worth">
+<meta name="twitter:description" content="See what your next star is worth and how many 5-star reviews it takes to get there.">
+<meta name="twitter:image" content="https://sentopi.com/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sentopi Star Rating Calculator",
+  "url": "https://sentopi.com/star-rating-calculator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "Free calculator that models the revenue impact of improving an Amazon star rating: reviews needed to reach a target rating, expected conversion lift, and the monthly and annual revenue uplift.",
+  "featureList": [
+    "Reviews needed to reach a target star rating, solved from the weighted average",
+    "Conversion lift from a piecewise model of rating versus purchase probability",
+    "Monthly and annual revenue uplift at your volume and conversion rate",
+    "Sensitivity analysis: what N new 5-star reviews would do"
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free, no email required." },
+  "publisher": { "@type": "Organization", "name": "Sentopi", "url": "https://sentopi.com" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sentopi.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Star Rating Calculator" }
+  ]
+}
+</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream:    #faf7f2;
+  --cream2:   #f2ece0;
+  --cream3:   #e5d9c8;
+  --parchment:#d4c9b8;
+  --ink:      #1a1714;
+  --ink2:     #2e2a25;
+  --ink3:     #4a443c;
+  --ink4:     #6b6358;
+  --ink5:     #7a6e65;
+  --forest:   #059669;
+  --forest2:  #047857;
+  --forest3:  #10b981;
+  --forest-lt:#d1fae5;
+  --ochre:    #ea580c;
+  --ochre-lt: #fff7ed;
+  --rust:     #dc2626;
+  --rust-lt:  #fee2e2;
+  --teal:     #0f766e;
+  --teal-lt:  #ccfbf1;
+  --amber:    #d97706;
+  --amber-lt: #fef9c3;
+  --white:    #ffffff;
+  --r:        4px;
+  /* legacy aliases for React inline styles */
+  --navy2:    #2e2a25;
+  --slate1:   #faf7f2;
+  --slate2:   #e5d9c8;
+  --slate3:   #d4c9b8;
+  --slate4:   #7a6e65;
+  --slate5:   #6b6358;
+  --indigo:   #059669;
+  --emerald:  #059669;
+}
+html { font-size: 16px; }
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cream);
+  color: var(--ink2);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(255,255,255,0.97);
+  border-bottom: 1px solid var(--cream3);
+}
+.nav-inner {
+  max-width: 1120px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between; height: 60px;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: var(--ink);
+  text-decoration: none; letter-spacing: 0.01em;
+}
+.nav-back {
+  font-size: 0.8125rem; font-weight: 400; color: var(--ink4);
+  text-decoration: none; display: flex; align-items: center; gap: 6px;
+  transition: color 0.15s;
+}
+.nav-back:hover { color: var(--ink); }
+.nav-cta {
+  display: inline-flex; align-items: center;
+  background: var(--ochre);
+  color: #fff; font-weight: 500; font-size: 0.8125rem;
+  padding: 8px 18px; border-radius: var(--r); border: none; cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+.nav-cta:hover { background: #c94d0a; transform: translateY(-1px); }
+
+/* ── Page shell ── */
+.page { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── Hero ── */
+.calc-hero {
+  text-align: center; margin-bottom: 40px;
+}
+.calc-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2);
+  color: var(--forest2); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 2px; margin-bottom: 18px;
+}
+.calc-hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.75rem, 4vw, 2.6rem); font-weight: 400;
+  color: var(--ink); letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 12px;
+}
+.calc-hero p {
+  font-size: 1rem; color: var(--ink4); max-width: 480px; margin: 0 auto; line-height: 1.7;
+}
+
+/* ── Main grid ── */
+.main-grid {
+  display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start;
+}
+@media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
+
+/* ── Panel (shared card shell) ── */
+.panel {
+  background: var(--white); border: 1px solid var(--cream3);
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26,23,20,0.06);
+}
+.panel-header {
+  background: var(--white); padding: 14px 20px;
+  border-bottom: 1px solid var(--cream2);
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ink4);
+}
+.panel-body { padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; }
+
+/* ── Fields ── */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; font-weight: 600; color: var(--ink2);
+}
+.field-tip {
+  cursor: help; display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--cream2); font-size: 9px; color: var(--ink4); font-weight: 700;
+}
+.field-wrap { position: relative; }
+.field-prefix {
+  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  color: var(--ink4); font-size: 0.875rem; pointer-events: none;
+}
+.field-suffix {
+  position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+  color: var(--ink4); font-size: 0.875rem; pointer-events: none;
+}
+.field-input {
+  width: 100%; padding: 10px 12px; border-radius: var(--r);
+  border: 1px solid var(--cream3); background: var(--cream);
+  color: var(--ink2); font-size: 0.9375rem; font-family: inherit;
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.field-input:focus {
+  border-color: rgba(5,150,105,0.5);
+  box-shadow: 0 0 0 3px rgba(5,150,105,0.1);
+  background: var(--white);
+}
+.field-input.has-prefix { padding-left: 24px; }
+.field-input.has-suffix { padding-right: 30px; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { opacity: 0.4; }
+input[type="range"] { accent-color: var(--forest); width: 100%; }
+
+/* Stars */
+.stars { display: inline-flex; gap: 2px; margin-top: 4px; }
+
+/* Methodology toggle */
+.method-toggle {
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--forest); font-size: 0.8rem; font-weight: 500; font-family: inherit;
+  display: flex; align-items: center; gap: 5px; transition: color 0.15s;
+}
+.method-toggle:hover { color: var(--forest2); }
+.method-caret { display: inline-block; transition: transform 0.2s; font-size: 0.65rem; }
+.method-body {
+  background: var(--cream); border: 1px solid var(--cream3);
+  border-radius: var(--r); padding: 14px 16px;
+  font-size: 0.8rem; color: var(--ink4); line-height: 1.7;
+  animation: fadeUp 0.2s ease-out;
+}
+.method-body p { margin-bottom: 8px; }
+.method-body p:last-child { margin-bottom: 0; color: var(--ink5); font-style: italic; }
+
+/* ── Output column ── */
+.output-col { display: flex; flex-direction: column; gap: 16px; }
+
+/* Error panel */
+.error-panel {
+  background: #fef2f2; border: 1px solid #fecaca;
+  border-radius: 16px; padding: 20px;
+}
+.error-panel h4 { font-size: 0.875rem; font-weight: 700; color: #991b1b; margin-bottom: 10px; }
+.error-item {
+  font-size: 0.8125rem; color: #dc2626; margin-bottom: 5px;
+  padding-left: 14px; position: relative; line-height: 1.5;
+}
+.error-dot {
+  position: absolute; left: 0; top: 7px;
+  width: 5px; height: 5px; border-radius: 50%; background: #f87171;
+}
+
+/* Stat cards grid */
+.cards-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+@media (max-width: 500px) { .cards-grid { grid-template-columns: 1fr; } }
+
+.stat-card {
+  border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 8px;
+  animation: fadeUp 0.25s ease-out;
+}
+.stat-card.indigo  { background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2); }
+.stat-card.emerald { background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2); }
+.stat-card.amber   { background: var(--ochre-lt);  border: 1px solid rgba(234,88,12,0.2); }
+.stat-card.violet  { background: var(--teal-lt);   border: 1px solid rgba(15,118,110,0.2); }
+.stat-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+}
+.stat-card.indigo  .stat-label { color: var(--forest2); }
+.stat-card.emerald .stat-label { color: var(--forest2); }
+.stat-card.amber   .stat-label { color: #9a3412; }
+.stat-card.violet  .stat-label { color: var(--teal); }
+.stat-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.75rem; font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
+}
+.stat-card.indigo  .stat-value { color: var(--forest); }
+.stat-card.emerald .stat-value { color: var(--forest); }
+.stat-card.amber   .stat-value { color: var(--ochre); }
+.stat-card.violet  .stat-value { color: var(--teal); }
+.stat-sub {
+  font-size: 0.775rem; line-height: 1.4; opacity: 0.75;
+}
+.stat-card.indigo  .stat-sub { color: var(--forest2); }
+.stat-card.emerald .stat-sub { color: var(--forest2); }
+.stat-card.amber   .stat-sub { color: #9a3412; }
+.stat-card.violet  .stat-sub { color: var(--teal); }
+
+/* Rating journey */
+.journey-bar-track {
+  position: relative; height: 10px; background: var(--cream2);
+  border-radius: 99px; overflow: hidden; margin: 12px 0 6px;
+}
+.journey-bar-current {
+  position: absolute; height: 100%;
+  background: var(--parchment); border-radius: 99px; transition: width 0.4s;
+}
+.journey-bar-target {
+  position: absolute; height: 100%;
+  background: var(--forest);
+  border-radius: 99px; transition: width 0.4s;
+}
+.journey-peak {
+  position: absolute; top: 0; height: 100%; width: 2px; background: var(--ochre);
+  left: 87.5%;
+}
+.journey-ticks {
+  display: flex; justify-content: space-between;
+  font-size: 0.7rem; color: var(--ink5);
+}
+.journey-legend {
+  display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap;
+}
+.legend-pip {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.72rem; color: var(--ink4);
+}
+.pip { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+/* What-if toggle */
+.toggle-row {
+  display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none;
+}
+.toggle-track {
+  width: 40px; height: 22px; border-radius: 99px;
+  position: relative; transition: background 0.2s; flex-shrink: 0;
+}
+.toggle-thumb {
+  position: absolute; top: 3px; width: 16px; height: 16px;
+  background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: left 0.2s;
+}
+.toggle-label { font-size: 0.875rem; font-weight: 500; color: var(--ink2); }
+
+.whatif-result {
+  margin-top: 14px; border-radius: var(--r); padding: 16px 18px;
+  animation: fadeUp 0.2s ease-out;
+}
+.whatif-result.hit  { background: var(--forest-lt); border: 1px solid rgba(5,150,105,0.2); }
+.whatif-result.miss { background: var(--cream); border: 1px solid var(--cream3); }
+.whatif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.whatif-item-label { font-size: 0.72rem; color: var(--ink5); margin-bottom: 3px; }
+.whatif-item-val   { font-size: 1rem; font-weight: 600; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+.whatif-hit-msg    { margin-top: 12px; font-size: 0.8rem; font-weight: 600; color: var(--forest2); }
+
+/* Assumptions */
+.assumptions {
+  font-size: 0.77rem; color: var(--ink5); line-height: 1.7; padding: 0 2px;
+}
+
+/* Footer */
+.calc-footer {
+  background: #120f0c; border-top: 1px solid rgba(255,255,255,0.04);
+  padding: 28px 0; margin-top: 80px;
+}
+.calc-footer-inner {
+  max-width: 1120px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.calc-footer-copy { font-size: 0.8125rem; color: var(--ink5); }
+.calc-footer-link {
+  font-size: 0.8125rem; color: var(--ink5); text-decoration: none; transition: color 0.15s;
+}
+.calc-footer-link:hover { color: rgba(255,255,255,0.5); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Sentopi</a>
+    <a href="/" class="nav-back">&#8592; Back to Sentopi</a>
+    <a href="/revenue-risk-report" class="nav-cta">Run your Revenue Risk Report &#8594;</a>
+  </div>
+</nav>
+
+<div id="root"></div>
+
+<!-- Footer -->
+<footer class="calc-footer">
+  <div class="calc-footer-inner">
+    <span class="calc-footer-copy">&copy; 2026 Sentopi. All rights reserved.</span>
+    <a href="/#demo" class="calc-footer-link">Get your free report &#8594;</a>
+  </div>
+</footer>
+
+<script src="/calc-app.js"></script>
+</body>
+</html>
