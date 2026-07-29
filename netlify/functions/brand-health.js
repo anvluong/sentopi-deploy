@@ -6,7 +6,7 @@
  * Auto-detects whether input is an ASIN (B0...) or Seller ID (A...).
  *
  * Flow:
- *   ASIN   → pull product → expand via variationCSV → score brand
+ *   ASIN   → pull product → expand via variations/variationCSV → score brand
  *   Seller → /seller?storefront=1 → ASIN list → score brand
  *
  * Pillars: BSR Health (40pts) + Rating Health (35pts) + Buy Box Health (25pts) = 100
@@ -671,7 +671,15 @@ exports.handler = async function (event) {
         return { statusCode: 404, headers, body: JSON.stringify({ error: `ASIN "${detected.value}" not found in Keepa.` }) };
       }
       const seed = seedProducts[0];
-      const variations = (seed.variationCSV || '').split(',').map(s => s.trim()).filter(Boolean);
+      /* Keepa returns the sibling set as `variations` (array of {asin}) on the
+         products checked here, and only sometimes as the legacy `variationCSV`
+         string. Reading one field alone made multi-variant brands collapse to a
+         single-product report with no error, which understates the brand. Read
+         both and merge. */
+      const variations = [
+        ...(seed.variationCSV || '').split(',').map(s => s.trim()),
+        ...(Array.isArray(seed.variations) ? seed.variations.map(v => (typeof v === 'string' ? v : v && v.asin)) : []),
+      ].filter(Boolean);
       if (variations.length > 1) {
         asins = [...new Set([detected.value, ...variations])].slice(0, MAX_ASINS);
       } else {
