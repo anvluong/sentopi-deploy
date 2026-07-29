@@ -29,8 +29,11 @@ It checks, and FAILs the push on:
 - **Broken internal links** (href → no file/redirect).
 - **Netlify form mismatch:** a JS `form-name` that no registered `data-netlify` form declares (Netlify rejects it).
 - **Committed secrets.**
+- **Page contract:** missing canonical or meta description on any page; a JSON-LD block that does not `JSON.parse`; Article `dateModified` out of sync with the page's sitemap `lastmod`; a sitemap `<loc>` that resolves to nothing; any monthly price string other than $149.
 
-WARNs (surface, don't block): AI-tells, placeholder/TODO text, missing viewport/title/GTM, anchors not found, multiple `<h1>`.
+WARNs (surface, don't block): AI-tells, placeholder/TODO text, missing viewport/title/GTM, anchors not found, multiple `<h1>`, meta description length outside 70-165 chars, an indexable page missing from the sitemap, an article footer missing the canonical link set.
+
+New-page conventions (chromes, head order, schema per page class, the 5-step wiring checklist) live in `PAGE-CONVENTIONS.md` next to this file; clone new article pages from `_template-article.html`.
 
 ### Tier 2 — Deep behavioral pass (run when risk is touched)
 
