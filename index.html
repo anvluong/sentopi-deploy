@@ -807,6 +807,13 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   width: 100%; height: auto; display: block;
   font-family: 'DM Sans', -apple-system, sans-serif;
 }
+/* Touch targets on the conversion path. A 22px chip is not reliably tappable on
+   a phone, and these controls are the whole "try it" affordance. */
+@media (max-width: 720px) {
+  .mockup-chip { min-height: 44px; display: inline-flex; align-items: center; }
+  .mockup-input, .mockup-go { min-height: 44px; }
+}
+
 @media (max-width: 720px) {
   .chart-card-trend .chart-body {
     overflow-x: auto;

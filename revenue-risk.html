@@ -781,6 +781,12 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 .demo-wrap { min-height: 200px; }
 
 /* ── Mobile ── */
+/* Touch targets on the conversion path, matching the homepage rule. */
+@media (max-width: 720px) {
+  .demo-pill { min-height: 44px; display: inline-flex; align-items: center; }
+  .rrr-input, .btn-analyze { min-height: 44px; }
+}
+
 @media (max-width: 720px) {
   .page { padding: 28px 18px 80px; }
   .hero-v2 { margin-bottom: 22px; }
