@@ -10,6 +10,8 @@ Sentopi turns Amazon customer reviews into a ranked action plan: which issues to
 - Differentiator: financial context. Every issue is tied to a dollar impact estimate rather than a bare sentiment score.
 - Original research finding: across 3,725 Amazon reviews spanning 7 brands in 4 categories, 40 to 55 percent of 1-star reviews trace to listing accuracy problems rather than product failures.
 - Free tools: the Revenue Risk Report gives an instant per-ASIN revenue-risk read with no email required; the first product analysis is free.
+- Pricing: ongoing monitoring is $149 per month per product. The service is done for you: Sentopi gathers, reads, and scores everything, so there is no dashboard to operate.
+- Framework: the Retail Flywheel. Five levers run every Amazon brand (Operations, Pricing, Assortment, Visibility, Ratings); Ratings is the feedback signal that reports on the other four, and it is the lever Sentopi runs for its customers.
 - Founders: Oliver Silen and An Luong, with 10+ years in retail and ecommerce at companies including Amazon and Walmart.
 
 ## Core pages

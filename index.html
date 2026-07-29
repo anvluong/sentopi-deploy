@@ -868,6 +868,33 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 }
 .pricing-cta:hover { background: var(--forest2); }
 
+/* ─────────────── FLYWHEEL ─────────────── */
+.fly-header { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+.fly-header .section-sub { margin-top: 14px; }
+.fly-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: var(--cream3);
+  border: 1px solid var(--cream3); border-radius: 6px; overflow: hidden; margin-bottom: 28px;
+}
+.fly-card { background: var(--white); padding: 26px 20px; }
+.fly-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem; color: var(--ink4); line-height: 1; margin-bottom: 14px; font-style: italic;
+}
+.fly-card h3 { font-size: 0.9375rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.fly-card p { font-size: 0.83rem; color: var(--ink4); line-height: 1.6; }
+.fly-watch { display: block; margin-top: 10px; font-size: 0.73rem; font-weight: 500; color: var(--forest); }
+.fly-card.fly-ratings { background: var(--forest-lt); }
+.fly-card.fly-ratings .fly-num, .fly-card.fly-ratings p { color: var(--ink3); }
+.fly-cta { text-align: center; }
+.fly-cta a { font-size: 0.9rem; font-weight: 500; color: var(--forest); }
+@media (max-width: 900px) {
+  .fly-grid { grid-template-columns: repeat(2, 1fr); }
+  .fly-card.fly-ratings { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) { .fly-grid { grid-template-columns: 1fr; } }
+a.pricing-cta { text-decoration: none; }
+
 /* ─────────────── FOUNDERS ─────────────── */
 .founders { background: var(--cream2); border-bottom: 1px solid var(--cream3); padding: 72px 0; }
 .founders-inner { max-width: 760px; margin: 0 auto; text-align: center; }
@@ -993,7 +1020,7 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 /* ─────────────── REVEAL ─────────────── */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; }
+.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; } .d4 { transition-delay: 0.32s; }
 
 /* ─────────────── RESPONSIVE ─────────────── */
 @media (max-width: 960px) {
@@ -1137,12 +1164,20 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
         "Free Revenue Risk Report on any ASIN or Seller ID, no email required"
       ],
       "publisher": { "@id": "https://sentopi.com/#organization" },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Free analysis for your first product."
-      }
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free analysis for your first product, plus the free Revenue Risk Report on any ASIN."
+        },
+        {
+          "@type": "Offer",
+          "price": "149",
+          "priceCurrency": "USD",
+          "description": "Ongoing monitoring: every new review read and scored, ranked fix list with owners, competitor benchmark, and 90-day targets. $149 per month per product."
+        }
+      ]
     }
   ]
 }
@@ -1212,8 +1247,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <a href="/revenue-risk-report">Revenue Risk Report <span class="nav-free-badge">Free</span></a>
       <a href="/listing-accuracy">Research</a>
       <a href="/guides">Guides</a>
+      <a href="#pricing">Pricing</a>
     </div>
-    <a href="#demo" class="nav-cta">See your revenue risk →</a>
+    <a href="/revenue-risk-report" class="nav-cta">See your revenue risk →</a>
   </div>
 </nav>
 
@@ -1225,13 +1261,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <div class="hero-headline">
         <div class="hero-eyebrow">
           <span class="hero-eyebrow-dot"></span>
-          Amazon Review Intelligence
+          Amazon Review Intelligence, Done For You
         </div>
         <h1>Prioritized actions<br><em>straight from your customers.</em></h1>
       </div>
 
       <div class="hero-support">
-        <p class="hero-sub only-desktop">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. Paste your ASIN to see yours instantly.</p>
+        <p class="hero-sub only-desktop">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. You set up nothing and operate nothing; we do the analyst work. Paste your ASIN to see yours instantly.</p>
         <p class="hero-sub only-mobile">Every Amazon review, scored by revenue impact, turned into a ranked fix list. Paste your ASIN to see yours.</p>
         <div class="hero-calc">
           100 of your reviews, priority-scored. No commitment.
@@ -1351,13 +1387,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   </div>
 </section>
 
+<!-- ══════════ RETAIL FLYWHEEL ══════════ -->
+<section class="section flywheel-section">
+  <div class="container">
+    <div class="fly-header">
+      <span class="eyebrow reveal">The Retail Flywheel</span>
+      <h2 class="section-h2 reveal">Five levers run<br>every Amazon brand.</h2>
+      <p class="section-sub reveal">Run weekly, they compound. Neglect one and it caps the rest. Ratings is the lever that reports on the other four, and it is the one Sentopi runs for you.</p>
+    </div>
+    <div class="fly-grid">
+      <div class="fly-card reveal">
+        <div class="fly-num">01</div>
+        <h3>Operations</h3>
+        <p>Keep it in stock and shipping fast. A stockout loses today's sale and the rank behind tomorrow's.</p>
+        <span class="fly-watch">Watch: in-stock rate</span>
+      </div>
+      <div class="fly-card reveal d1">
+        <div class="fly-num">02</div>
+        <h3>Pricing</h3>
+        <p>Be obviously worth it next to the alternative on the same screen, or carry a USP strong enough that you never compete on price.</p>
+        <span class="fly-watch">Watch: price vs the comparable listing</span>
+      </div>
+      <div class="fly-card reveal d2">
+        <div class="fly-num">03</div>
+        <h3>Assortment</h3>
+        <p>Carry the size, bundle, and variant your customer is actually looking for. Every gap is demand handed to a competitor.</p>
+        <span class="fly-watch">Watch: variant coverage vs the leader</span>
+      </div>
+      <div class="fly-card reveal d3">
+        <div class="fly-num">04</div>
+        <h3>Visibility</h3>
+        <p>Earn rank with ASIN-level relevancy. Visibility you buy stops the day you stop paying; relevancy compounds.</p>
+        <span class="fly-watch">Watch: organic rank and glance views</span>
+      </div>
+      <div class="fly-card fly-ratings reveal d4">
+        <div class="fly-num">05</div>
+        <h3>Ratings</h3>
+        <p>The feedback signal for the other four. Customers tell you, in their own words, which lever is leaking. This is the lever Sentopi runs for you.</p>
+        <span class="fly-watch">Watch: star rating and review velocity</span>
+      </div>
+    </div>
+    <div class="fly-cta reveal">
+      <a href="/growth-loop">Read the full framework: the growth loop →</a>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ FOUNDERS ══════════ -->
 <section class="founders">
   <div class="container">
     <div class="founders-inner reveal">
       <span class="eyebrow">From the founders</span>
-      <p class="founders-quote only-desktop">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first.</p>
-      <p class="founders-quote only-mobile">We spent 10+ years in retail and ecommerce at Amazon and Walmart, watching strong products lose sales to problems hiding in their own reviews. Sentopi reads every review and ranks exactly what to fix first.</p>
+      <p class="founders-quote only-desktop">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first. No analyst required.</p>
+      <p class="founders-quote only-mobile">We spent 10+ years in retail and ecommerce at Amazon and Walmart, watching strong products lose sales to problems hiding in their own reviews. Sentopi reads every review and ranks exactly what to fix first. No analyst required.</p>
       <div class="founders-sign">
         <span class="founders-names"><a href="https://www.linkedin.com/in/oliversilen" target="_blank" rel="noopener">Oliver</a> &amp; <a href="https://www.linkedin.com/in/an-luong/" target="_blank" rel="noopener">An</a></span>
         <span class="founders-role">Cofounders, Sentopi</span>
@@ -1730,7 +1812,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <div class="how-header">
       <span class="eyebrow reveal">How It Works</span>
       <h2 class="section-h2 reveal">From your Amazon link<br>to your action plan.</h2>
-      <p class="section-sub reveal">Share your link, get back a prioritized report with the actions that move your rating.</p>
+      <p class="section-sub reveal">Share your link. We gather, read, and score everything; you get back a prioritized report with the actions that move your rating.</p>
     </div>
     <div class="how-grid">
       <div class="how-card reveal">
@@ -1750,6 +1832,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         <h3>Your Ranked To-Do List, Ready to Act On</h3>
         <p>Every fix comes out pre-assigned to product, ops, or marketing with a revenue number attached. No interpretation needed; your team knows exactly what to do and what it's worth.</p>
         <span class="how-tag">No interpretation needed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRICING ══════════ -->
+<section id="pricing" class="section pricing-section">
+  <div class="container">
+    <div class="pricing-inner">
+      <span class="eyebrow reveal">Pricing</span>
+      <h2 class="section-h2 reveal">Start free.<br>Stay for the monitoring.</h2>
+      <p class="section-sub reveal">One plan, no tiers to decode. Every paid engagement starts with a conversation about your product, so you know exactly what you are buying.</p>
+      <div class="pricing-card reveal">
+        <div class="pricing-starting">Ongoing monitoring</div>
+        <div class="pricing-price">$149<span> / month per product</span></div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Every new review read and scored, week after week</span></div>
+          <div class="pricing-feat"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Ranked fix list with owners assigned to product, ops, or marketing</span></div>
+          <div class="pricing-feat"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Complaint to root cause mapping, with the revenue at stake on each</span></div>
+          <div class="pricing-feat"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Competitor benchmark on ratings, complaints, and trajectory</span></div>
+          <div class="pricing-feat"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>90-day baselines and targets, cancel anytime</span></div>
+        </div>
+        <hr class="pricing-divider">
+        <div class="pricing-free-label">Free to start</div>
+        <div class="pricing-free-desc">Run the <a href="/revenue-risk-report">Revenue Risk Report</a> on any ASIN right now, no email required. Your first full product analysis is free too, delivered within 48 hours.</div>
+        <a class="pricing-cta" href="#demo">Start with your free report →</a>
       </div>
     </div>
   </div>
@@ -1863,6 +1971,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <a href="/listing-accuracy">Research</a>
       <a href="/growth-loop">Growth Loop</a>
       <a href="/why-are-my-amazon-sales-down">Sales Drop Diagnostic</a>
+      <a href="#pricing">Pricing</a>
       <a href="/legal.html#privacy">Privacy</a>
       <a href="/legal.html#terms">Terms</a>
       <a href="mailto:hello@sentopi.com">Contact</a>
