@@ -106,16 +106,9 @@ function App() {
 
   const maxSlider = out.needed && out.needed !== Infinity ? Math.max(out.needed * 2, 100) : 500;
 
+  {/* Hero renders statically in calculator.html; the app owns only the grid. */}
   return (
     <>
-      {/* Page hero */}
-      <div className="page">
-        <div className="calc-hero">
-          <div className="calc-eyebrow">Free Tool</div>
-          <h1>What is your next star worth?</h1>
-          <p>Enter your product data and see the revenue impact of improving your Amazon star rating.</p>
-        </div>
-
         <div className="main-grid">
           {/* Inputs */}
           <div className="panel">
@@ -295,7 +288,6 @@ function App() {
             )}
           </div>
         </div>
-      </div>
     </>
   );
 }
