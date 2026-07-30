@@ -3,6 +3,14 @@
    ScoreCard renders them with no code path changes.
    Brands are fictional. */
 
+/* Composite, status and weakest lever are DERIVED from the levers below by
+   flywheel-core.js. Fixtures declare lever scores and copy only: a hand-stated
+   summary could disagree with the levers it claimed to summarise, and did. */
+const FW = (levers) => (typeof window !== 'undefined' ? window.FlywheelCore : require('./flywheel-core.js')).finalize(levers);
+/* Shared per-ASIN sample, also used by the homepage chips, so the two surfaces
+   cannot tell different stories about the same product. */
+const SAMPLE = (asin) => (typeof window !== 'undefined' ? window.FLYWHEEL_SAMPLES : require('./flywheel-samples.js'))[asin];
+
 window.DEMO_FIXTURES = {
   /* ── 1. Rating-slip story ────────────────────────────────────────────────
      Hearthside Goods — kitchen brand. Rating fell 4.4 → 4.0 over 30 days
@@ -13,36 +21,33 @@ window.DEMO_FIXTURES = {
     entryPoint: 'seller',
     input: 'DEMO-HEARTHSIDE',
     brandScore: 58.4,
-    flywheel: {
-      compositeScore: 63.4, measuredCount: 5, weakestKey: "ratings",
-      levers: [
-      { key: "operations", label: "Operations", score: 88, status: "strong",
+    flywheel: FW([
+      { key: "operations", label: "Operations", score: 88,
         headline: "Buy Box held 92% of the last 30 days",
         metric: { label: "Buy Box share, 30d", value: "92%", delta: "-1.5 pts", deltaDir: "down" },
         read: "You held the Buy Box on 92% of the last 30 days. Nothing here is costing you units this month.",
         confidence: "high", dataNote: null, detail: [] },
-      { key: "pricing", label: "Pricing", score: 66, status: "watch",
+      { key: "pricing", label: "Pricing", score: 66,
         headline: "Average selling price fell 2.1% month over month",
         metric: { label: "Avg selling price, MoM", value: "$41.10", delta: "-2.1%", deltaDir: "down" },
         read: "Your average selling price drifted down 2.1% while you sat 18% below list. The reference price is doing little work.",
         confidence: "medium", dataNote: "Offer count comes from the current Keepa snapshot, not from 90 days of offer history.", detail: [] },
-      { key: "assortment", label: "Assortment", score: 72, status: "watch",
+      { key: "assortment", label: "Assortment", score: 72,
         headline: "Three listings in the family",
         metric: { label: "Listings in family", value: "3 variants", delta: null, deltaDir: null },
         read: "You carry three variants. Coverage is reasonable for the category without being complete.",
         confidence: "medium", dataNote: null, detail: [] },
-      { key: "visibility", label: "Visibility", score: 62, status: "watch",
+      { key: "visibility", label: "Visibility", score: 62,
         headline: "Rank slipped 6.2% over 90 days",
         metric: { label: "Sales rank, 90d change", value: "#412", delta: "-6.2%", deltaDir: "down" },
         read: "Rank drifted from 388 to 412 over 90 days. That is slow erosion rather than a cliff.",
         confidence: "high", dataNote: null, detail: [] },
-      { key: "ratings", label: "Ratings", score: 32, status: "leaking",
+      { key: "ratings", label: "Ratings", score: 32,
         headline: "Rating fell 0.4 stars in 30 days",
         metric: { label: "Rating now", value: "4.0", delta: "-0.40 in 30d", deltaDir: "down" },
         read: "Your rating fell from 4.4 to 4.0 in the last 30 days while rank and Buy Box held. Nothing in Seller Central flagged it, and it is the largest drag on conversion you have.",
         confidence: "high", dataNote: null, detail: [] }
-      ]
-    },
+      ]),
     label: 'At Risk',
     capReasons: ['Rating dropped in the last 30 days'],
     ratingDropDetails: [
@@ -113,36 +118,33 @@ window.DEMO_FIXTURES = {
     entryPoint: 'seller',
     input: 'DEMO-TRAILWISE',
     brandScore: 62.0,
-    flywheel: {
-      compositeScore: 61.5, measuredCount: 5, weakestKey: "operations",
-      levers: [
-      { key: "operations", label: "Operations", score: 40, status: "leaking",
+    flywheel: FW([
+      { key: "operations", label: "Operations", score: 40,
         headline: "Buy Box share fell to 56% over 30 days",
         metric: { label: "Buy Box share, 30d", value: "56%", delta: "-38.0 pts", deltaDir: "down" },
         read: "You lost the Buy Box on 44% of the last 30 days. That takes traffic and conversion down together, and it is the fastest thing on this page to fix.",
         confidence: "high", dataNote: null, detail: [] },
-      { key: "pricing", label: "Pricing", score: 45, status: "leaking",
+      { key: "pricing", label: "Pricing", score: 45,
         headline: "A competitor is undercutting by $7.00",
         metric: { label: "Avg selling price, MoM", value: "$74.20", delta: "-4.8%", deltaDir: "down" },
         read: "A reseller sits at $71.99 against your $78.99. On this listing that gap is enough to swing the Buy Box.",
         confidence: "medium", dataNote: "Offer count comes from the current Keepa snapshot, not from 90 days of offer history.", detail: [] },
-      { key: "assortment", label: "Assortment", score: 72, status: "watch",
+      { key: "assortment", label: "Assortment", score: 72,
         headline: "Three listings in the family",
         metric: { label: "Listings in family", value: "3 variants", delta: null, deltaDir: null },
         read: "You carry three variants. Coverage is reasonable for the category without being complete.",
         confidence: "medium", dataNote: null, detail: [] },
-      { key: "visibility", label: "Visibility", score: 70, status: "watch",
+      { key: "visibility", label: "Visibility", score: 70,
         headline: "Rank slipped 3.8% over 90 days",
         metric: { label: "Sales rank, 90d change", value: "#1,640", delta: "-3.8%", deltaDir: "down" },
         read: "Rank drifted from 1,580 to 1,640 over 90 days, consistent with the Buy Box loss rather than a separate problem.",
         confidence: "high", dataNote: null, detail: [] },
-      { key: "ratings", label: "Ratings", score: 85, status: "strong",
+      { key: "ratings", label: "Ratings", score: 85,
         headline: "Rating held at 4.4 across 90 days",
         metric: { label: "Rating now", value: "4.4", delta: "flat", deltaDir: "flat" },
         read: "Your rating has not moved in 90 days. Customers are happy; the leak is upstream of them.",
         confidence: "high", dataNote: null, detail: [] }
-      ]
-    },
+      ]),
     label: 'At Risk',
     capReasons: ['Lost Buy Box on one or more products'],
     ratingDropDetails: [],
@@ -210,36 +212,33 @@ window.DEMO_FIXTURES = {
     entryPoint: 'seller',
     input: 'DEMO-LUMELO',
     brandScore: 54.6,
-    flywheel: {
-      compositeScore: 57.9, measuredCount: 5, weakestKey: "visibility",
-      levers: [
-      { key: "operations", label: "Operations", score: 72, status: "watch",
+    flywheel: FW([
+      { key: "operations", label: "Operations", score: 72,
         headline: "Buy Box held 78% of the last 30 days",
         metric: { label: "Buy Box share, 30d", value: "78%", delta: "-8.0 pts", deltaDir: "down" },
         read: "You lost the Buy Box on 22% of the last 30 days, mostly to a cheaper offer.",
         confidence: "high", dataNote: null, detail: [] },
-      { key: "pricing", label: "Pricing", score: 58, status: "watch",
+      { key: "pricing", label: "Pricing", score: 58,
         headline: "A competitor is undercutting by $3.00",
         metric: { label: "Avg selling price, MoM", value: "$13.80", delta: "-4.4%", deltaDir: "down" },
         read: "A competitor sits at $11.99 against your $14.99. At this price point a $3 gap is a large relative difference.",
         confidence: "medium", dataNote: "Offer count comes from the current Keepa snapshot, not from 90 days of offer history.", detail: [] },
-      { key: "assortment", label: "Assortment", score: 72, status: "watch",
+      { key: "assortment", label: "Assortment", score: 72,
         headline: "Three listings in the family",
         metric: { label: "Listings in family", value: "3 variants", delta: null, deltaDir: null },
         read: "You carry three variants. Coverage is reasonable for the category without being complete.",
         confidence: "medium", dataNote: null, detail: [] },
-      { key: "visibility", label: "Visibility", score: 28, status: "leaking",
+      { key: "visibility", label: "Visibility", score: 28,
         headline: "Rank fell 69% over 90 days",
         metric: { label: "Sales rank, 90d change", value: "#1,420", delta: "-69.0%", deltaDir: "down" },
         read: "Rank collapsed from 840 to 1,420 in 90 days. Fewer people are seeing the listing at all, so every other lever is working on a smaller audience.",
         confidence: "high", dataNote: null, detail: [] },
-      { key: "ratings", label: "Ratings", score: 62, status: "watch",
+      { key: "ratings", label: "Ratings", score: 62,
         headline: "Rating held at 3.9 across 90 days",
         metric: { label: "Rating now", value: "3.9", delta: "flat", deltaDir: "flat" },
         read: "Your rating is steady at 3.9. Steady is not the same as good: below 4.0 you are paying a conversion penalty on every visit.",
         confidence: "high", dataNote: null, detail: [] }
-      ]
-    },
+      ]),
     label: 'At Risk',
     capReasons: ['Competitor undercutting on one or more products'],
     ratingDropDetails: [],
@@ -317,6 +316,7 @@ window.SAMPLE_CHIPS = [
     label:    'Pet Diffuser · 3.6★',
     cachedAt: '2026-06-03',
     data: {
+      flywheel: SAMPLE('B0FB9MXHR1'),
       success: true, entryPoint: 'asin', input: 'B0FB9MXHR1',
       brandScore: 48.8, label: 'Critical', capReasons: [],
       ratingDropDetails: [],
@@ -347,6 +347,7 @@ window.SAMPLE_CHIPS = [
     label:    'Hair Serum · 3.7★',
     cachedAt: '2026-06-03',
     data: {
+      flywheel: SAMPLE('B0C35WRR24'),
       success: true, entryPoint: 'asin', input: 'B0C35WRR24',
       brandScore: 60.8, label: 'At Risk', capReasons: [],
       ratingDropDetails: [],
@@ -377,6 +378,7 @@ window.SAMPLE_CHIPS = [
     label:    'Mini Camera · 3.9★',
     cachedAt: '2026-06-04',
     data: {
+      flywheel: SAMPLE('B0GXB717TN'),
       success: true, entryPoint: 'asin', input: 'B0GXB717TN',
       brandScore: 71.6, label: 'At Risk',
       capReasons: ['Rating dropped in the last 30 days'],

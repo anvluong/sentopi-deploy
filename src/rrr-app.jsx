@@ -679,97 +679,16 @@ function PillarCard({ name, metric, metricSub, score, max, flags }) {
 // order, same rules, so the homepage cockpit and this page read identically.
 // Returns null when the payload is absent, so an older cached response still
 // renders the signal detail below it on its own.
+/* The flywheel scorecard is rendered by flywheel-view.js, the same module the
+   homepage uses, so a behavioural fix lands on both surfaces at once. It used
+   to exist twice, once here in JSX and once in vanilla JS. The module escapes
+   every interpolated value, so the markup is safe to inject. */
 function Flywheel({ fw, riskAnnual }) {
-  if (!fw || !Array.isArray(fw.levers) || !fw.levers.length) return null;
-
-  const composite = (fw.compositeScore === null || fw.compositeScore === undefined)
-    ? null : fw.compositeScore;
-  const scoreLabel = composite === null
-    ? null
-    : (composite >= 75 ? 'strong' : composite >= 50 ? 'watch' : 'leaking');
-  const scoreWord = { strong: 'Healthy', watch: 'At risk', leaking: 'Leaking' };
-
-  // Only raise the alarm when the weakest lever is actually leaking or on watch.
-  // Flagging a "weakest lever" on a healthy brand trains the reader to ignore the
-  // callout on the day it matters.
-  const weak = fw.levers.find(l =>
-    l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking'));
-
-  // Surface every caveat the scorer attached rather than burying it. A score shown
-  // without the strength of the evidence behind it is the thing this product exists
-  // to stop.
-  const caveats = fw.levers
-    .filter(l => l.dataNote && l.status !== 'unmeasured')
-    .map(l => l.label + ': ' + l.dataNote);
-  const unmeasured = fw.levers.filter(l => l.status === 'unmeasured')
-    .map(l => l.label + (l.dataNote ? ': ' + l.dataNote : '.'));
-  const confBits = [];
-  if (unmeasured.length) confBits.push('Not measured from public data. ' + unmeasured.join(' '));
-  if (caveats.length) confBits.push(caveats.join(' '));
-
-  return (
-    <div className="fw-card animate-in">
-      <div className="fw">
-        <div className="fw-head">
-          <div className="fw-head-left">
-            <span className="fw-head-label">Flywheel</span>
-            {scoreLabel ? (
-              <>
-                <span className="fw-head-score">{Math.round(composite)}<span className="fw-out">/100</span></span>
-                <span className={`fw-chip ${scoreLabel}`}>{scoreWord[scoreLabel]}</span>
-              </>
-            ) : (
-              <span className="fw-chip unmeasured">Not enough data to score</span>
-            )}
-          </div>
-          {(riskAnnual !== null && riskAnnual !== undefined && riskAnnual > 0) && (
-            <div className="fw-head-risk">
-              <div className="fw-head-risk-label">Revenue at risk</div>
-              <div className="fw-head-risk-val">${Number(riskAnnual).toLocaleString()}<span className="fw-out">/yr</span></div>
-            </div>
-          )}
-        </div>
-
-        <div className="fw-grid">
-          {fw.levers.map(l => {
-            const un = l.status === 'unmeasured' || l.score === null || l.score === undefined;
-            const cls = ['fw-tile'];
-            if (un) cls.push('is-unmeasured');
-            else if (l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking')) cls.push('is-weak');
-            const m = l.metric || {};
-            return (
-              <div key={l.key} className={cls.join(' ')}>
-                <div className="fw-lever">{l.label || l.key}</div>
-                {un
-                  ? <div className="fw-score unmeasured">{'––'}</div>
-                  : <div className={`fw-score ${l.status}`}>{Math.round(l.score)}</div>}
-                {un ? (
-                  <div className="fw-note">Not measured</div>
-                ) : (
-                  <>
-                    <div className="fw-metric">{m.value || ''}</div>
-                    {m.delta && <div className={`fw-delta ${m.deltaDir || 'flat'}`}>{m.delta}</div>}
-                    {m.label && <div className="fw-note">{m.label}</div>}
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {weak && (
-          <div className="fw-weak">
-            <span className="fw-weak-mark">{'⚠'}</span>
-            <div>
-              <div className="fw-weak-title">Weakest lever: {weak.label}</div>
-              <div className="fw-weak-read">{weak.read || weak.headline || ''}</div>
-            </div>
-          </div>
-        )}
-        {confBits.length > 0 && <div className="fw-conf">{confBits.join(' ')}</div>}
-      </div>
-    </div>
-  );
+  const html = (typeof window !== 'undefined' && window.FlywheelView)
+    ? window.FlywheelView.render(fw, riskAnnual)
+    : '';
+  if (!html) return null;
+  return <div className="fw-card" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 // ─── Shared colgroup — both tables use identical widths for column alignment ──

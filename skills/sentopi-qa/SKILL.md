@@ -30,6 +30,7 @@ It checks, and FAILs the push on:
 - **Netlify form mismatch:** a JS `form-name` that no registered `data-netlify` form declares (Netlify rejects it).
 - **Committed secrets.**
 - **Page contract:** missing canonical or meta description on any page; a JSON-LD block that does not `JSON.parse`; Article `dateModified` out of sync with the page's sitemap `lastmod`; a sitemap `<loc>` that resolves to nothing; any monthly price string other than $149.
+- **Flywheel conformance:** any fixture sample without a flywheel payload; levers out of contract order; a `status` that disagrees with its score; an unmeasured lever with no stated reason; a `compositeScore`, `measuredCount` or `weakestKey` that does not recompute from its own levers; the generated landing block in `index.html` out of sync with `HERO_SAMPLES[0]`.
 
 WARNs (surface, don't block): AI-tells, placeholder/TODO text, missing viewport/title/GTM, anchors not found, multiple `<h1>`, meta description length outside 70-165 chars, an indexable page missing from the sitemap, an article footer missing the canonical link set.
 

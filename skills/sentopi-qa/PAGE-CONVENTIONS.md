@@ -44,3 +44,15 @@ Then: `node scripts/qa-check.mjs` and update `llms.txt` if the page belongs in C
 - Monthly price is $149 everywhere it appears. qa-check FAILs on any other monthly price string.
 - Every claim traces to a named source or our own dataset; sources render visibly and in schema `citation`.
 - No "not this, but that" contrast constructions.
+
+## The Retail Flywheel: one source, one renderer
+
+The flywheel scorecard appears on the homepage widget and on `/revenue-risk-report`, and its data comes from the Keepa functions, two fixture files, and a generated block in `index.html`. It is easy for those to drift apart, and they did: the homepage sample chips kept rendering the pre-flywheel card for a full session because each surface carried its own copy of the contract. The structure below exists to make that impossible rather than to make it unlikely.
+
+- **`flywheel-core.js`** owns the contract: lever order, weights, status thresholds, and how a composite is derived. Nothing else defines them. It loads in Node and the browser.
+- **`flywheel-view.js`** is the only renderer. `index.html` calls it directly; `src/rrr-app.jsx` wraps it in a component via `dangerouslySetInnerHTML` (the module escapes every value). Never write a second renderer: a behavioural fix must land on both surfaces at once.
+- **Fixtures declare levers, never summaries.** `demo-fixtures.js` and `priority-templates.js` wrap their lever arrays in `FW(...)`, which calls `flywheel-core.finalize()`. Composite, `measuredCount`, `weakestKey` and each lever's `status` are computed there, so a stated summary cannot disagree with the levers under it.
+- **The landing card is generated.** The block between the `GENERATED:LANDING` markers in `index.html` comes from `node scripts/gen-landing.mjs`, rendered from `HERO_SAMPLES[0]`. Never hand-edit it; regenerate. The gate fails if it drifts.
+- **A lever with no data is `unmeasured`, with a reason.** Never a zero, never a neutral placeholder. The gate rejects an unmeasured lever that gives no `dataNote`.
+
+The QA gate validates every fixture against the contract and fails when a sample has no flywheel at all. Adding a new sample surface means adding it to that check; a sample nothing validates is a sample that will silently render the wrong card.

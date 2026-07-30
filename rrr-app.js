@@ -864,94 +864,22 @@ function PillarCard({
 // order, same rules, so the homepage cockpit and this page read identically.
 // Returns null when the payload is absent, so an older cached response still
 // renders the signal detail below it on its own.
+/* The flywheel scorecard is rendered by flywheel-view.js, the same module the
+   homepage uses, so a behavioural fix lands on both surfaces at once. It used
+   to exist twice, once here in JSX and once in vanilla JS. The module escapes
+   every interpolated value, so the markup is safe to inject. */
 function Flywheel({
   fw,
   riskAnnual
 }) {
-  if (!fw || !Array.isArray(fw.levers) || !fw.levers.length) return null;
-  const composite = fw.compositeScore === null || fw.compositeScore === undefined ? null : fw.compositeScore;
-  const scoreLabel = composite === null ? null : composite >= 75 ? 'strong' : composite >= 50 ? 'watch' : 'leaking';
-  const scoreWord = {
-    strong: 'Healthy',
-    watch: 'At risk',
-    leaking: 'Leaking'
-  };
-
-  // Only raise the alarm when the weakest lever is actually leaking or on watch.
-  // Flagging a "weakest lever" on a healthy brand trains the reader to ignore the
-  // callout on the day it matters.
-  const weak = fw.levers.find(l => l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking'));
-
-  // Surface every caveat the scorer attached rather than burying it. A score shown
-  // without the strength of the evidence behind it is the thing this product exists
-  // to stop.
-  const caveats = fw.levers.filter(l => l.dataNote && l.status !== 'unmeasured').map(l => l.label + ': ' + l.dataNote);
-  const unmeasured = fw.levers.filter(l => l.status === 'unmeasured').map(l => l.label + (l.dataNote ? ': ' + l.dataNote : '.'));
-  const confBits = [];
-  if (unmeasured.length) confBits.push('Not measured from public data. ' + unmeasured.join(' '));
-  if (caveats.length) confBits.push(caveats.join(' '));
+  const html = typeof window !== 'undefined' && window.FlywheelView ? window.FlywheelView.render(fw, riskAnnual) : '';
+  if (!html) return null;
   return /*#__PURE__*/React.createElement("div", {
-    className: "fw-card animate-in"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "fw"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "fw-head"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "fw-head-left"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fw-head-label"
-  }, "Flywheel"), scoreLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-    className: "fw-head-score"
-  }, Math.round(composite), /*#__PURE__*/React.createElement("span", {
-    className: "fw-out"
-  }, "/100")), /*#__PURE__*/React.createElement("span", {
-    className: `fw-chip ${scoreLabel}`
-  }, scoreWord[scoreLabel])) : /*#__PURE__*/React.createElement("span", {
-    className: "fw-chip unmeasured"
-  }, "Not enough data to score")), riskAnnual !== null && riskAnnual !== undefined && riskAnnual > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "fw-head-risk"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "fw-head-risk-label"
-  }, "Revenue at risk"), /*#__PURE__*/React.createElement("div", {
-    className: "fw-head-risk-val"
-  }, "$", Number(riskAnnual).toLocaleString(), /*#__PURE__*/React.createElement("span", {
-    className: "fw-out"
-  }, "/yr")))), /*#__PURE__*/React.createElement("div", {
-    className: "fw-grid"
-  }, fw.levers.map(l => {
-    const un = l.status === 'unmeasured' || l.score === null || l.score === undefined;
-    const cls = ['fw-tile'];
-    if (un) cls.push('is-unmeasured');else if (l.key === fw.weakestKey && (l.status === 'watch' || l.status === 'leaking')) cls.push('is-weak');
-    const m = l.metric || {};
-    return /*#__PURE__*/React.createElement("div", {
-      key: l.key,
-      className: cls.join(' ')
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "fw-lever"
-    }, l.label || l.key), un ? /*#__PURE__*/React.createElement("div", {
-      className: "fw-score unmeasured"
-    }, '––') : /*#__PURE__*/React.createElement("div", {
-      className: `fw-score ${l.status}`
-    }, Math.round(l.score)), un ? /*#__PURE__*/React.createElement("div", {
-      className: "fw-note"
-    }, "Not measured") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-      className: "fw-metric"
-    }, m.value || ''), m.delta && /*#__PURE__*/React.createElement("div", {
-      className: `fw-delta ${m.deltaDir || 'flat'}`
-    }, m.delta), m.label && /*#__PURE__*/React.createElement("div", {
-      className: "fw-note"
-    }, m.label)));
-  })), weak && /*#__PURE__*/React.createElement("div", {
-    className: "fw-weak"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fw-weak-mark"
-  }, '⚠'), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "fw-weak-title"
-  }, "Weakest lever: ", weak.label), /*#__PURE__*/React.createElement("div", {
-    className: "fw-weak-read"
-  }, weak.read || weak.headline || ''))), confBits.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "fw-conf"
-  }, confBits.join(' '))));
+    className: "fw-card",
+    dangerouslySetInnerHTML: {
+      __html: html
+    }
+  });
 }
 
 // ─── Shared colgroup — both tables use identical widths for column alignment ──

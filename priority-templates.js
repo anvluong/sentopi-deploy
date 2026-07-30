@@ -88,6 +88,11 @@ window.PRIORITY_TEMPLATES = {
 /* Sample chips for the hero widget — same real ASINs as the Revenue Risk
    Report page, snapshot-shaped to mirror /api/product-lookup output.
    Cached June 2026; rendered client-side, zero API tokens spent. */
+/* Flywheel data comes from flywheel-samples.js, one definition per real ASIN
+   shared with the Revenue Risk Report chips, so the two surfaces cannot tell
+   different stories about the same product. */
+const SAMPLE = (asin) => (typeof window !== 'undefined' ? window.FLYWHEEL_SAMPLES : require('./flywheel-samples.js'))[asin];
+
 window.HERO_SAMPLES = [
   {
     asin:  'B0FB9MXHR1',
@@ -101,6 +106,7 @@ window.HERO_SAMPLES = [
       reviewCount: 4518, bsr: 519, bsrDelta90dPct: 201.7,
       price: 28.49, monthlySold: 10000, bbPct30d: 100,
       revRiskMonthly: 38746, revRiskBasis: 'chronic',
+      flywheel: SAMPLE('B0FB9MXHR1'),
     },
   },
   {
@@ -115,6 +121,7 @@ window.HERO_SAMPLES = [
       reviewCount: 1017, bsr: 13340, bsrDelta90dPct: 73.5,
       price: 29.95, monthlySold: 1000, bbPct30d: null,
       revRiskMonthly: 3654, revRiskBasis: 'chronic',
+      flywheel: SAMPLE('B0C35WRR24'),
     },
   },
   {
@@ -129,6 +136,7 @@ window.HERO_SAMPLES = [
       reviewCount: 82, bsr: 2155, bsrDelta90dPct: -98.5,
       price: 21.59, monthlySold: 1000, bbPct30d: 100,
       revRiskMonthly: 2029, revRiskBasis: 'drop',
+      flywheel: SAMPLE('B0GXB717TN'),
     },
   },
 ];

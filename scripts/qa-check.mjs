@@ -228,6 +228,76 @@ for (const f of [...html, ...jsx]) {
   });
 }
 
+/* ── 14. Flywheel conformance ────────────────────────────────────────── */
+// Every surface that shows a sample must ship flywheel data, and every payload
+// must agree with the contract. The homepage sample chips silently rendered the
+// pre-flywheel card for a full session because nothing asserted this.
+{
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  let core = null;
+  try {
+    core = require(join(ROOT, 'flywheel-core.js'));
+  } catch (e) {
+    fail(`flywheel-core.js failed to load (${e.message.slice(0, 60)}). Every flywheel surface depends on it.`);
+  }
+  if (core) {
+
+  try { require(join(ROOT, 'flywheel-view.js')); }
+  catch (e) { fail(`flywheel-view.js failed to load (${e.message.slice(0, 60)}).`); }
+
+  // Fixture files are browser scripts; give them the globals they expect.
+  // Shared per-ASIN samples must exist before any fixture that references them.
+  global.window = { FlywheelCore: core };
+  try { global.window.FLYWHEEL_SAMPLES = require(join(ROOT, 'flywheel-samples.js')); }
+  catch (e) { fail(`flywheel-samples.js failed to load (${e.message.slice(0, 60)}).`); }
+
+  const fixtureFiles = tracked("'*.js'").filter((f) =>
+    !f.includes('node_modules') && /fixtures|templates/i.test(f));
+  for (const f of fixtureFiles) {
+    try { require(join(ROOT, f)); }
+    catch (e) { fail(`${f} failed to load (${e.message.slice(0, 70)}).`); }
+  }
+
+  /* Discover every scored payload rather than naming the globals we happen to
+     know about. SAMPLE_CHIPS was a fourth fixture set nobody had listed, so it
+     kept rendering the pre-flywheel card while the enumerated sets passed. */
+  const found = [];
+  const seen = new Set();
+  const looksScored = (o) => o && typeof o === 'object' &&
+    (o.brandScore !== undefined || Array.isArray(o.products) ||
+     (o.asin !== undefined && o.rating !== undefined));
+  (function walk(node, path, depth) {
+    if (!node || typeof node !== 'object' || depth > 5 || seen.has(node)) return;
+    seen.add(node);
+    if (looksScored(node)) { found.push([path, node]); return; }
+    for (const [k, v] of Object.entries(node)) {
+      if (typeof v === 'function') continue;
+      walk(v, path ? `${path}.${k}` : k, depth + 1);
+    }
+  })(global.window, '', 0);
+
+  if (found.length < 3) {
+    warn(`Only ${found.length} scored sample payloads discovered. Did a fixture file move or change shape?`);
+  }
+  for (const [where, payload] of found) {
+    if (!payload.flywheel) {
+      fail(`${where}: scored sample has no flywheel payload. It will silently render the pre-flywheel card.`);
+      continue;
+    }
+    for (const err of core.validate(payload.flywheel, where)) fail(err);
+  }
+  }
+}
+
+/* ── 15. Generated landing block is in sync ──────────────────────────── */
+try {
+  execSync('node scripts/gen-landing.mjs --check', { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+} catch (e) {
+  const out = ((e.stderr || '') + (e.stdout || '')).toString().trim().split('\n')[0];
+  fail(`index.html landing block is out of sync with HERO_SAMPLES[0]. Regenerate: node scripts/gen-landing.mjs (${out})`);
+}
+
 /* ── Report ──────────────────────────────────────────────────────────── */
 const G = '\x1b[32m', R = '\x1b[31m', Y = '\x1b[33m', D = '\x1b[0m';
 console.log('\nSentopi pre-push QA gate\n========================');

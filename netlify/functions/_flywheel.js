@@ -16,11 +16,10 @@
  */
 
 const { daysAgoKeepa, parseCSV, parseBBTriplets } = require('./_keepa-utils');
-
-// Contract weights. Order of LEVER_ORDER is the render order and never changes.
-const LEVER_ORDER = ['operations', 'pricing', 'assortment', 'visibility', 'ratings'];
-const LEVER_WEIGHTS = { operations: 22, pricing: 22, assortment: 14, visibility: 20, ratings: 22 };
-const MIN_MEASURED_FOR_COMPOSITE = 3;
+/* Lever order, weights, thresholds and the composite rule live in exactly one
+   place so the scorer, both renderers, the fixtures and the QA gate cannot
+   disagree about what the contract says. */
+const { LEVER_ORDER, LEVER_WEIGHTS, MIN_MEASURED_FOR_COMPOSITE, statusFor } = require('../../flywheel-core.js');
 
 // A variant needs this many reviews before it is doing any real work in search.
 // Mirrors MIN_REVIEWS_FOR_ROLLUP in brand-health.js.
@@ -63,13 +62,6 @@ function sum(values) {
   let s = 0;
   for (const v of values) { const n = num(v); if (n !== null) s += n; }
   return s;
-}
-
-function statusFor(score) {
-  if (num(score) === null) return 'unmeasured';
-  if (score >= 75) return 'strong';
-  if (score >= 50) return 'watch';
-  return 'leaking';
 }
 
 // deltaDir where a RISING number is good (Buy Box share, rating, price).
