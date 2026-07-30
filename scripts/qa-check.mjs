@@ -290,7 +290,23 @@ for (const f of [...html, ...jsx]) {
   }
 }
 
-/* ── 15. Generated landing block is in sync ──────────────────────────── */
+/* ── 15. Single-source guards ────────────────────────────────────────── */
+// The rating-to-conversion table drives every dollar figure the site publishes.
+// It used to be copy-pasted into four files, one of which claimed in a comment
+// to be the single source of truth. A second definition means the calculator
+// and the report can quote different dollars for the same product.
+for (const f of [...js, ...jsx]) {
+  if (f === 'revenue-model.js') continue;
+  if (/const CONV_TABLE\s*=\s*\[/.test(read(f)))
+    fail(`${f} defines its own CONV_TABLE. The rating-to-conversion model lives only in revenue-model.js; import it instead.`);
+}
+for (const f of [...js, ...jsx]) {
+  if (f === 'flywheel-core.js') continue;
+  if (/const LEVER_WEIGHTS\s*=\s*\{/.test(read(f)))
+    fail(`${f} defines its own LEVER_WEIGHTS. The flywheel contract lives only in flywheel-core.js.`);
+}
+
+/* ── 16. Generated landing block is in sync ──────────────────────────── */
 try {
   execSync('node scripts/gen-landing.mjs --check', { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
 } catch (e) {

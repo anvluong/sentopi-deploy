@@ -1,24 +1,11 @@
 const { useState, useCallback } = React;
 
 // ─── Conversion rate model — identical to calculator.html ─────────────────────
-const CONV_TABLE = [
-  { r: 1.0, i: 0.40 }, { r: 2.0, i: 0.55 }, { r: 2.5, i: 0.65 },
-  { r: 3.0, i: 0.75 }, { r: 3.5, i: 0.85 }, { r: 4.0, i: 0.92 },
-  { r: 4.2, i: 0.96 }, { r: 4.5, i: 1.00 }, { r: 4.7, i: 0.99 },
-  { r: 5.0, i: 0.87 },
-];
-function convRate(rating) {
-  if (!rating || rating <= CONV_TABLE[0].r) return CONV_TABLE[0].i;
-  if (rating >= CONV_TABLE[CONV_TABLE.length - 1].r) return CONV_TABLE[CONV_TABLE.length - 1].i;
-  for (let j = 0; j < CONV_TABLE.length - 1; j++) {
-    const lo = CONV_TABLE[j], hi = CONV_TABLE[j + 1];
-    if (rating >= lo.r && rating <= hi.r) {
-      const t = (rating - lo.r) / (hi.r - lo.r);
-      return lo.i + t * (hi.i - lo.i);
-    }
-  }
-  return 0.92;
-}
+/* Rating-to-conversion model lives in revenue-model.js so the calculator, the
+   report and the two Keepa functions cannot quote different dollars for the
+   same product. Loaded by the page before this bundle. */
+const convRate = (rating) => window.RevenueModel.convRate(rating);
+
 
 function calcRevenueAtRisk(units, price, ratingBefore, ratingNow) {
   if (!units || !price || !ratingBefore || !ratingNow) return 0;
