@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Tag Manager -->
+<script>if(/(^|\.)sentopi\.com$/.test(location.hostname)){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MLF5DHCH');}</script>
+<!-- End Google Tag Manager -->
+<title>Amazon Sales Drop Diagnostic: Find Which Lever Broke | Sentopi</title>
+<meta name="description" content="Free diagnostic: paste four numbers from Seller Central and find out whether your Amazon sales drop is a traffic, conversion, or stockout problem, with the checks to run.">
+<link rel="canonical" href="https://sentopi.com/sales-drop-diagnostic">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sentopi.com/sales-drop-diagnostic">
+<meta property="og:title" content="Amazon Sales Drop Diagnostic: Find Which Lever Broke">
+<meta property="og:description" content="Enter sessions and conversion from Seller Central. The diagnostic tells you which half of the funnel broke, the causes to check first, and your estimated monthly gap.">
+<meta property="og:site_name" content="Sentopi">
+<meta property="og:image" content="https://sentopi.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Amazon Sales Drop Diagnostic: Find Which Lever Broke">
+<meta name="twitter:description" content="Four numbers in, one verdict out: traffic problem, conversion problem, or stockout. Free, no email.">
+<meta name="twitter:image" content="https://sentopi.com/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sentopi Sales Drop Diagnostic",
+  "url": "https://sentopi.com/sales-drop-diagnostic",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "Free interactive diagnostic for a sudden Amazon sales drop. Enter sessions and conversion rate from Seller Central for this period and the prior period; the tool identifies whether the drop is a visibility, conversion, or operations problem, ranks the likely causes with the exact check for each, and estimates the monthly revenue gap from your own numbers.",
+  "featureList": [
+    "Sessions-versus-conversion fork computed from your own Seller Central numbers",
+    "Ranked cause list per branch, each with the specific report to check",
+    "Estimated monthly revenue gap from your sessions, conversion, and price",
+    "No email, no account, runs in the browser"
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free, no email required." },
+  "publisher": { "@type": "Organization", "name": "Sentopi", "url": "https://sentopi.com" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sentopi.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Free Tools", "item": "https://sentopi.com/tools" },
+    { "@type": "ListItem", "position": 3, "name": "Sales Drop Diagnostic" }
+  ]
+}
+</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream:    #faf7f2;
+  --cream2:   #f2ece0;
+  --cream3:   #e5d9c8;
+  --ink:      #1a1714;
+  --ink2:     #2e2a25;
+  --ink3:     #4a443c;
+  --ink4:     #6b6358;
+  --ink5:     #7a6e65;
+  --forest:   #059669;
+  --forest2:  #047857;
+  --forest-lt:#d1fae5;
+  --ochre:    #ea580c;
+  --amber-lt: #fef3c7;
+  --red-lt:   #fee2e2;
+  --white:    #ffffff;
+  --r:        4px;
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--cream); color: var(--ink2); -webkit-font-smoothing: antialiased; }
+
+.nav { background: rgba(255,255,255,0.97); backdrop-filter: blur(16px); border-bottom: 1px solid var(--cream3); position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+.nav-back { font-size: 0.8125rem; color: var(--ink4); text-decoration: none; }
+.nav-back:hover { color: var(--ink); }
+.nav-cta { display: inline-flex; align-items: center; gap: 6px; background: var(--ochre); color: #fff; font-size: 0.8125rem; font-weight: 500; padding: 8px 18px; border-radius: var(--r); text-decoration: none; transition: background 0.15s, transform 0.15s; }
+.nav-cta:hover { background: #c94d0a; transform: translateY(-1px); }
+@media (max-width: 600px) { .nav-inner { padding: 0 20px; } .nav-back { display: none; } }
+
+.page { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+.hero-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--forest); margin-bottom: 10px; }
+h1 { font-family: 'DM Serif Display', serif; font-size: 2.1rem; font-weight: 400; letter-spacing: -0.02em; color: var(--ink); line-height: 1.15; margin-bottom: 12px; }
+.hero-sub { font-size: 1.02rem; color: var(--ink4); line-height: 1.65; margin-bottom: 34px; max-width: 620px; }
+
+.tool { background: var(--white); border: 1px solid var(--cream3); border-radius: 12px; padding: 28px; margin-bottom: 34px; }
+.tool-h { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.tool-note { font-size: 0.8rem; color: var(--ink5); margin-bottom: 18px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+.fld label { display: block; font-size: 0.78rem; font-weight: 500; color: var(--ink3); margin-bottom: 5px; }
+.fld input { width: 100%; padding: 10px 12px; font: inherit; font-size: 0.95rem; border: 1px solid var(--cream3); border-radius: var(--r); background: var(--cream); color: var(--ink); }
+.fld input:focus { outline: 2px solid var(--forest); outline-offset: -1px; background: var(--white); }
+.opt-row { margin-top: 14px; }
+.run-btn { margin-top: 20px; width: 100%; padding: 13px; font: inherit; font-size: 0.95rem; font-weight: 600; color: #fff; background: var(--forest); border: none; border-radius: var(--r); cursor: pointer; transition: background 0.15s; }
+.run-btn:hover { background: var(--forest2); }
+.err { display: none; margin-top: 12px; font-size: 0.82rem; color: #b91c1c; }
+
+#verdict { display: none; }
+.v-card { border-radius: 12px; padding: 26px 28px; margin-bottom: 18px; border: 1px solid var(--cream3); background: var(--white); }
+.v-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
+.v-tag.viz { background: var(--amber-lt); color: #92400e; }
+.v-tag.conv { background: var(--red-lt); color: #991b1b; }
+.v-tag.ops { background: var(--forest-lt); color: var(--forest2); }
+.v-title { font-family: 'DM Serif Display', serif; font-size: 1.45rem; color: var(--ink); margin-bottom: 8px; }
+.v-read { font-size: 0.95rem; color: var(--ink3); line-height: 1.65; }
+.v-read b { color: var(--ink); }
+.gap-strip { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--cream3); }
+.gap-cell .n { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--ochre); }
+.gap-cell .l { font-size: 0.75rem; color: var(--ink5); }
+.causes-h { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink4); margin: 22px 0 10px; }
+.cause { border: 1px solid var(--cream3); background: var(--white); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+.cause b { display: block; font-size: 0.95rem; color: var(--ink); margin-bottom: 4px; }
+.cause p { font-size: 0.85rem; color: var(--ink4); line-height: 1.6; }
+.cause .chk { display: block; margin-top: 8px; font-size: 0.82rem; color: var(--ink3); background: var(--cream); border-radius: var(--r); padding: 8px 10px; }
+.cause .chk b { display: inline; font-size: inherit; }
+.cause a { color: var(--forest); }
+.v-cta { background: #120f0c; border-radius: 12px; padding: 26px 28px; margin-top: 22px; text-align: center; }
+.v-cta h3 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400; color: #fff; margin-bottom: 8px; }
+.v-cta p { font-size: 0.88rem; color: rgba(255,255,255,0.65); margin-bottom: 16px; }
+.v-cta a { display: inline-block; background: var(--ochre); color: #fff; font-weight: 500; font-size: 0.9rem; padding: 12px 24px; border-radius: var(--r); text-decoration: none; }
+.v-cta a:hover { background: #c94d0a; }
+
+.meth { margin-top: 40px; border-top: 1px solid var(--cream3); padding-top: 24px; }
+.meth h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--ink); margin-bottom: 12px; }
+.meth p, .meth li { font-size: 0.88rem; color: var(--ink4); line-height: 1.7; }
+.meth ul { padding-left: 20px; margin: 10px 0; }
+.meth a { color: var(--forest); }
+.meth .lim { background: var(--cream2); border-radius: var(--r); padding: 12px 14px; margin-top: 12px; font-size: 0.82rem; color: var(--ink3); }
+
+.foot { background: #120f0c; padding: 36px 24px; }
+.foot-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.foot-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: rgba(255,255,255,0.85); }
+.foot-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+.foot-links a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; }
+.foot-links a:hover { color: rgba(255,255,255,0.85); }
+.foot-copy { font-size: 0.76rem; color: rgba(255,255,255,0.35); }
+
+@media (max-width: 600px) { .grid2 { grid-template-columns: 1fr; } h1 { font-size: 1.7rem; } .page { padding: 36px 20px 60px; } }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLF5DHCH" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Sentopi</a>
+    <a href="/tools" class="nav-back">&#8592; All free tools</a>
+    <a href="/revenue-risk-report" class="nav-cta">Run your Revenue Risk Report &#8594;</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero-eyebrow">Free Tool</div>
+  <h1>Your Amazon sales dropped. Find which lever broke.</h1>
+  <p class="hero-sub">Pull four numbers from Seller Central (Business Reports &#8594; Detail Page Sales and Traffic) and get the same first read a category manager would run: did traffic break, or did conversion? No email, no account.</p>
+
+  <div class="tool">
+    <div class="tool-h">This period vs. the same window before the drop</div>
+    <div class="tool-note">Use matching windows: this week vs. the week before, or this month vs. last month. Seasonal category? Compare to the same weeks last year instead.</div>
+    <div class="grid2">
+      <div class="fld"><label for="s-then">Sessions, before</label><input id="s-then" type="number" min="0" inputmode="numeric" placeholder="e.g. 4200"></div>
+      <div class="fld"><label for="s-now">Sessions, now</label><input id="s-now" type="number" min="0" inputmode="numeric" placeholder="e.g. 3900"></div>
+      <div class="fld"><label for="c-then">Conversion rate %, before</label><input id="c-then" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="e.g. 12.5"></div>
+      <div class="fld"><label for="c-now">Conversion rate %, now</label><input id="c-now" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="e.g. 9.8"></div>
+    </div>
+    <div class="opt-row fld"><label for="price">Average selling price in $ (optional, unlocks the revenue gap estimate)</label><input id="price" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 34.99"></div>
+    <button class="run-btn" id="run">Run the diagnostic</button>
+    <div class="err" id="err">Enter all four sessions and conversion numbers first. Conversion is the unit session percentage from Business Reports.</div>
+  </div>
+
+  <div id="verdict"></div>
+
+  <div class="meth">
+    <h2>How this works, and where the logic comes from</h2>
+    <p>The fork is simple arithmetic on your own numbers. A move of more than 10% against the comparison window counts as a real change; under that we call it flat, because normal week-to-week noise on Amazon routinely swings single digits. The branch logic and cause rankings come from our long-form diagnostic, <a href="/why-are-my-amazon-sales-down">Why Are My Amazon Sales Down?</a>, which cites the underlying evidence: seller analyses attribute roughly 80% of sudden drops to a lost Buy Box, a dropped rank, or an uncompetitive price (<a href="https://mikebegg.me/blog/why-are-my-amazon-sales-down-2026" target="_blank" rel="noopener">Begg, 2026</a>); stockout recovery typically takes two to four weeks (<a href="https://www.8fig.co/blog/running-out-of-stock-amazon/" target="_blank" rel="noopener">8fig, 2026</a>); and negative reviews move sales more than positive ones (<a href="https://www.nber.org/papers/w10148" target="_blank" rel="noopener">Chevalier &amp; Mayzlin, 2006</a>).</p>
+    <p>The revenue gap estimate is your own data multiplied through: units = sessions &#215; conversion, and the gap is the difference in units between the two windows at your average selling price. It is a description of what already changed, not a forecast.</p>
+    <div class="lim"><b>Limits:</b> the tool reads the two numbers you give it and nothing else. It cannot see seasonality, ad spend changes, or category shifts, so rule those out with the same-weeks-last-year comparison before acting. Runs entirely in your browser; we never see your numbers.</div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <span class="foot-logo">Sentopi</span>
+    <nav class="foot-links">
+      <a href="/tools">Free Tools</a>
+      <a href="/revenue-risk-report">Revenue Risk Report</a>
+      <a href="/star-rating-calculator">Star Rating Calculator</a>
+      <a href="/guides">Guides</a>
+      <a href="/why-are-my-amazon-sales-down">Sales Drop Guide</a>
+      <a href="/legal">Legal</a>
+    </nav>
+    <span class="foot-copy">&copy; 2026 Sentopi. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var CAUSES = {
+    buybox: { tag: 'Conversion &#183; same day', name: 'You lost the Buy Box.', body: 'The large majority of sales go through the Buy Box; losing it erases units overnight while the listing looks untouched. Usual triggers: a competitor beat your price, low stock, or a slipped fulfillment metric.', chk: '<b>Check:</b> Buy Box (Featured Offer) percentage by day, in Business Reports. A cliff there is your answer.' },
+    rank: { tag: 'Traffic &#183; gradual', name: 'Your organic rank slipped.', body: 'If sessions fell on your main keywords, the algorithm stopped ranking you where it did. Sponsored ads crowd more of the first screen every year, so organic slots are harder to hold.', chk: '<b>Check:</b> organic rank and glance views on your top three terms, week over week.' },
+    price: { tag: 'Conversion &#183; fast', name: 'Your price stopped being competitive.', body: 'Price on Amazon is relative. Your number can sit untouched for months and still become the expensive option the day a rival cuts theirs.', chk: '<b>Check:</b> your price versus the comparable listing today, and whether a new competitor undercut you.' },
+    stock: { tag: 'Both &#183; fast', name: 'You ran out of stock, or nearly.', body: 'A stockout costs twice: missed sales while the shelf is empty, and lost organic rank that takes two to four weeks to recover.', chk: '<b>Check:</b> in-stock rate and any recent zero-inventory hours on the ASIN.' },
+    review: { tag: 'Conversion &#183; quiet', name: 'A fresh negative review landed at the top.', body: 'Amazon often surfaces a recent negative review near the top of the listing; one landing there can tank conversion overnight with traffic unchanged. This is the cause sellers check last, and it compounds while they look elsewhere.', chk: '<b>Check:</b> your most recent reviews and whether your displayed rating moved. <a href="/revenue-risk-report">The free Revenue Risk Report</a> reads the rating trajectory for you.' }
+  };
+  var BRANCHES = {
+    viz: { cls: 'viz', label: 'Traffic problem', title: 'Sessions fell. Fewer people are seeing the listing.', read: 'Your conversion held, so the listing still persuades the people who reach it. The leak is upstream: <b>Visibility</b>. Work the causes below in order; the binary ones cut fastest.', causes: ['rank', 'stock', 'buybox'] },
+    conv: { cls: 'conv', label: 'Conversion problem', title: 'Conversion fell. Same traffic, fewer buyers.', read: 'Your sessions held, so discovery is fine. Something on the listing stopped persuading: <b>Pricing, Ratings, or the Buy Box</b>. Work the causes below in order.', causes: ['buybox', 'price', 'review'] },
+    ops: { cls: 'ops', label: 'Both fell', title: 'Sessions and conversion fell together. Suspect a stockout.', read: 'When both halves of the funnel break at once, the usual culprit is <b>Operations</b>: a stockout or near-stockout takes down traffic and conversion together. Rule it out first, then work the rest.', causes: ['stock', 'buybox', 'rank', 'price', 'review'] },
+    flat: { cls: 'ops', label: 'No clear break', title: 'Neither moved more than 10%. This may not be a funnel problem.', read: 'Sessions and conversion are both within normal noise. Before changing anything, check <b>seasonality</b> (same weeks last year), <b>ad spend</b> changes, and whether the drop is concentrated in one child ASIN. A flat funnel with falling revenue can also mean a price change quietly shifted your average order value.', causes: ['stock', 'review'] }
+  };
+  function pct(then, now) { return then > 0 ? (now - then) / then : 0; }
+  function fmtMoney(n) {
+    if (n >= 1000) return '$' + Math.round(n / 100) / 10 + 'K';
+    return '$' + Math.round(n);
+  }
+  function fmtPct(p) { return (p > 0 ? '+' : '') + Math.round(p * 100) + '%'; }
+  document.getElementById('run').addEventListener('click', function () {
+    var sThen = parseFloat(document.getElementById('s-then').value);
+    var sNow = parseFloat(document.getElementById('s-now').value);
+    var cThen = parseFloat(document.getElementById('c-then').value);
+    var cNow = parseFloat(document.getElementById('c-now').value);
+    var price = parseFloat(document.getElementById('price').value);
+    var err = document.getElementById('err');
+    if (!(sThen >= 0) || !(sNow >= 0) || !(cThen >= 0) || !(cNow >= 0) || sThen === 0 || cThen === 0) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    var ds = pct(sThen, sNow), dc = pct(cThen, cNow);
+    var T = 0.10;
+    var key = (ds < -T && dc < -T) ? 'ops' : (ds < -T) ? 'viz' : (dc < -T) ? 'conv' : 'flat';
+    var b = BRANCHES[key];
+    var unitsThen = sThen * cThen / 100, unitsNow = sNow * cNow / 100;
+    var gap = Math.max(0, unitsThen - unitsNow);
+    var html = '<div class="v-card"><span class="v-tag ' + b.cls + '">' + b.label + '</span>' +
+      '<div class="v-title">' + b.title + '</div><p class="v-read">' + b.read + '</p>' +
+      '<div class="gap-strip">' +
+      '<div class="gap-cell"><div class="n">' + fmtPct(ds) + '</div><div class="l">sessions</div></div>' +
+      '<div class="gap-cell"><div class="n">' + fmtPct(dc) + '</div><div class="l">conversion</div></div>' +
+      '<div class="gap-cell"><div class="n">' + Math.round(gap) + '</div><div class="l">units lost per window</div></div>' +
+      (price > 0 ? '<div class="gap-cell"><div class="n">' + fmtMoney(gap * price) + '</div><div class="l">est. revenue gap per window, at your ' + '$' + price + ' ASP</div></div>' : '') +
+      '</div></div>';
+    html += '<div class="causes-h">Check these, in this order</div>';
+    for (var i = 0; i < b.causes.length; i++) {
+      var c = CAUSES[b.causes[i]];
+      html += '<div class="cause"><b>' + (i + 1) + '. ' + c.name + '</b><p>' + c.body + '</p><span class="chk">' + c.chk + '</span></div>';
+    }
+    html += '<div class="v-cta"><h3>If the fork points at ratings or the listing</h3>' +
+      '<p>The Revenue Risk Report reads your rating trajectory, Buy Box share, and BSR from live Amazon signals and puts a dollar figure on each. Free, ~30 seconds, no email.</p>' +
+      '<a href="/revenue-risk-report">Run the free Revenue Risk Report &#8594;</a></div>';
+    var v = document.getElementById('verdict');
+    v.innerHTML = html;
+    v.style.display = 'block';
+    v.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.dataLayer) window.dataLayer.push({ event: 'diagnostic_run', diagnostic_branch: key });
+  });
+})();
+</script>
+</body>
+</html>

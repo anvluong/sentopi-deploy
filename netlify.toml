@@ -26,6 +26,16 @@
   status = 200
 
 [[redirects]]
+  from = "/sales-drop-diagnostic"
+  to = "/sales-drop-diagnostic.html"
+  status = 200
+
+[[redirects]]
+  from = "/tools"
+  to = "/tools.html"
+  status = 200
+
+[[redirects]]
   from = "/listing-accuracy"
   to = "/listing-accuracy.html"
   status = 200
