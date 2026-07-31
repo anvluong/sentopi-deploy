@@ -158,6 +158,7 @@ body {
   display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start;
 }
 @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .nav-cta { display: none; } }
 
 /* ── Panel (shared card shell) ── */
 .panel {
@@ -378,7 +379,7 @@ input[type="range"] { accent-color: var(--forest); width: 100%; }
 <nav class="nav">
   <div class="nav-inner">
     <a href="/" class="nav-logo">Sentopi</a>
-    <a href="/" class="nav-back">&#8592; Back to Sentopi</a>
+    <a href="/tools" class="nav-back">&#8592; All free tools</a>
     <a href="/revenue-risk-report" class="nav-cta">Run your Revenue Risk Report &#8594;</a>
   </div>
 </nav>

@@ -997,7 +997,9 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 
 /* ─────────────── RESPONSIVE ─────────────── */
 @media (max-width: 960px) {
-  .nav-links { display: none; }
+  /* Keep wayfinding at every width: compact links instead of hiding them */
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 0.8rem; }
   .hero-inner {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -1020,6 +1022,10 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 @media (max-width: 600px) {
   /* Nav scrolls away on mobile — the bottom sticky CTA is the persistent button */
   .nav { position: static; }
+  /* The sticky CTA owns conversion on phones; the top bar keeps the nav links */
+  .nav-cta { display: none; }
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 0.78rem; }
   .hero { padding: 28px 0 56px; }
   .section { padding: 72px 0; }
   .container { padding: 0 20px; }
