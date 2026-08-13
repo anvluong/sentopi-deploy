@@ -112,7 +112,7 @@ Agent judgment, not scripted. Walk every page and confirm intent, not syntax.
 - **Every page leads somewhere we want.** No dead ends. Nav and primary CTAs reach a sign-up or an instant tool. `success.html` cross-sells the instant tool.
 - **Instant-tool-first for cold traffic.** Ad and landing entry points lead with a tool, not a context-free email form. Content pages may capture email for the deeper report, because that offer maps to the 48hr report rather than the instant tool. That is intentional. Confirm it still holds.
 - **Copy register:** painkiller framing, no AI-tells, "insight and action engine" and not "analytics tool". Delivery time stays honest at the form ("within 48 hours") even though lead CTAs drop "48hr".
-- **Routing decisions in flight:** when an anchor is being retired, confirm CTAs were repointed and not merely recopied.
+- **Routing decisions in flight:** when an anchor is being retired, confirm the CTAs actually moved to the new destination. Recopied text with an old href is the failure here.
 
 ---
 
