@@ -215,7 +215,7 @@ for (const f of html) {
 }
 
 /* ── 13. Article footer link set + price [gate:price-drift] ──────────── */
-const FOOT_LINKS = ['/', '/revenue-risk-report', '/guides'];
+const FOOT_LINKS = ['/', '/revenue-risk-report', '/tools', '/guides'];
 for (const f of html) {
   const c = read(f);
   const foot = c.match(/<footer\s+class="art-foot">([\s\S]*?)<\/footer>/);
