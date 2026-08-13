@@ -16,6 +16,7 @@
 import { execSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { checkSkillDrift } from './qa-skill-drift.mjs';
 
 const ROOT = process.cwd();
 const fails = [];
@@ -38,7 +39,7 @@ const jsx  = tracked("'src/*.jsx'");
 const js   = tracked("'*.js'").filter((f) => !f.includes('node_modules'));
 const allCode = [...html, ...jsx, ...js];
 
-/* ── 1. Compiled apps in sync with their src/*.jsx sources ───────────── */
+/* ── 1. Compiled apps in sync with their src/*.jsx sources [gate:compiled-drift] ── */
 for (const [srcF, outF] of [['src/rrr-app.jsx', 'rrr-app.js'], ['src/calc-app.jsx', 'calc-app.js']]) {
   if (!existsSync(join(ROOT, srcF)) || !existsSync(join(ROOT, outF))) continue;
   let out;
@@ -54,13 +55,13 @@ for (const [srcF, outF] of [['src/rrr-app.jsx', 'rrr-app.js'], ['src/calc-app.js
     fail(`${outF} is OUT OF SYNC with ${srcF}. Recompile: npx babel ${srcF} --presets @babel/preset-react -o ${outF}`);
 }
 
-/* ── 2. JS syntax (parse-only) ───────────────────────────────────────── */
+/* ── 2. JS syntax (parse-only) [gate:js-syntax] ──────────────────────── */
 for (const f of js) {
   try { execSync(`node --check ${JSON.stringify(f)}`, { cwd: ROOT, stdio: 'ignore' }); }
   catch { fail(`JS syntax error in ${f} (node --check failed).`); }
 }
 
-/* ── 3. Stale lead-CTA copy ──────────────────────────────────────────── */
+/* ── 3. Stale lead-CTA copy [gate:stale-cta] ─────────────────────────── */
 for (const f of allCode) {
   read(f).split('\n').forEach((ln, i) => {
     if (/Get My Free|Free 48hr Report|\b48hr Report\b/.test(ln))
@@ -68,7 +69,7 @@ for (const f of allCode) {
   });
 }
 
-/* ── 4. Visible em-dashes in copy surfaces (comments stripped) ───────── */
+/* ── 4. Visible em-dashes in copy surfaces (comments stripped) [gate:em-dash] ── */
 // Scope: .html + src/*.jsx (where marketing copy lives). Comments are blanked
 // in place (positions preserved) so multi-line /* */ and <!-- --> don't false-trip.
 // Generated rrr-app.js and backend .js notes are out of scope (see SKILL Tier 3).
@@ -78,11 +79,11 @@ const blankComments = (s) => s
   .replace(/(^|[^:])\/\/[^\n]*/g, (m, p1) => p1 + ' '.repeat(m.length - p1.length));
 for (const f of [...html, ...jsx]) {
   blankComments(read(f)).split('\n').forEach((ln, i) => {
-    if (ln.includes('—')) fail(`Em-dash in visible copy ${f}:${i + 1}: brand rule, use a colon, semicolon, or period.`);
+    if (ln.includes('—')) fail(`Em-dash in visible copy ${f}:${i + 1}: brand rule, use a spaced hyphen, a comma, or a period.`);
   });
 }
 
-/* ── 5. AI-tells / placeholders (WARN) ───────────────────────────────── */
+/* ── 5. AI-tells / placeholders [warn-only] ──────────────────────────── */
 const tells = /\b(of course|in conclusion|it'?s worth noting|needless to say|rest assured)\b/i;
 const placeholders = /\b(lorem ipsum|TODO|FIXME|PLACEHOLDER|TBD)\b/;
 for (const f of html) {
@@ -92,7 +93,7 @@ for (const f of html) {
   });
 }
 
-/* ── 6. Internal links + anchors resolve ─────────────────────────────── */
+/* ── 6. Internal links + anchors resolve [gate:broken-link] ──────────── */
 const toml = read('netlify.toml');
 const redirects = {};
 {
@@ -129,7 +130,7 @@ for (const f of html) {
   }
 }
 
-/* ── 7. Netlify form integrity ───────────────────────────────────────── */
+/* ── 7. Netlify form integrity [gate:netlify-form] ───────────────────── */
 const registered = new Set();
 for (const f of html) {
   const c = read(f);
@@ -148,7 +149,7 @@ for (const f of allCode) {
   }
 }
 
-/* ── 8. Meta hygiene (WARN) ──────────────────────────────────────────── */
+/* ── 8. Meta hygiene [warn-only] ─────────────────────────────────────── */
 for (const f of html) {
   const c = read(f);
   if (!/<meta[^>]+name=["']viewport["']/.test(c)) warn(`${f}: missing viewport meta.`);
@@ -158,14 +159,14 @@ for (const f of html) {
   if (!/GTM-[A-Z0-9]+/.test(c)) warn(`${f}: no GTM container found (analytics may be missing).`);
 }
 
-/* ── 9. Secret scan (tracked, non-binary) ────────────────────────────── */
+/* ── 9. Secret scan (tracked, non-binary) [gate:secrets] ─────────────── */
 const secretPat = /(api[_-]?key|secret|password|token)\s*[:=]\s*["'][A-Za-z0-9_\-]{20,}["']|AKIA[0-9A-Z]{16}|sk_live_[0-9A-Za-z]{10,}/i;
 for (const f of tracked()) {
   if (/\.(png|jpe?g|gif|webp|ico|svg|woff2?|ttf|pdf)$/i.test(f) || f.includes('node_modules') || f.endsWith('qa-check.mjs')) continue;
   if (secretPat.test(read(f))) fail(`Possible secret committed in ${f}. Move it to an env var / gitignored .env.`);
 }
 
-/* ── 10. Page contract: canonical + meta description ─────────────────── */
+/* ── 10. Page contract [gate:canonical] [gate:meta-description] ──────── */
 // Every page (success.html included, it carries both for hygiene) must have a
 // canonical URL and a meta description. Length is advisory only.
 for (const f of html) {
@@ -178,7 +179,7 @@ for (const f of html) {
     warn(`${f}: meta description is ${desc[1].length} chars (aim for 70-165).`);
 }
 
-/* ── 11. JSON-LD blocks must parse ───────────────────────────────────── */
+/* ── 11. JSON-LD blocks must parse [gate:jsonld-parse] ───────────────── */
 for (const f of html) {
   const c = read(f);
   let n = 0;
@@ -189,7 +190,7 @@ for (const f of html) {
   }
 }
 
-/* ── 12. Freshness + sitemap consistency ─────────────────────────────── */
+/* ── 12. Freshness + sitemap [gate:sitemap-loc] [gate:datemodified-lastmod] ── */
 // Article dateModified must equal the page's sitemap lastmod (the drift class
 // behind the July merge conflicts). Every sitemap loc must resolve to a file;
 // every indexable page must appear in the sitemap.
@@ -213,7 +214,7 @@ for (const f of html) {
     warn(`${f}: not reachable from sitemap.xml (add an entry or note why).`);
 }
 
-/* ── 13. Article footer link set + price consistency ─────────────────── */
+/* ── 13. Article footer link set + price [gate:price-drift] ──────────── */
 const FOOT_LINKS = ['/', '/revenue-risk-report', '/guides'];
 for (const f of html) {
   const c = read(f);
@@ -231,6 +232,11 @@ for (const f of [...html, ...jsx]) {
     }
   });
 }
+
+/* ── 14. The skill's check table equals this file [gate:skill-drift] ─── */
+// Registered on both sides, the way GoutSafe's qa:skill-drift is. Lives in
+// its own module so CI can run it alone in ~200ms with no install.
+for (const m of checkSkillDrift()) fail(m);
 
 /* ── Report ──────────────────────────────────────────────────────────── */
 const G = '\x1b[32m', R = '\x1b[31m', Y = '\x1b[33m', D = '\x1b[0m';

@@ -1,0 +1,37 @@
+# Guards the sentopi-qa skill against drifting from the gate it documents.
+#
+# Why this exists separately from the pre-push hook: the hook is local and
+# only runs on a clone that has `core.hooksPath` set. This is the server-side
+# copy, and it is filtered to the files that can cause skill drift so it stays
+# cheap. The guard imports only node builtins, so there is no install step.
+#
+# Caveat, learned on GoutSafe 2026-08-13: GitHub evaluates `paths` PER PUSH,
+# not per commit. A push that mixes a SKILL.md edit with a site edit runs this
+# workflow regardless of the filter. That is fine here (running more often is
+# the safe direction) but it means this file is not evidence of isolation.
+name: Sentopi Skills
+
+on:
+  push:
+    paths:
+      - '.claude/skills/**'
+      - 'scripts/qa-check.mjs'
+      - 'scripts/qa-skill-drift.mjs'
+      - '.github/workflows/skills.yml'
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - 'scripts/qa-check.mjs'
+      - 'scripts/qa-skill-drift.mjs'
+      - '.github/workflows/skills.yml'
+
+jobs:
+  skill-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: sentopi-qa SKILL.md matches qa-check.mjs
+        run: node scripts/qa-skill-drift.mjs

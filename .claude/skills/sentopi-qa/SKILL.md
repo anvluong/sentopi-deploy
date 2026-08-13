@@ -1,78 +1,140 @@
 ---
 name: sentopi-qa
-description: "Run the Sentopi site QA gate before pushing to main. Use this skill whenever you are about to push, commit for deploy, or ship changes to the Sentopi site (sentopi-deploy), or when the user says 'QA the site', 'ready to push', 'pre-push check', 'run QA', or 'check before deploy'. Verifies copy, routing/funnel, build integrity, Netlify forms, analytics, and (for risky changes) live behavior. Auto-fixes mechanical issues and surfaces judgment calls for review."
+description: "The Sentopi site gate, for sentopi-deploy only. Four modes: `static` is the free deterministic qa-check.mjs pass the pre-push hook also runs, `behavioral` adds the mocked funnel pass, `visual` adds screenshots and the 45-point rubric, `full` adds the funnel and copy read. Use before pushing sentopi-deploy, or when Oliver says 'gate the Sentopi site', 'Sentopi pre-push check', or 'is Sentopi ready to push'. The single definition of this gate: sentopi-fix-cycle and ux-review call it by mode rather than restating it. Not GoutSafe, use goutsafe-qa."
 ---
 
 # Sentopi QA
 
-Pre-push quality gate for the Sentopi site (`sentopi-deploy`). Complete this **before every push to `main`**. A git pre-push hook also runs the automated tier and blocks the push on failure, but this skill covers the parts a script can't: behavioral verification and funnel/strategy judgment.
+The single definition of the gate for `sentopi-deploy`. `sentopi-fix-cycle` and `ux-review` call this skill **by mode** rather than restating it, because until 2026-08-13 the check list existed in three places and two of them had drifted.
 
-Guiding principle for this site: **every page leads to a sign-up or the instant tool, the copy is on-brand, and the build that ships matches the source.**
+Guiding principle: **every page leads to a sign-up or the instant tool, the copy is on-brand, and the build that ships matches the source.**
+
+| Mode | What runs | When |
+|---|---|---|
+| `static` | `node scripts/qa-check.mjs`. Deterministic, free, no browser. | Every caller, every time. The baseline before touching anything. Also what the pre-push hook runs. |
+| `behavioral` | `static`, then the mocked funnel pass. | The diff touches `index.html`, `revenue-risk.html`, `calculator.html`, `sales-drop-diagnostic.html`, `src/*.jsx`, a compiled `*-app.js`, `netlify/functions/*`, or anything with a form, widget, or analytics. |
+| `visual` | `behavioral`, then screenshots at both presets and the rubric score. | Any change with a rendered effect. |
+| `full` | `visual`, then the funnel and copy judgment read. | Before recommending a merge to Oliver. |
+
+**Never report "done" while a mode was skipped or partially run. Say which mode you ran.**
 
 ---
 
-## Tiered process
+## Mode: `static`
 
-### Tier 1 — Fast static gate (ALWAYS run)
-
-From the `sentopi-deploy` root:
-
-```
+```bash
 node scripts/qa-check.mjs
 ```
 
-It checks, and FAILs the push on:
-- **Compiled drift:** `rrr-app.js` out of sync with `src/rrr-app.jsx` (the #1 footgun — never hand-edit the compiled file).
-- **JS syntax** errors (`node --check`).
-- **Stale lead CTAs:** any "Get My Free 48hr Report" / "48hr Report" → must read "Get your free report".
-- **Visible em-dashes** in user-facing copy (comments are ignored). Brand rule: spaced hyphen ( - ), comma, or period. Never a semicolon. See `Voice/rules.md`.
-- **Broken internal links** (href → no file/redirect).
-- **Netlify form mismatch:** a JS `form-name` that no registered `data-netlify` form declares (Netlify rejects it).
-- **Committed secrets.**
-- **Page contract:** missing canonical or meta description on any page; a JSON-LD block that does not `JSON.parse`; Article `dateModified` out of sync with the page's sitemap `lastmod`; a sitemap `<loc>` that resolves to nothing; any monthly price string other than $149.
+Exit 1 on any FAIL. WARN never blocks.
 
-WARNs (surface, don't block): AI-tells, placeholder/TODO text, missing viewport/title/GTM, anchors not found, multiple `<h1>`, meta description length outside 70-165 chars, an indexable page missing from the sitemap, an article footer missing the canonical link set.
+### What it enforces
 
-New-page conventions (chromes, head order, schema per page class, the 5-step wiring checklist) live in `PAGE-CONVENTIONS.md` next to this file; clone new article pages from `_template-article.html`.
+Do not transcribe a subset of this table anywhere else. That is exactly how the gate ended up with three versions. `scripts/qa-skill-drift.mjs` fails the run when this table and the `[gate:*]` tags in `qa-check.mjs` disagree **in either direction**, and it is itself registered on both sides.
 
-### Tier 2 — Deep behavioral pass (run when risk is touched)
+<!-- gate:static-start -->
 
-Trigger when the diff touches any of: `index.html`, `revenue-risk.html`, `src/rrr-app.jsx`, `rrr-app.js`, `netlify/functions/*`, or anything involving forms/widgets/analytics. `git diff --name-only origin/main` to decide.
+| Check | What it holds |
+|---|---|
+| `compiled-drift` | `rrr-app.js` and `calc-app.js` match their `src/*.jsx`. The number one footgun: never hand-edit a compiled file. |
+| `js-syntax` | Every tracked `*.js` passes `node --check`. |
+| `stale-cta` | No "Get My Free" or "48hr Report" copy survives. Remedy: `Get your free report`. |
+| `em-dash` | No visible em-dash in `.html` or `src/*.jsx`, comments excluded. Remedy: `a spaced hyphen, a comma, or a period`. Never a semicolon, see `Voice/rules.md`. |
+| `broken-link` | Every internal `href` resolves to a file or a `netlify.toml` redirect. |
+| `netlify-form` | Every JS-posted `form-name` has a registered `<form data-netlify>`. Netlify rejects the rest. |
+| `secrets` | No committed key, token, or password in a tracked non-binary file. |
+| `canonical` | Every page has `<link rel="canonical">`. |
+| `meta-description` | Every page has `<meta name="description">`. Length is advisory. |
+| `jsonld-parse` | Every `application/ld+json` block passes `JSON.parse`. |
+| `sitemap-loc` | Every sitemap `<loc>` resolves to a file or redirect. |
+| `datemodified-lastmod` | An article's `dateModified` equals that page's sitemap `lastmod`. Move them together. |
+| `price-drift` | The only monthly price on this site is $149. Remedy: `the canonical price is $149/mo`. |
+| `skill-drift` | This table equals the `[gate:*]` tags in `qa-check.mjs`, both directions, and any pinned Remedy string appears verbatim in the code. |
 
-1. Recompile if `src/rrr-app.jsx` changed: `npx babel src/rrr-app.jsx --presets @babel/preset-react -o rrr-app.js`.
-2. Start the mocked dev server (free, no Keepa spend): `preview_start` with the `revenue-risk-mock` launch config (`netlify dev`, `KEEPA_MOCK=true`, port 4322).
-3. Verify the funnel behaviors that matter:
-   - **Homepage real lookup** (paste an ASIN): inline capture appears with the brand name, URL pre-filled, redundant scroll CTA hidden, `inline_capture_shown` fires.
-   - **Homepage sample chip:** inline capture does NOT appear (not peak interest), scroll CTA stays.
-   - **RRR real lookup:** `InlineClaim` renders at the result with the brand; demo/chip states do not show it.
-   - **No console errors** (`preview_console_logs` level error).
-4. Note the known-local limitation: Netlify Forms POSTs return **405 under `netlify dev`** (forms only run on the deployed site). This affects all forms equally — not a regression.
+<!-- gate:static-end -->
 
-### Tier 3 — Funnel & copy judgment (human/agent review, not scripted)
+A row may pin its **Remedy** in backticks. That string must appear verbatim in `qa-check.mjs`, so the message the gate prints to a human cannot drift from the rule it enforces. This is not decoration. Until 2026-08-13 the em-dash failure told the fixer to use "a colon, semicolon, or period", which `Voice/rules.md:29` names as the exact construction that pushes output toward something Oliver has never written. An id-only comparison passes that happily, because the id was never wrong.
 
-Walk every page and confirm intent, not just syntax:
-- **Every page leads somewhere we want.** No dead-ends. Nav + primary CTAs reach a sign-up or the instant tool. `success.html` should cross-sell the instant tool.
-- **Instant-tool-first for cold traffic.** Ad/landing entry points lead with the tool, not a context-free email form. (Content pages like the research article may capture email for the deeper report, since that offer maps to the 48hr report, not the instant tool — that's intentional, confirm it still holds.)
-- **Copy register:** painkiller framing, no AI-tells, "insight and action engine" not "analytics tool". Delivery time ("within 48 hours") stays honest at the form, even though lead CTAs drop "48hr".
-- **Routing decisions in flight:** if the `#demo` anchor is being retired (see WBR next-steps), confirm CTAs were repointed, not just recopied.
+WARNs surface and do not block: AI-tells, placeholder and TODO text, missing viewport or title or GTM, anchors not found, multiple `<h1>`, meta description outside 70-165 chars, a page missing from the sitemap, an article footer missing the canonical link set.
+
+### Failure policy
+
+**Auto-fix, mechanical and deterministic:** recompile a drifted `*-app.js`, stale-CTA copy, visible em-dashes, obvious broken-link typos. Re-run the gate after fixing.
+
+**Surface for review, judgment and strategy:** CTA destination changes, funnel and routing decisions, conversion-copy rewrites, anything where the right answer is a product call. Report these. Do not decide them alone.
+
+---
+
+## Mode: `behavioral`
+
+Recompile first if a `src/*.jsx` changed:
+
+```bash
+npx babel src/rrr-app.jsx --presets @babel/preset-react -o rrr-app.js
+```
+
+Start the mocked dev server, which costs no Keepa spend: `preview_start` the **`revenue-risk-mock`** config. It lives in `Ventures/Sentopi/.claude/launch.json`, runs `netlify dev` with `KEEPA_MOCK=true` on port 4322, and `netlify-cli` is available through `npx`, so it starts headless.
+
+**Do not conclude this mode is unavailable without actually attempting `preview_start "revenue-risk-mock"`.** The recurring mistake is reading `sentopi-deploy/.claude/launch.json`, which holds only `sentopi-static` on port 4488, and concluding the mock does not exist. Run `preview_list` first and reuse the server if it is already up.
+
+Verify the funnel behaviors that matter:
+
+- **Homepage real lookup**, pasting a real ASIN: inline capture appears with the brand name, the URL pre-filled, the redundant scroll CTA hidden, and `inline_capture_shown` fires.
+- **Homepage sample chip:** inline capture does **not** appear, because a sample is not peak interest. The scroll CTA stays.
+- **Revenue Risk real lookup:** `InlineClaim` renders at the result with the brand. Demo and chip states do not show it.
+- **Zero console errors**, read at `error` level.
+
+**Known local limitation, not a regression:** Netlify Forms POSTs return 405 under `netlify dev`. Forms only run on the deployed site, and this affects every form equally.
 
 ---
 
-## Auto-fix policy
+## Mode: `visual`
 
-**Auto-fix (mechanical, deterministic):** recompile `rrr-app.js`; stale-CTA copy; visible em-dashes; obvious broken-link typos. Re-run the gate after fixing.
+Screenshot every touched page at desktop and mobile, then score it against `../../../../Product/QA-rubric.md` (15 criteria, max 45). **Pass is >= 38/45 on any touched page, and zero visual regressions against the prior state.**
 
-**Surface for review (judgment / strategy):** CTA destination changes, funnel/routing decisions, conversion-copy rewrites, anything where the "right" answer is a product call. Report these; don't decide them unilaterally.
+Look for layout shift or overlap, broken or empty sections, clipped text, invisible or duplicated CTAs, and anything that reads machine-generated.
 
-After a run, report: what passed, what was auto-fixed, and a short list of items needing the user's review.
+**The mechanics, all learned the hard way and all still true.** These cost about eight wasted calls on 2026-06-24 before they were written down:
+
+- **Preset viewports only.** Use the `desktop` and `mobile` presets. A custom width or height desyncs the capture viewport from the eval viewport and yields blank cream screenshots. To check a specific width, screenshot at the preset and confirm dimensions in JS, never by custom-resizing.
+- **Force-reveal before shooting.** Sentopi fades content in with `.reveal` at `opacity:0` until an IntersectionObserver fires, and an instant programmatic scroll skips the observer, so a below-fold section screenshots blank. Run `document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'))` first. That renders what a real scrolling user would see.
+- **Scroll atomically.** Scroll with `behavior:'instant'` and read `getBoundingClientRect().top` in the **same** eval as the `scrollTo`. The page sets `scroll-behavior:smooth`, so a separate readback lands mid-animation and reports the wrong position.
+- **Confirm independently of the screenshot.** Check `el.classList.contains('visible')`, a non-zero `getBoundingClientRect().height`, and `document.documentElement.scrollWidth <= window.innerWidth + 1` for horizontal overflow. Do **not** read computed `opacity` right after adding `.visible`: the reveal has an opacity transition and you will catch it mid-flight near 0.
+
+If a touched page drops below 38/45 or shows a visual regression, the change does not ship.
 
 ---
+
+## Mode: `full`
+
+Agent judgment, not scripted. Walk every page and confirm intent, not syntax.
+
+- **Every page leads somewhere we want.** No dead ends. Nav and primary CTAs reach a sign-up or an instant tool. `success.html` cross-sells the instant tool.
+- **Instant-tool-first for cold traffic.** Ad and landing entry points lead with a tool, not a context-free email form. Content pages may capture email for the deeper report, because that offer maps to the 48hr report rather than the instant tool. That is intentional. Confirm it still holds.
+- **Copy register:** painkiller framing, no AI-tells, "insight and action engine" and not "analytics tool". Delivery time stays honest at the form ("within 48 hours") even though lead CTAs drop "48hr".
+- **Routing decisions in flight:** when an anchor is being retired, confirm CTAs were repointed and not merely recopied.
+
+---
+
+## Report
+
+Say which mode ran. Then what **passed**, what was **auto-fixed** and re-verified, and what **needs Oliver's review**. Name any check that was skipped and why. A verdict with no evidence is an opinion.
+
+## Keep this current
+
+When a new failure mode bites, add the check where it belongs, which is almost never this file.
+
+- **A new deterministic check** goes in `scripts/qa-check.mjs` with a `[gate:<id>]` tag on its block, **and** a row in the fenced table above. `skill-drift` fails the run until both exist.
+- **A new page** follows `PAGE-CONVENTIONS.md` next to this file: chromes, head order, schema per page class, and the five-step wiring checklist. Clone article pages from `_template-article.html`.
+- **Only a new mechanic or a new lesson** belongs in this file.
+
+**Where the guard reaches.** `scripts/qa-skill-drift.mjs` runs inside `qa-check.mjs`, so the pre-push hook catches it on every ref, and `.github/workflows/skills.yml` catches it on push for skill-only commits that the hook would miss on a machine without `core.hooksPath` set. GitHub evaluates workflow `paths` per push and not per commit, so a mixed push runs the workflow regardless. Do not claim the workflow proves isolation.
 
 ## Scope notes
 
-- **Conversion quality is separate.** The 15-criterion landing-page rubric in `../../../../Product/QA-rubric.md` (Sentopi root, not this repo) is a design-review tool for when you're iterating on a page, not part of the per-push gate. Don't run it here.
-- Keep this skill current. An outdated checklist is worse than none — when a new failure mode bites (a new page, a new form, a new compiled asset), add a check to `scripts/qa-check.mjs` and a line here.
+- **Conversion quality is separate.** The 15-criterion rubric at `../../../../Product/QA-rubric.md` is scored in mode `visual` when a page is touched. It is a design-review tool, not a per-push gate. Do not run it in `static`.
+- This gate covers `sentopi-deploy` only. The review pipeline in `reviews_saas/` has no gate.
 
 ## Sources
 
-Session-derived patterns (compiled-asset drift, instant-tool-first, Netlify form registration, inline-capture gating) plus web QA best practice: pre-launch/pre-deploy checklists (Semrush, Cheeeck, DEV Community), CRO/landing-page QA (Unbounce, Instapage, Landingi), automated accessibility/performance (Lighthouse CI, axe-core, Pa11y), and QA-process guidance (BrowserStack, Testlio, VirtuosoQA) on tiering automated gates vs. exploratory/judgment review.
+Session-derived patterns (compiled-asset drift, instant-tool-first, Netlify form registration, inline-capture gating, the reveal and viewport mechanics) plus web QA best practice: pre-launch and pre-deploy checklists (Semrush, Cheeeck, DEV Community), CRO and landing-page QA (Unbounce, Instapage, Landingi), automated accessibility and performance (Lighthouse CI, axe-core, Pa11y), and QA-process guidance (BrowserStack, Testlio, VirtuosoQA) on tiering automated gates against exploratory review.

@@ -1,15 +1,18 @@
 #!/bin/sh
-# Sentopi pre-push QA gate. Runs the automated static checks before any push
-# to main and blocks the push on FAIL. Other branches push freely.
+# Sentopi pre-push QA gate. Runs the `static` mode of the sentopi-qa skill
+# and blocks the push on FAIL.
+#
+# Runs on EVERY ref, not only main. It narrowed to refs/heads/main until
+# 2026-08-13, which meant the fix cycle -- which only ever pushes to
+# growth-loop/<date> -- never met the gate at all. A gate that cannot fire
+# on the commits it exists to catch is not a gate.
+#
 # Install (one-time): git config core.hooksPath .githooks
 # Emergency bypass: git push --no-verify
+#
+# This hook is local. A clone without core.hooksPath set has no gate, which
+# is why .github/workflows/skills.yml covers the skill files server-side.
 
-while read -r local_ref local_sha remote_ref remote_sha; do
-  case "$remote_ref" in
-    refs/heads/main)
-      echo "Sentopi QA gate (push to main)..."
-      node scripts/qa-check.mjs || exit 1
-      ;;
-  esac
-done
+echo "Sentopi QA gate (static)..."
+node scripts/qa-check.mjs || exit 1
 exit 0
