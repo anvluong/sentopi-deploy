@@ -7,4 +7,12 @@ generate_og.py
 dev-preview.html
 
 BRIEFING.md
-.claude/
+
+# `.claude/skills/` is this repo's operating procedure - the QA gate and the
+# page conventions - so it versions alongside the site it gates. Excluded as
+# CONTENTS rather than as a directory: git cannot re-include a file whose
+# parent directory is excluded, so `.claude/` plus `!.claude/skills/` would
+# silently keep ignoring it. launch.json and settings.local.json are
+# machine-local and stay out.
+.claude/*
+!.claude/skills/

@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 /*
- * Sentopi pre-push QA gate — fast, static, dependency-light, no network.
- * Run: node scripts/qa-check.mjs   (exit 1 on any FAIL; WARN never blocks)
+ * Sentopi pre-push QA gate - fast, static, dependency-light, no network.
+ * Run: node scripts/qa-check.mjs   (exit 1 on any FAIL, WARN never blocks)
  *
- * This is the AUTOMATED tier of the sentopi-qa skill. It catches the
+ * This is the `static` mode of the sentopi-qa skill. It catches the
  * deterministic regressions we keep hitting: compiled-asset drift, stale
  * lead-CTA copy, visible em-dashes, broken links, Netlify form mismatches,
- * and committed secrets. Behavioral/conversion checks live in the skill
- * (see skills/sentopi-qa/SKILL.md), not here.
+ * and committed secrets. Behavioral, visual and judgment checks live in the
+ * skill (see .claude/skills/sentopi-qa/SKILL.md), not here.
+ *
+ * Every block below that can call fail() carries a stable [gate:<id>] tag.
+ * scripts/qa-skill-drift.mjs holds those ids equal to the fenced table in
+ * the skill, in both directions. Add a check here, add its row there.
  */
 import { execSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';

@@ -25,7 +25,7 @@ It checks, and FAILs the push on:
 - **Compiled drift:** `rrr-app.js` out of sync with `src/rrr-app.jsx` (the #1 footgun — never hand-edit the compiled file).
 - **JS syntax** errors (`node --check`).
 - **Stale lead CTAs:** any "Get My Free 48hr Report" / "48hr Report" → must read "Get your free report".
-- **Visible em-dashes** in user-facing copy (comments are ignored). Brand rule: colon, semicolon, or period.
+- **Visible em-dashes** in user-facing copy (comments are ignored). Brand rule: spaced hyphen ( - ), comma, or period. Never a semicolon. See `Voice/rules.md`.
 - **Broken internal links** (href → no file/redirect).
 - **Netlify form mismatch:** a JS `form-name` that no registered `data-netlify` form declares (Netlify rejects it).
 - **Committed secrets.**
@@ -70,7 +70,7 @@ After a run, report: what passed, what was auto-fixed, and a short list of items
 
 ## Scope notes
 
-- **Conversion quality is separate.** The 15-criterion landing-page rubric in `../../../Product/QA-rubric.md` (Sentopi root, not this repo) is a design-review tool for when you're iterating on a page, not part of the per-push gate. Don't run it here.
+- **Conversion quality is separate.** The 15-criterion landing-page rubric in `../../../../Product/QA-rubric.md` (Sentopi root, not this repo) is a design-review tool for when you're iterating on a page, not part of the per-push gate. Don't run it here.
 - Keep this skill current. An outdated checklist is worse than none — when a new failure mode bites (a new page, a new form, a new compiled asset), add a check to `scripts/qa-check.mjs` and a line here.
 
 ## Sources
