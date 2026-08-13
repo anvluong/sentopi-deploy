@@ -91,27 +91,61 @@
     '</div>';
   }
 
+  /* Ratings is the lever this product is actually built on, and until 2026-08-13
+     the grid rendered it as one tile of five with nothing to say it goes deeper.
+     Every competitor scoring a listing covers more listing surface than we do.
+     The only thing none of them does is read the reviews and say which lever the
+     customers are describing, so that has to be visible on the instrument. */
+  function deepBlock(fw) {
+    const r = fw.levers.find((l) => l.key === 'ratings');
+    if (!r || isUnmeasured(r)) return '';
+    return '<div class="fw-deep">' +
+      '<div class="fw-deep-title">Ratings is the deepest lever</div>' +
+      '<div class="fw-deep-read">The score above is the rating trend on its own. ' +
+      'The full report reads every written review on this listing and maps each ' +
+      'complaint to a root cause, so you see which of the other levers your ' +
+      'customers are actually describing.</div>' +
+    '</div>';
+  }
+
+  /* A lever that cannot be scored on this surface leaves the grid rather than
+     sitting in it as a blank cell. Assortment needs the whole variation family
+     and a single-ASIN lookup fetches one listing, so it was permanently blank on
+     every sample and every real lookup. One blank cell reads as restraint, a
+     permanently blank one reads as broken. Naming it is honest, showing an empty
+     tile is not. */
+  function notScoredBlock(unmeasured) {
+    if (!unmeasured.length) return '';
+    const names = unmeasured.map((l) => l.label || l.key);
+    const verb = names.length > 1 ? ' are not scored here. ' : ' is not scored here. ';
+    const why = unmeasured.map((l) => l.dataNote).filter(Boolean).join(' ');
+    return '<div class="fw-notscored">' + esc(names.join(' and ') + verb + why) + '</div>';
+  }
+
   /* Surface every caveat the scorer attached rather than burying it. A score
      shown without the strength of the evidence behind it is the thing this
-     product exists to stop. */
+     product exists to stop. Unmeasured levers are handled by notScoredBlock, so
+     this covers only the levers that did score but carry a proxy or short window. */
   function confBlock(fw) {
-    const unmeasured = fw.levers.filter((l) => isUnmeasured(l))
-      .map((l) => l.label + (l.dataNote ? ': ' + l.dataNote : '.'));
     const caveats = fw.levers.filter((l) => l.dataNote && !isUnmeasured(l))
       .map((l) => l.label + ': ' + l.dataNote);
-    const bits = [];
-    if (unmeasured.length) bits.push('Not measured from public data. ' + unmeasured.join(' '));
-    if (caveats.length) bits.push(caveats.join(' '));
-    return bits.length ? '<div class="fw-conf">' + esc(bits.join(' ')) + '</div>' : '';
+    return caveats.length ? '<div class="fw-conf">' + esc(caveats.join(' ')) + '</div>' : '';
   }
 
   /** Returns '' when there is no payload, so a caller can fall back cleanly. */
   function render(fw, riskAnnual) {
     if (!fw || !Array.isArray(fw.levers) || !fw.levers.length) return '';
+    const unmeasured = fw.levers.filter(isUnmeasured);
+    const measured = fw.levers.filter((l) => !isUnmeasured(l));
+    /* Never render an empty grid: if nothing scored, show what we have and let
+       notScoredBlock carry the explanation. */
+    const grid = measured.length ? measured : fw.levers;
     return '<div class="fw">' +
       head(fw, riskAnnual) +
-      '<div class="fw-grid">' + fw.levers.map((l) => tile(l, fw.weakestKey)).join('') + '</div>' +
-      weakBlock(fw) + confBlock(fw) +
+      '<div class="fw-grid fw-grid-' + grid.length + '">' +
+        grid.map((l) => tile(l, fw.weakestKey)).join('') + '</div>' +
+      weakBlock(fw) + deepBlock(fw) +
+      (measured.length ? notScoredBlock(unmeasured) : '') + confBlock(fw) +
     '</div>';
   }
 
