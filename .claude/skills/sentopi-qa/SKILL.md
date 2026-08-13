@@ -49,6 +49,7 @@ Do not transcribe a subset of this table anywhere else. That is exactly how the 
 | `sitemap-loc` | Every sitemap `<loc>` resolves to a file or redirect. |
 | `datemodified-lastmod` | An article's `dateModified` equals that page's sitemap `lastmod`. Move them together. |
 | `price-drift` | The only monthly price on this site is $149. Remedy: `the canonical price is $149/mo`. |
+| `flywheel-conformance` | Every scored sample payload carries a conforming `flywheel` object, discovered by walking the fixture globals rather than by enumerating them. Levers are in contract order, the composite recomputes, and `weakestKey` agrees. Also guards against a second definition of `CONV_TABLE` or `LEVER_WEIGHTS`. |
 | `skill-drift` | This table equals the `[gate:*]` tags in `qa-check.mjs`, both directions, and any pinned Remedy string appears verbatim in the code. |
 
 <!-- gate:static-end -->

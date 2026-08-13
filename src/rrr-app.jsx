@@ -1,24 +1,11 @@
 const { useState, useCallback } = React;
 
 // ─── Conversion rate model — identical to calculator.html ─────────────────────
-const CONV_TABLE = [
-  { r: 1.0, i: 0.40 }, { r: 2.0, i: 0.55 }, { r: 2.5, i: 0.65 },
-  { r: 3.0, i: 0.75 }, { r: 3.5, i: 0.85 }, { r: 4.0, i: 0.92 },
-  { r: 4.2, i: 0.96 }, { r: 4.5, i: 1.00 }, { r: 4.7, i: 0.99 },
-  { r: 5.0, i: 0.87 },
-];
-function convRate(rating) {
-  if (!rating || rating <= CONV_TABLE[0].r) return CONV_TABLE[0].i;
-  if (rating >= CONV_TABLE[CONV_TABLE.length - 1].r) return CONV_TABLE[CONV_TABLE.length - 1].i;
-  for (let j = 0; j < CONV_TABLE.length - 1; j++) {
-    const lo = CONV_TABLE[j], hi = CONV_TABLE[j + 1];
-    if (rating >= lo.r && rating <= hi.r) {
-      const t = (rating - lo.r) / (hi.r - lo.r);
-      return lo.i + t * (hi.i - lo.i);
-    }
-  }
-  return 0.92;
-}
+/* Rating-to-conversion model lives in revenue-model.js so the calculator, the
+   report and the two Keepa functions cannot quote different dollars for the
+   same product. Loaded by the page before this bundle. */
+const convRate = (rating) => window.RevenueModel.convRate(rating);
+
 
 function calcRevenueAtRisk(units, price, ratingBefore, ratingNow) {
   if (!units || !price || !ratingBefore || !ratingNow) return 0;
@@ -142,6 +129,20 @@ function RatingSparkline({ r90, r30, rNow }) {
 }
 
 // ─── Score ring ───────────────────────────────────────────────────────────────
+function headlineScore(data) {
+  /* The flywheel composite is the headline whenever it exists. The pillar
+     brandScore uses a different weighting, so rendering both as "the score"
+     put two different numbers for one brand on the same screen. The pillar
+     figures survive below as signal detail. */
+  const fw = data && data.flywheel;
+  if (fw && fw.compositeScore !== null && fw.compositeScore !== undefined) {
+    const score = Math.round(fw.compositeScore);
+    const label = score >= 75 ? 'Healthy' : score >= 50 ? 'At Risk' : 'Critical';
+    return { score, label, isFlywheel: true };
+  }
+  return { score: data ? data.brandScore : 0, label: data ? data.label : 'At Risk', isFlywheel: false };
+}
+
 function ScoreRing({ score, label }) {
   const r = 42, cx = 50, cy = 50, circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
@@ -598,12 +599,24 @@ function Methodology() {
           <h4>Data sources</h4>
           <p>Best Seller Rank, star rating history, review count, list price, Buy Box ownership, and average sale price are pulled from live Amazon signals over a 90-day window. Updated daily.</p>
 
-          <h4>Brand Score (0–100)</h4>
+          <h4>Flywheel Score (0–100)</h4>
+          <p>The headline number is a weighted mean of the five levers, over the levers we could actually measure from public data. Weights: Operations 22, Pricing 22, Assortment 14, Visibility 20, Ratings 22.</p>
+          <ul>
+            <li><strong>Operations:</strong> share of the last 30 days you held the Buy Box, plus time out of stock.</li>
+            <li><strong>Pricing:</strong> where your price sits in its own 90-day range, the month-over-month move in average selling price, discount against list, and how many sellers compete on the listing.</li>
+            <li><strong>Assortment:</strong> how many listings are in the variant family and how many of them carry reviews and the Buy Box.</li>
+            <li><strong>Visibility:</strong> Best Seller Rank trajectory over 90 and 30 days.</li>
+            <li><strong>Ratings:</strong> current rating, the 30 and 90 day move, and review velocity.</li>
+          </ul>
+          <p>A lever we cannot measure is reported as not measured, with the reason stated. It is never given a score, and it is left out of the mean rather than counted as a zero. When fewer than three levers can be measured we show the levers without a headline score, because an average of two is not a brand score.</p>
+
+          <h4>Signal detail (0–100)</h4>
           <ul>
             <li><strong>BSR Health (40 pts):</strong> 90-day rank trajectory. Each 10% deterioration costs 4 points.</li>
             <li><strong>Rating Health (35 pts):</strong> Penalizes both the absolute drop and the recency. A drop in the last 30 days hurts more than a drop 60 days ago.</li>
             <li><strong>Buy Box Health (25 pts):</strong> % of time you held the Buy Box in the last 30 days. Extra penalty when competitors undercut.</li>
           </ul>
+          <p>These three readings sit underneath the levers and use their own weighting, so the detail score and the Flywheel Score answer different questions and will not match.</p>
 
           <h4>Revenue at risk</h4>
           <p>For each product where the rating dropped, we apply a conversion-rate index by star rating (based on Spiegel Research Center 2017, PowerReviews, and Pattern.com). Conversion peaks around 4.5★ and declines toward 5.0★ ("too good to be true" skepticism).</p>
@@ -645,6 +658,24 @@ function PillarCard({ name, metric, metricSub, score, max, flags }) {
       ))}
     </div>
   );
+}
+
+// ─── Retail Flywheel ──────────────────────────────────────────────────────────
+// Renders the five-lever payload described in .claude/skills/sentopi-qa/FLYWHEEL-CONTRACT.md.
+// This is the React twin of renderFlywheel() in index.html: same class names, same
+// order, same rules, so the homepage cockpit and this page read identically.
+// Returns null when the payload is absent, so an older cached response still
+// renders the signal detail below it on its own.
+/* The flywheel scorecard is rendered by flywheel-view.js, the same module the
+   homepage uses, so a behavioural fix lands on both surfaces at once. It used
+   to exist twice, once here in JSX and once in vanilla JS. The module escapes
+   every interpolated value, so the markup is safe to inject. */
+function Flywheel({ fw, riskAnnual }) {
+  const html = (typeof window !== 'undefined' && window.FlywheelView)
+    ? window.FlywheelView.render(fw, riskAnnual)
+    : '';
+  if (!html) return null;
+  return <div className="fw-card" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 // ─── Shared colgroup — both tables use identical widths for column alignment ──
@@ -742,6 +773,7 @@ function ProductsTable({ products, weights, noWrapper = false }) {
 function ScoreCard({ data, lede = true }) {
   const { brandScore, label, capReasons, ratingDropDetails, products,
           productsExcluded, weights, asinCountExcluded } = data;
+  const head = headlineScore(data);
 
   const hasRatingDrop = ratingDropDetails && ratingDropDetails.length > 0;
 
@@ -909,8 +941,15 @@ function ScoreCard({ data, lede = true }) {
     ? (worstDelta30 < 0 ? `▼${Math.abs(worstDelta30)} vs. 30d` : 'Stable last 30d')
     : 'No rating data';
 
+  // Flywheel head carries the same exposure figure the hero and calculator use,
+  // so one lookup never shows two different dollar numbers.
+  const fwRiskAnnual = totalExposureMonthly > 0 ? Math.round(totalExposureMonthly * 12) : null;
+
   return (
     <div>
+      {/* ── Primary result: the five levers ── */}
+      <Flywheel fw={data.flywheel} riskAnnual={fwRiskAnnual} />
+
       {lede && (<>
       {/* ── Headline narrative — one-sentence read of the situation ── */}
       <HeadlineNarrative
@@ -924,11 +963,11 @@ function ScoreCard({ data, lede = true }) {
         {/* Left: Brand Health Score */}
         <div className="hero-card">
           <div className="hero-score-inner">
-            <ScoreRing score={brandScore} label={label} />
+            <ScoreRing score={head.score} label={head.label} />
             <div className="score-meta">
-              <div className="score-brand-name">{lead.brand || 'Your Brand'} Brand Score</div>
-              <div className={`score-label-badge ${labelClass(label)}`} style={{ marginTop: 6 }}>
-                {label === 'Healthy' ? '✓' : label === 'At Risk' ? '⚠' : '✕'} {label}
+              <div className="score-brand-name">{lead.brand || 'Your Brand'} {head.isFlywheel ? 'Flywheel Score' : 'Brand Score'}</div>
+              <div className={`score-label-badge ${labelClass(head.label)}`} style={{ marginTop: 6 }}>
+                {head.label === 'Healthy' ? '✓' : head.label === 'At Risk' ? '⚠' : '✕'} {head.label}
               </div>
               {capReasons.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
@@ -1056,7 +1095,13 @@ function ScoreCard({ data, lede = true }) {
         </div>
       )}
 
-      {/* ── Pillars ── */}
+      {/* ── Signal detail: the raw signals the levers are scored from ── */}
+      {data.flywheel && (
+        <div className="fw-detail-head">
+          Signal detail
+          <span>The rank, rating, and Buy Box readings behind the levers above.</span>
+        </div>
+      )}
       <div className="pillars-grid">
         <PillarCard
           name="Best Seller Rank"
@@ -1380,7 +1425,7 @@ const ANALYZE_STAGES = [
   'Pulling 90-day price and rank history…',
   'Reading rating trajectory…',
   'Checking Buy Box and velocity…',
-  'Weighing the three pillars…',
+  'Scoring the five levers…',
   'Building your report…',
 ];
 
@@ -1563,21 +1608,22 @@ function SummaryStrip({ data, isDemo, loading }) {
       </div>
     );
   }
-  const exposure  = defaultExposure(data.products);
-  const brand     = data.products?.[0]?.brand || 'Your Brand';
-  const labelIcon = data.label === 'Healthy' ? '✓' : data.label === 'At Risk' ? '⚠' : '✕';
+  const exposure    = defaultExposure(data.products);
+  const brand       = data.products?.[0]?.brand || 'Your Brand';
+  const summaryHead = headlineScore(data);
+  const labelIcon   = summaryHead.label === 'Healthy' ? '✓' : summaryHead.label === 'At Risk' ? '⚠' : '✕';
   return (
     <div id="rrr-summary" className="summary-wrap animate-in">
       {isDemo && <div className="summary-sample-tag">Sample report</div>}
       <div className="summary-cards">
         {/* Brand Score */}
         <div className="summary-card score-card">
-          <div className="summary-card-label">Brand Score</div>
+          <div className="summary-card-label">{summaryHead.isFlywheel ? 'Flywheel Score' : 'Brand Score'}</div>
           <div className="summary-score-row">
-            <ScoreRing score={data.brandScore} label={data.label} />
+            <ScoreRing score={summaryHead.score} label={summaryHead.label} />
             <div className="summary-score-meta">
               <div className="summary-brand">{brand}</div>
-              <div className={`score-label-badge ${labelClass(data.label)}`}>{labelIcon} {data.label}</div>
+              <div className={`score-label-badge ${labelClass(summaryHead.label)}`}>{labelIcon} {summaryHead.label}</div>
             </div>
           </div>
         </div>
@@ -1822,16 +1868,16 @@ function App() {
         <div className="proof-grid">
           <div className="proof-card">
             <div className="proof-card-num">90 days</div>
-            <div className="proof-card-title">Of BSR, rating, and Buy Box history.</div>
+            <div className="proof-card-title">Of stock, price, rank, and rating history.</div>
             <div className="proof-card-body">
               The same Amazon signals your paid analyst tools surface, scored against revenue impact instead of vanity charts.
             </div>
           </div>
           <div className="proof-card">
-            <div className="proof-card-num">3 pillars</div>
-            <div className="proof-card-title">BSR (40%), rating (35%), Buy Box (25%).</div>
+            <div className="proof-card-num">5 levers</div>
+            <div className="proof-card-title">Operations, pricing, assortment, visibility, ratings.</div>
             <div className="proof-card-body">
-              Each weighted by how much it actually moves topline. A 0.3-star slip on a high-volume SKU outranks a small BSR wobble on a long-tail one.
+              Every lever scored on your own data, the weakest one named. A lever public data cannot measure is reported as unmeasured rather than scored anyway.
             </div>
           </div>
           <div className="proof-card">
@@ -1883,8 +1929,8 @@ function App() {
 
         <div className="bridge-cta">
           <div className="bridge-cta-text">
-            <strong>The Revenue Risk Report tells you where the leak is.</strong>
-            <span> The 48hr Custom Report tells you why and what to fix.</span>
+            <strong>The Revenue Risk Report names the lever that is leaking.</strong>
+            <span> The 48hr Custom Report reads your reviews and tells you why, and what to fix.</span>
           </div>
           <button type="button" className="bridge-cta-btn"
             aria-label="Scroll to the 48hr Custom Report form"

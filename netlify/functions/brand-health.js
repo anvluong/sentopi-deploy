@@ -6,7 +6,7 @@
  * Auto-detects whether input is an ASIN (B0...) or Seller ID (A...).
  *
  * Flow:
- *   ASIN   → pull product → expand via variationCSV → score brand
+ *   ASIN   → pull product → expand via variations/variationCSV → score brand
  *   Seller → /seller?storefront=1 → ASIN list → score brand
  *
  * Pillars: BSR Health (40pts) + Rating Health (35pts) + Buy Box Health (25pts) = 100
@@ -16,6 +16,7 @@
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 
 const { KEEPA_DOMAIN, daysAgoKeepa, parseCSV, parseBBTriplets, fetchProductData } = require('./_keepa-utils');
+const { computeFlywheel } = require('./_flywheel');
 
 const MAX_ASINS              = 10;
 const MIN_REVIEWS_FOR_ROLLUP = 25;
@@ -26,25 +27,12 @@ const WEIGHTS = { bsr: 40, rating: 35, buybox: 25 };
 // ─── CONVERSION RATE MODEL ───────────────────────────────────────────────────
 // Piecewise linear — identical to calculator.html. Single source of truth.
 
-const CONV_TABLE = [
-  { r: 1.0, i: 0.40 }, { r: 2.0, i: 0.55 }, { r: 2.5, i: 0.65 },
-  { r: 3.0, i: 0.75 }, { r: 3.5, i: 0.85 }, { r: 4.0, i: 0.92 },
-  { r: 4.2, i: 0.96 }, { r: 4.5, i: 1.00 }, { r: 4.7, i: 0.99 },
-  { r: 5.0, i: 0.87 },
-];
+/* Rating-to-conversion model lives in revenue-model.js so the calculator, the
+   report and the two Keepa functions cannot quote different dollars for the
+   same product. */
+const { convRate } = require('../../revenue-model.js');
 
-function convRate(rating) {
-  if (!rating || rating <= CONV_TABLE[0].r) return CONV_TABLE[0].i;
-  if (rating >= CONV_TABLE[CONV_TABLE.length - 1].r) return CONV_TABLE[CONV_TABLE.length - 1].i;
-  for (let j = 0; j < CONV_TABLE.length - 1; j++) {
-    const lo = CONV_TABLE[j], hi = CONV_TABLE[j + 1];
-    if (rating >= lo.r && rating <= hi.r) {
-      const t = (rating - lo.r) / (hi.r - lo.r);
-      return lo.i + t * (hi.i - lo.i);
-    }
-  }
-  return 0.92;
-}
+
 
 // ─── PILLAR 1: BSR HEALTH (0–40 pts) ─────────────────────────────────────────
 
@@ -224,8 +212,10 @@ function computeASPWindow(csvBB, daysStart, daysEnd) {
 function scoreBrand(products) {
   const coreResults     = [];
   const excludedResults = [];
+  const rawByAsin       = new Map();   // raw Keepa products, for the flywheel layer
 
   for (const p of products) {
+    if (p && p.asin) rawByAsin.set(p.asin, p);
     const csv = p.csv || [];
 
     // Review count for weighting + sparse filter
@@ -302,6 +292,10 @@ function scoreBrand(products) {
 
   const rollupSet = coreResults.length ? coreResults : excludedResults;
 
+  // Retail Flywheel: scored on the same product set as the rollup, from raw
+  // Keepa series. See .claude/skills/sentopi-qa/FLYWHEEL-CONTRACT.md.
+  const flywheel = computeFlywheel(rollupSet.map(r => rawByAsin.get(r.asin)).filter(Boolean));
+
   const totalWeight = rollupSet.reduce((s, r) => s + (r.reviewCount || 1), 0) || rollupSet.length;
   const brandScore = rollupSet.reduce((s, r) => {
     const w = totalWeight > 0 ? r.reviewCount / totalWeight : 1 / rollupSet.length;
@@ -352,6 +346,7 @@ function scoreBrand(products) {
     products:          rollupSet,
     productsExcluded:  coreResults.length ? excludedResults : [],
     weights: WEIGHTS,
+    flywheel,
   };
 }
 
@@ -394,6 +389,99 @@ const MOCK_RESPONSE = {
   asinCountScored: 6,
   asinCountExcluded: 1,
   weights: { bsr: 40, rating: 35, buybox: 25 },
+  // Retail Flywheel fixture. Numbers are the real scoring math applied to the
+  // six mock products below (review-count weighted), so the levers and the
+  // pillar_* values never disagree. Statuses covered here: leaking, watch,
+  // strong. The unmeasured path is exercised by the product-lookup fixture.
+  flywheel: {
+    compositeScore: 57.4,
+    measuredCount: 5,
+    weakestKey: 'operations',
+    levers: [
+      {
+        key: 'operations',
+        label: 'Operations',
+        score: 36.8,
+        status: 'leaking',
+        headline: 'Buy Box held 55% of the last 30 days',
+        metric: { label: 'Buy Box share, 30d', value: '55.4%', delta: '-8.5 pts', deltaDir: 'down' },
+        read: 'You lost the Buy Box on 45% of recorded events in the last 30 days. Traffic and conversion fall together every time that happens. Stock was unavailable 2% of the window.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Buy Box events, 30d', value: '827' },
+          { label: 'Events with Buy Box held', value: '458' },
+          { label: 'Out of stock, 30d', value: '1.8%' },
+          { label: 'Buy Box share, prior 30d', value: '63.9%' },
+        ],
+      },
+      {
+        key: 'pricing',
+        label: 'Pricing',
+        score: 51.6,
+        status: 'watch',
+        headline: 'Average selling price is $30.13, -4.2% month over month',
+        metric: { label: 'Average selling price, 30d', value: '$30.13', delta: '-4.2% MoM', deltaDir: 'down' },
+        read: 'Average selling price fell 4.2% month over month to $30.13. That is margin coming out of the same unit volume. You are selling 21% below list, so the reference price on the listing is doing little work. 3 sellers are competing on this listing.',
+        confidence: 'medium',
+        dataNote: 'Competing offer count comes from the current Keepa offer snapshot, not from 90 days of offer history.',
+        detail: [
+          { label: 'Price position in 90d range', value: '62.1%' },
+          { label: 'List price', value: '$38.35' },
+          { label: 'Discount off list', value: '21.4%' },
+          { label: 'Competing offers', value: '3' },
+        ],
+      },
+      {
+        key: 'assortment',
+        label: 'Assortment',
+        score: 74.8,
+        status: 'watch',
+        headline: '6 listings in the family, 100% carrying 25 or more reviews',
+        metric: { label: 'Listings with review depth', value: '6 of 6', delta: null, deltaDir: null },
+        read: 'All 6 listings carry 25 or more reviews. 1 of 6 hold the Buy Box outright, which is where the remaining upside sits.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Listings in family', value: '6' },
+          { label: 'Listings with 25+ reviews', value: '6 of 6' },
+          { label: 'Listings holding Buy Box', value: '1 of 6' },
+        ],
+      },
+      {
+        key: 'visibility',
+        label: 'Visibility',
+        score: 75.6,
+        status: 'strong',
+        headline: 'Sales rank improved 3.3% over 90 days',
+        metric: { label: 'Sales rank, 90d change', value: '-3.3%', delta: '-2.0% in 30d', deltaDir: 'up' },
+        read: 'Sales rank improved 3.3% over 90 days. Visibility is working; the gains show up in units before they show up in reviews.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Sales rank now, top listing', value: '#278' },
+          { label: 'Sales rank 90d ago, top listing', value: '#285' },
+          { label: 'Rank points in window', value: '1,914' },
+        ],
+      },
+      {
+        key: 'ratings',
+        label: 'Ratings',
+        score: 56.2,
+        status: 'watch',
+        headline: 'Rating is 3.87 stars, -0.14 over 30 days',
+        metric: { label: 'Rating now', value: '3.87', delta: '-0.14 in 30d', deltaDir: 'down' },
+        read: 'Rating is 3.87 stars and down 0.14 in the last 30 days. Every tenth of a star costs conversion on traffic you already paid for. 412 new reviews landed in the last 30 days.',
+        confidence: 'high',
+        dataNote: null,
+        detail: [
+          { label: 'Rating change, 90d', value: '-0.13' },
+          { label: 'New reviews, 30d', value: '412' },
+          { label: 'Total reviews', value: '7,488' },
+        ],
+      },
+    ],
+  },
   products: [
     {
       asin: 'B0FB9MXHR1',
@@ -570,7 +658,15 @@ exports.handler = async function (event) {
         return { statusCode: 404, headers, body: JSON.stringify({ error: `ASIN "${detected.value}" not found in Keepa.` }) };
       }
       const seed = seedProducts[0];
-      const variations = (seed.variationCSV || '').split(',').map(s => s.trim()).filter(Boolean);
+      /* Keepa returns the sibling set as `variations` (array of {asin}) on the
+         products checked here, and only sometimes as the legacy `variationCSV`
+         string. Reading one field alone made multi-variant brands collapse to a
+         single-product report with no error, which understates the brand. Read
+         both and merge. */
+      const variations = [
+        ...(seed.variationCSV || '').split(',').map(s => s.trim()),
+        ...(Array.isArray(seed.variations) ? seed.variations.map(v => (typeof v === 'string' ? v : v && v.asin)) : []),
+      ].filter(Boolean);
       if (variations.length > 1) {
         asins = [...new Set([detected.value, ...variations])].slice(0, MAX_ASINS);
       } else {

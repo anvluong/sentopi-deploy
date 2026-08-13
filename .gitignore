@@ -16,3 +16,4 @@ BRIEFING.md
 # machine-local and stay out.
 .claude/*
 !.claude/skills/
+Icon?

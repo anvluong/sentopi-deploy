@@ -10,18 +10,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Amazon Revenue Risk Report | Sentopi</title>
-<meta name="description" content="Free Amazon Revenue Risk Report. See where your brand is losing revenue across BSR, rating trajectory, and Buy Box, with a dollar estimate, in about 30 seconds.">
+<title>Free Amazon Revenue Risk Report: Five Levers Scored | Sentopi</title>
+<meta name="description" content="Score your Amazon brand on five levers: operations, pricing, assortment, visibility, ratings. See which one is leaking and what it costs, in about 30 seconds.">
 <link rel="canonical" href="https://sentopi.com/revenue-risk-report">
 <!-- Open Graph -->
-<meta property="og:title" content="Free Amazon Revenue Risk Report | Sentopi">
-<meta property="og:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk: Best Seller Rank, rating trajectory, Buy Box, plus an estimated dollar impact. No account required.">
+<meta property="og:title" content="Free Amazon Revenue Risk Report: Five Levers Scored | Sentopi">
+<meta property="og:description" content="Paste any ASIN or Seller ID. Sentopi scores all five levers of your brand (operations, pricing, assortment, visibility, ratings), names the weakest one, and prices it in dollars. No account required.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sentopi.com/revenue-risk-report">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Free Amazon Revenue Risk Report | Sentopi">
-<meta name="twitter:description" content="Paste any ASIN or Seller ID. See exactly where your Amazon revenue is at risk, plus an estimated dollar impact. Results in ~30 seconds.">
+<meta name="twitter:title" content="Free Amazon Revenue Risk Report: Five Levers Scored | Sentopi">
+<meta name="twitter:description" content="Paste any ASIN or Seller ID. All five levers scored, the weakest one named, the leak priced in dollars. Results in ~30 seconds.">
 <meta property="og:image" content="https://sentopi.com/og-image.png">
 <meta name="twitter:image" content="https://sentopi.com/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
@@ -781,6 +781,12 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
 .demo-wrap { min-height: 200px; }
 
 /* ── Mobile ── */
+/* Touch targets on the conversion path, matching the homepage rule. */
+@media (max-width: 720px) {
+  .demo-pill { min-height: 44px; display: inline-flex; align-items: center; }
+  .rrr-input, .btn-analyze { min-height: 44px; }
+}
+
 @media (max-width: 720px) {
   .page { padding: 28px 18px 80px; }
   .hero-v2 { margin-bottom: 22px; }
@@ -876,6 +882,89 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
   background: var(--forest-lt); border-color: rgba(5,150,105,0.25);
 }
 @media (max-width: 560px) { .inline-claim-row { flex-direction: column; } }
+
+/* ═══════════ COCKPIT REGISTER ═══════════
+   Dense instrument styling for tool surfaces only. Marketing sections keep the
+   editorial register. Numbers are tabular so columns align as values change.
+   Status vocabulary is shared with the flywheel payload contract:
+   strong / watch / leaking / unmeasured. An unmeasured lever is drawn as
+   deliberately absent (dashed, no number) and never as a zero. */
+.fw { border-bottom: 1px solid var(--cream2); font-variant-numeric: tabular-nums; }
+.fw-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 11px 18px; background: var(--cream); border-bottom: 1px solid var(--cream2);
+}
+.fw-head-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.fw-head-label {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--ink5);
+}
+.fw-head-score {
+  font-family: 'DM Serif Display', serif; font-size: 1.6rem; line-height: 1; color: var(--ink);
+}
+.fw-head-score .fw-out { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--ink5); }
+.fw-chip {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; white-space: nowrap;
+}
+.fw-chip.strong     { background: var(--forest-lt); color: var(--forest2); }
+.fw-chip.watch      { background: #fef3c7;          color: #92400e; }
+.fw-chip.leaking    { background: #fee2e2;          color: #991b1b; }
+.fw-chip.unmeasured { background: var(--cream2);    color: var(--ink5); }
+.fw-head-risk { text-align: right; flex-shrink: 0; }
+.fw-head-risk-label { font-size: 0.62rem; color: var(--ink5); letter-spacing: 0.04em; }
+.fw-head-risk-val { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--ink); line-height: 1.2; }
+
+.fw-grid { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--cream3); gap: 1px; }
+.fw-tile {
+  background: var(--white); padding: 11px 7px 12px;
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.fw-tile.is-weak { background: #fffbf7; box-shadow: inset 0 -2px 0 var(--ochre); }
+.fw-tile.is-unmeasured { background: repeating-linear-gradient(-45deg, var(--white), var(--white) 6px, var(--cream) 6px, var(--cream) 12px); }
+/* Labels wrap rather than truncate: "Assortment" ellipsed to "Assortm..." in the
+   narrow hero column, and a lever nobody can read is a lever nobody acts on.
+   min-height keeps the score row aligned across one- and two-line labels. */
+.fw-lever {
+  font-size: 0.55rem; font-weight: 600; letter-spacing: 0.02em;
+  text-transform: uppercase; color: var(--ink5);
+  line-height: 1.25; min-height: 1.3em; overflow-wrap: normal; hyphens: none;
+}
+.fw-score { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.05; color: var(--ink); }
+.fw-score.strong  { color: var(--forest); }
+.fw-score.watch   { color: #b45309; }
+.fw-score.leaking { color: var(--rust); }
+.fw-score.unmeasured { color: var(--parchment); font-size: 1.2rem; }
+.fw-metric { font-size: 0.7rem; color: var(--ink3); line-height: 1.35; }
+.fw-delta { font-size: 0.67rem; font-weight: 600; }
+.fw-delta.up   { color: var(--forest); }
+.fw-delta.down { color: var(--rust); }
+.fw-delta.flat { color: var(--ink5); }
+.fw-note { font-size: 0.63rem; color: var(--ink5); line-height: 1.35; font-style: italic; }
+
+.fw-weak { display: flex; gap: 11px; padding: 12px 18px; background: var(--ochre-lt); border-top: 1px solid rgba(234,88,12,0.16); }
+.fw-weak-mark { flex-shrink: 0; font-size: 0.85rem; line-height: 1.4; }
+.fw-weak-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #9a3412; margin-bottom: 3px; }
+.fw-weak-read { font-size: 0.83rem; color: var(--ink2); line-height: 1.6; }
+.fw-conf { font-size: 0.63rem; color: var(--ink5); padding: 7px 18px; background: var(--cream); border-top: 1px solid var(--cream2); line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .fw-grid { grid-template-columns: repeat(3, 1fr); }
+  .fw-tile:nth-child(4), .fw-tile:nth-child(5) { grid-column: span 1; }
+}
+@media (max-width: 460px) {
+  .fw-grid { grid-template-columns: repeat(2, 1fr); }
+  .fw-head { flex-wrap: wrap; gap: 8px; }
+  .fw-score { font-size: 1.3rem; }
+}
+
+/* Page framing for the cockpit block. The homepage nests the flywheel inside the
+   hero mockup; here it is a standalone card, so the card chrome lives on a
+   wrapper and the shared .fw rules stay byte-identical across both surfaces. */
+.fw-card { background: var(--white); border: 1px solid var(--cream3); border-radius: 6px; overflow: hidden; box-shadow: 0 1px 6px rgba(26,23,20,0.04); margin-bottom: 16px; }
+.fw-card .fw { border-bottom: none; }
+.fw-detail-head { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink4); margin: 2px 0 10px; }
+.fw-detail-head span { display: block; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 0.8rem; color: var(--ink5); margin-top: 3px; }
 </style>
 
 <!-- Structured data: WebApplication + breadcrumb -->
@@ -890,7 +979,16 @@ h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 2.75r
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "browserRequirements": "Requires JavaScript.",
-      "description": "Free Amazon Revenue Risk Report. Paste any ASIN or Seller ID to see where your brand is losing revenue across Best Seller Rank, rating trajectory, and Buy Box, with an estimated dollar impact. Results in about 30 seconds.",
+      "description": "Free Amazon Revenue Risk Report. Paste any ASIN or Seller ID to score the five levers that run your brand (operations, pricing, assortment, visibility, ratings), see which one is leaking, and get an estimated dollar impact. Results in about 30 seconds.",
+      "featureList": [
+        "Accepts any Amazon ASIN or Seller ID",
+        "Scores five levers: operations, pricing, assortment, visibility, and ratings",
+        "Names the weakest lever and what it is costing in revenue",
+        "Reports levers it cannot measure from public data rather than scoring them anyway",
+        "Shows the underlying rank, rating, and Buy Box signal detail behind each lever",
+        "Estimates the monthly revenue at risk in dollars",
+        "Returns results in about 30 seconds with no email required"
+      ],
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "publisher": {
         "@type": "Organization",
@@ -953,8 +1051,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>
 
 <div class="page">
-  <h1 class="sr-only">Free Amazon Revenue Risk Report</h1>
-  <div id="root"></div>
+  <h1 class="sr-only">Free Amazon Revenue Risk Report: your five levers scored</h1>
+  <div id="root">
+    <!-- Static pre-mount skeleton: React replaces this on mount; it reserves the
+         input block's space so initial load doesn't pop in (CLS). -->
+    <div class="rrr-head">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Analyze your brand</div>
+      <div class="rrr-head-title">Revenue Risk Report</div>
+    </div>
+    <div class="rrr-input-block" aria-hidden="true">
+      <div class="detail-skeleton">
+        <div class="skel skel-line w60"></div>
+        <div class="skel" style="height:48px"></div>
+        <div class="skel skel-line w40"></div>
+      </div>
+    </div>
+    <div class="demo-wrap"></div>
+  </div>
 
   <!-- ══════════ INLINE CLAIM FORM (Netlify Forms) ══════════ -->
   <section id="claim" class="claim-section">
@@ -995,6 +1108,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
 </div>
 
+<script src="/flywheel-core.js"></script>
+<script src="/revenue-model.js"></script>
+<script src="/flywheel-view.js"></script>
+<script src="/flywheel-samples.js"></script>
 <script src="demo-fixtures.js"></script>
 
 <!-- RRR app. Source: src/rrr-app.jsx. After editing the source, recompile with:

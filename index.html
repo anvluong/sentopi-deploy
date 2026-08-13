@@ -11,21 +11,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="7ijdi72mjm65BeZDHOcGuCKrUnMccBPhlX0DO24Fw8c" />
-<title>Amazon Review Analysis, Ranked by Revenue Impact | Sentopi</title>
-<meta name="description" content="Sentopi analyzes every Amazon review, scores each issue by revenue impact, and gives you a ranked fix list with owner assignments. Free for your first product.">
+<title>Amazon Brand Health, Scored Across Five Levers | Sentopi</title>
+<meta name="description" content="Score your Amazon brand on the five levers that run it: operations, pricing, assortment, visibility, ratings. Free instant read, no email required.">
 <link rel="canonical" href="https://sentopi.com/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sentopi.com/">
-<meta property="og:title" content="Sentopi: Prioritized Actions from Your Customer Reviews">
-<meta property="og:description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
+<meta property="og:title" content="Sentopi: Find the Lever That Is Leaking">
+<meta property="og:description" content="Five levers run every Amazon brand. Sentopi scores all five weekly and hands back the fix list, with the reviews layer read in full. Free for your first product.">
 <meta property="og:site_name" content="Sentopi">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sentopi: Prioritized Actions from Your Customer Reviews">
-<meta name="twitter:description" content="Sentopi reads every review, scores every issue, and hands you a ranked fix list with owner assignments and revenue impact. Free for your first product.">
+<meta name="twitter:title" content="Sentopi: Find the Lever That Is Leaking">
+<meta name="twitter:description" content="Five levers run every Amazon brand. Sentopi scores all five weekly and hands back the fix list. Free for your first product.">
 <meta property="og:image" content="https://sentopi.com/og-image.png">
 <meta name="twitter:image" content="https://sentopi.com/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf7f2'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='20' font-style='italic' font-weight='400' text-anchor='middle' fill='%23059669'%3ES%3C/text%3E%3C/svg%3E">
@@ -338,6 +338,81 @@ button, input { font-family: inherit; }
   display: flex; align-items: stretch;
   padding: 8px 18px; gap: 18px;
   background: var(--cream); border-bottom: 1px solid var(--cream2);
+}
+
+/* ═══════════ COCKPIT REGISTER ═══════════
+   Dense instrument styling for tool surfaces only. Marketing sections keep the
+   editorial register. Numbers are tabular so columns align as values change.
+   Status vocabulary is shared with the flywheel payload contract:
+   strong / watch / leaking / unmeasured. An unmeasured lever is drawn as
+   deliberately absent (dashed, no number) and never as a zero. */
+.fw { border-bottom: 1px solid var(--cream2); font-variant-numeric: tabular-nums; }
+.fw-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 11px 18px; background: var(--cream); border-bottom: 1px solid var(--cream2);
+}
+.fw-head-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.fw-head-label {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--ink5);
+}
+.fw-head-score {
+  font-family: 'DM Serif Display', serif; font-size: 1.6rem; line-height: 1; color: var(--ink);
+}
+.fw-head-score .fw-out { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--ink5); }
+.fw-chip {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; white-space: nowrap;
+}
+.fw-chip.strong     { background: var(--forest-lt); color: var(--forest2); }
+.fw-chip.watch      { background: #fef3c7;          color: #92400e; }
+.fw-chip.leaking    { background: #fee2e2;          color: #991b1b; }
+.fw-chip.unmeasured { background: var(--cream2);    color: var(--ink5); }
+.fw-head-risk { text-align: right; flex-shrink: 0; }
+.fw-head-risk-label { font-size: 0.62rem; color: var(--ink5); letter-spacing: 0.04em; }
+.fw-head-risk-val { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--ink); line-height: 1.2; }
+
+.fw-grid { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--cream3); gap: 1px; }
+.fw-tile {
+  background: var(--white); padding: 11px 7px 12px;
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.fw-tile.is-weak { background: #fffbf7; box-shadow: inset 0 -2px 0 var(--ochre); }
+.fw-tile.is-unmeasured { background: repeating-linear-gradient(-45deg, var(--white), var(--white) 6px, var(--cream) 6px, var(--cream) 12px); }
+/* Labels wrap rather than truncate: "Assortment" ellipsed to "Assortm..." in the
+   narrow hero column, and a lever nobody can read is a lever nobody acts on.
+   min-height keeps the score row aligned across one- and two-line labels. */
+.fw-lever {
+  font-size: 0.55rem; font-weight: 600; letter-spacing: 0.02em;
+  text-transform: uppercase; color: var(--ink5);
+  line-height: 1.25; min-height: 1.3em; overflow-wrap: normal; hyphens: none;
+}
+.fw-score { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.05; color: var(--ink); }
+.fw-score.strong  { color: var(--forest); }
+.fw-score.watch   { color: #b45309; }
+.fw-score.leaking { color: var(--rust); }
+.fw-score.unmeasured { color: var(--parchment); font-size: 1.2rem; }
+.fw-metric { font-size: 0.7rem; color: var(--ink3); line-height: 1.35; }
+.fw-delta { font-size: 0.67rem; font-weight: 600; }
+.fw-delta.up   { color: var(--forest); }
+.fw-delta.down { color: var(--rust); }
+.fw-delta.flat { color: var(--ink5); }
+.fw-note { font-size: 0.63rem; color: var(--ink5); line-height: 1.35; font-style: italic; }
+
+.fw-weak { display: flex; gap: 11px; padding: 12px 18px; background: var(--ochre-lt); border-top: 1px solid rgba(234,88,12,0.16); }
+.fw-weak-mark { flex-shrink: 0; font-size: 0.85rem; line-height: 1.4; }
+.fw-weak-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #9a3412; margin-bottom: 3px; }
+.fw-weak-read { font-size: 0.83rem; color: var(--ink2); line-height: 1.6; }
+.fw-conf { font-size: 0.63rem; color: var(--ink5); padding: 7px 18px; background: var(--cream); border-top: 1px solid var(--cream2); line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .fw-grid { grid-template-columns: repeat(3, 1fr); }
+  .fw-tile:nth-child(4), .fw-tile:nth-child(5) { grid-column: span 1; }
+}
+@media (max-width: 460px) {
+  .fw-grid { grid-template-columns: repeat(2, 1fr); }
+  .fw-head { flex-wrap: wrap; gap: 8px; }
+  .fw-score { font-size: 1.3rem; }
 }
 .mockup-stat { display: flex; flex-direction: column; gap: 1px; }
 .mockup-stat-label {
@@ -732,6 +807,13 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   width: 100%; height: auto; display: block;
   font-family: 'DM Sans', -apple-system, sans-serif;
 }
+/* Touch targets on the conversion path. A 22px chip is not reliably tappable on
+   a phone, and these controls are the whole "try it" affordance. */
+@media (max-width: 720px) {
+  .mockup-chip { min-height: 44px; display: inline-flex; align-items: center; }
+  .mockup-input, .mockup-go { min-height: 44px; }
+}
+
 @media (max-width: 720px) {
   .chart-card-trend .chart-body {
     overflow-x: auto;
@@ -839,34 +921,47 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 .how-cta p { font-size: 0.9rem; color: var(--ink5); margin-bottom: 18px; }
 
 /* ─────────────── PRICING ─────────────── */
-.pricing-section { background: var(--cream2); }
-.pricing-inner { max-width: 520px; margin: 0 auto; text-align: center; }
 .pricing-inner .section-h2 { margin-top: 12px; margin-bottom: 8px; }
 .pricing-inner .section-sub { margin-bottom: 40px; }
-.pricing-card {
   background: var(--white); border: 1px solid var(--cream3);
   border-radius: 6px; padding: 36px; text-align: left;
 }
-.pricing-starting { font-size: 0.75rem; color: var(--ink5); font-weight: 400; margin-bottom: 4px; }
-.pricing-price {
   font-family: 'DM Serif Display', serif;
   font-size: 2.8rem; color: var(--ink); line-height: 1.1; margin-bottom: 28px;
 }
-.pricing-price span { font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--ink4); font-weight: 400; }
-.pricing-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-.pricing-feat { display: flex; align-items: center; gap: 10px; font-size: 0.875rem; color: var(--ink3); }
-.pricing-feat svg { stroke: var(--forest); flex-shrink: 0; }
-.pricing-divider { border: none; border-top: 1px solid var(--cream2); margin-bottom: 24px; }
-.pricing-free-label { font-weight: 600; color: var(--ink); font-size: 0.9rem; margin-bottom: 6px; }
-.pricing-free-desc { font-size: 0.83rem; color: var(--ink4); line-height: 1.6; margin-bottom: 24px; }
-.pricing-cta {
   display: block; width: 100%; text-align: center;
   background: var(--forest); color: #fff;
   font-weight: 500; font-size: 0.9rem;
   padding: 14px; border-radius: var(--r);
   border: none; cursor: pointer; transition: background 0.15s;
 }
-.pricing-cta:hover { background: var(--forest2); }
+
+/* ─────────────── FLYWHEEL ─────────────── */
+.fly-header { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+.fly-header .section-sub { margin-top: 14px; }
+.fly-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: var(--cream3);
+  border: 1px solid var(--cream3); border-radius: 6px; overflow: hidden; margin-bottom: 28px;
+}
+.fly-card { background: var(--white); padding: 26px 20px; }
+.fly-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem; color: var(--ink4); line-height: 1; margin-bottom: 14px; font-style: italic;
+}
+.fly-card h3 { font-size: 0.9375rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.fly-card p { font-size: 0.83rem; color: var(--ink4); line-height: 1.6; }
+.fly-watch { display: block; margin-top: 10px; font-size: 0.73rem; font-weight: 500; color: var(--forest); }
+.fly-card.fly-ratings { background: var(--forest-lt); }
+.fly-card.fly-ratings .fly-num, .fly-card.fly-ratings p { color: var(--ink3); }
+.fly-cta { text-align: center; }
+.fly-cta a { font-size: 0.9rem; font-weight: 500; color: var(--forest); }
+@media (max-width: 900px) {
+  .fly-grid { grid-template-columns: repeat(2, 1fr); }
+  .fly-card.fly-ratings { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) { .fly-grid { grid-template-columns: 1fr; } }
+a.pricing-cta { text-decoration: none; }
 
 /* ─────────────── FOUNDERS ─────────────── */
 .founders { background: var(--cream2); border-bottom: 1px solid var(--cream3); padding: 72px 0; }
@@ -993,7 +1088,7 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
 /* ─────────────── REVEAL ─────────────── */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
-.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; }
+.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; } .d4 { transition-delay: 0.32s; }
 
 /* ─────────────── RESPONSIVE ─────────────── */
 @media (max-width: 960px) {
@@ -1032,7 +1127,6 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
   .hero h1 { font-size: 2.4rem; margin-bottom: 18px; }
   .hero-eyebrow { margin-bottom: 18px; }
   .hero-inner { row-gap: 22px; }
-  .pricing-price { font-size: 2.2rem; }
   /* Keep footer/content clear of the fixed mobile CTA bar */
   body { padding-bottom: 78px; }
   .sticky-cta { display: flex; }
@@ -1091,13 +1185,15 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
       "name": "Sentopi",
       "url": "https://sentopi.com/",
       "logo": "https://sentopi.com/og-image.png",
-      "description": "Sentopi is a review intelligence platform for Amazon brands. It reads every review, maps each complaint to a root cause, and delivers a priority-scored fix list with revenue impact modeling.",
+      "description": "Sentopi runs the Retail Flywheel for Amazon brands. It scores the five levers that drive a brand (operations, pricing, assortment, visibility, ratings) every week, reads every review to explain the weakest one, and delivers a priority-scored fix list with revenue impact modeling.",
       "knowsAbout": [
+        "Amazon brand health scoring",
+        "retail flywheel operations, pricing, assortment, visibility and ratings",
+        "Amazon Buy Box and stock position",
         "Amazon customer review analysis",
         "Amazon listing accuracy",
         "product review root cause analysis",
-        "ecommerce revenue impact modeling",
-        "customer sentiment analysis"
+        "ecommerce revenue impact modeling"
       ],
       "founder": [
         {
@@ -1112,7 +1208,14 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
           "jobTitle": "Cofounder",
           "sameAs": "https://www.linkedin.com/in/an-luong/"
         }
-      ]
+      ],
+      "email": "hello@sentopi.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@sentopi.com",
+        "availableLanguage": "English"
+      }
     },
     {
       "@type": "WebSite",
@@ -1127,14 +1230,24 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "url": "https://sentopi.com/",
-      "description": "Sentopi reads every Amazon review, scores every issue, and hands you a ranked fix list with owner assignments and estimated revenue impact.",
+      "description": "Sentopi scores the five levers of an Amazon brand every week, reads every review to explain the weakest lever, and hands back a ranked fix list with owner assignments and estimated revenue impact.",
+      "featureList": [
+        "Scores five levers weekly: operations, pricing, assortment, visibility, and ratings",
+        "Names the weakest lever and what it is costing in revenue",
+        "Reads every Amazon review for a product, not a sample, when ratings is the weak lever",
+        "Maps each complaint to a root cause across product, operations, and marketing",
+        "Returns a ranked fix list with owner assignments",
+        "Reports levers it cannot measure from public data rather than scoring them anyway",
+        "Free five-lever read on any ASIN or Seller ID, no email required"
+      ],
       "publisher": { "@id": "https://sentopi.com/#organization" },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Free analysis for your first product."
-      }
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free analysis for your first product, plus the free Revenue Risk Report on any ASIN."
+        }]
     }
   ]
 }
@@ -1150,15 +1263,15 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
       "name": "What does Sentopi do?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sentopi reads every Amazon review for your product, maps each complaint to a root cause (listing accuracy, product, or operations), and returns a priority-scored fix list with an estimated revenue impact on each item. You get a ranked to-do list: what to fix first, who owns it, and what it is worth in annual revenue."
+        "text": "Sentopi runs the Retail Flywheel for your brand. Five levers drive an Amazon business: operations, pricing, assortment, visibility, and ratings. We score all five every week from your own listing data, name the one that is leaking, and go deep on it. When that lever is ratings, going deep means reading every review and mapping each complaint to a root cause. You get a ranked to-do list: what to fix first, who owns it, and what it is worth in annual revenue."
       }
     },
     {
       "@type": "Question",
-      "name": "How is Sentopi different from Helium 10 or other review tools?",
+      "name": "How is Sentopi different from Helium 10 or Jungle Scout?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most review tools stop at sentiment and mention frequency; they tell you what people said. Sentopi connects each theme to a root cause, ties it to a dollar impact, and ranks the fixes by what moves your rating fastest. You leave with an action plan instead of another dashboard to interpret."
+        "text": "Those tools hand you dashboards and leave the interpreting to you. Sentopi scores the five levers, names the weakest one, ties it to a dollar impact, and ranks the fixes. When the weak lever is ratings, we read every review rather than sampling sentiment. You leave with an action plan instead of another dashboard to operate."
       }
     },
     {
@@ -1166,7 +1279,7 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
       "name": "Is it really free?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your first product analysis is free. Paste your Amazon link and we build a report from 100 of your reviews: top complaint categories, priority-scored issues, and what your rating gap is costing you. No credit card, delivered within 48 hours. Paid plans start at $149 per month for ongoing monitoring."
+        "text": "The five-lever read on any ASIN is free and instant, with no email required. Your first full product report is free too: paste your Amazon link and we score every lever and read 100 of your reviews, delivered within 48 hours with no credit card. The weekly report is $149 per month per product."
       }
     },
     {
@@ -1182,7 +1295,7 @@ a.pv-tag:hover { background: rgba(5,150,105,0.18); }
       "name": "How fast do I get results, and how accurate are they?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The free report lands within 48 hours. Findings are built from your actual reviews and public Amazon data. No vibes, no small sample. Each issue is scored by volume, severity, and fixability, so the ranking reflects real impact rather than how loud a single complaint is."
+        "text": "The free report lands within 48 hours. Findings are built from your actual reviews and public Amazon data. Each issue is scored by volume, severity, and fixability, so the ranking reflects real impact rather than how loud a single complaint is. Where public data cannot measure a lever, we say so on the scorecard rather than scoring it anyway."
       }
     }
   ]
@@ -1205,7 +1318,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <a href="/listing-accuracy">Research</a>
       <a href="/guides">Guides</a>
     </div>
-    <a href="#demo" class="nav-cta">See your revenue risk →</a>
+    <a href="/revenue-risk-report" class="nav-cta">See your revenue risk →</a>
   </div>
 </nav>
 
@@ -1217,19 +1330,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       <div class="hero-headline">
         <div class="hero-eyebrow">
           <span class="hero-eyebrow-dot"></span>
-          Amazon Review Intelligence
+          The Retail Flywheel, Run For You
         </div>
-        <h1>Prioritized actions<br><em>straight from your customers.</em></h1>
+        <h1>Five levers run your brand.<br><em>We find the one that's leaking.</em></h1>
       </div>
 
       <div class="hero-support">
-        <p class="hero-sub only-desktop">Sentopi reads every Amazon review for your product, scores every complaint by revenue impact, and hands back a ranked fix list with the owner already assigned. Paste your ASIN to see yours instantly.</p>
-        <p class="hero-sub only-mobile">Every Amazon review, scored by revenue impact, turned into a ranked fix list. Paste your ASIN to see yours.</p>
+        <p class="hero-sub only-desktop">Operations, pricing, assortment, visibility, ratings. Sentopi scores all five every week from your own listing data, then reads every review to explain the one that is slipping. You set up nothing and operate nothing; we do the analyst work. Paste your ASIN to score all five now.</p>
+        <p class="hero-sub only-mobile">Five levers run your Amazon brand. Sentopi scores all five weekly and reads every review to explain the one that is slipping. Paste your ASIN.</p>
         <div class="hero-calc">
-          100 of your reviews, priority-scored. No commitment.
+          All five levers scored weekly, with the reviews read in full. No commitment.
         </div>
         <div class="hero-calc">
-          <a href="/revenue-risk-report">See what your rating gap costs you →</a> 30 seconds, no sign-up required.
+          <a href="/revenue-risk-report">Score your whole brand, not just one listing →</a> 30 seconds, no sign-up required.
         </div>
       </div>
 
@@ -1242,47 +1355,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           </div>
           <div class="mockup-try-row">
             <input class="mockup-input" id="heroAsinInput" type="text" placeholder="Paste your ASIN or Amazon URL" autocomplete="off" spellcheck="false" aria-label="Your Amazon ASIN or product URL">
-            <button class="mockup-go" id="heroAsinGo" type="button">Show my fix list</button>
+            <button class="mockup-go" id="heroAsinGo" type="button">Score my five levers</button>
           </div>
           <div class="mockup-try-error" id="heroWidgetError" hidden></div>
         </div>
 
         <div id="heroWidgetBody" aria-live="polite">
           <div class="mockup-sample-tag" id="heroSampleTag">Sample · paste your ASIN above to see yours</div>
+          <!-- GENERATED:LANDING start. Do not hand-edit. Produced by
+               scripts/gen-landing.mjs from HERO_SAMPLES[0] via flywheel-view.js,
+               so the pre-interaction card cannot drift from the fixture the
+               first sample chip renders. Regenerate: node scripts/gen-landing.mjs -->
           <!-- Product header -->
           <div class="mockup-product-header">
-            <div class="mockup-product-name" id="heroProductName">TheraPetMD Dog Calming Diffuser Kit</div>
+            <div class="mockup-product-name" id="heroProductName">TheraPetMD 60-Day Dog Calming Diffuser Kit</div>
             <div class="mockup-product-meta">
-              <span class="mockup-stars" id="heroStars">★★★★☆</span>
-              <span class="mockup-rating-text" id="heroRatingText">3.8 avg · 4,161 reviews</span>
+              <span class="mockup-stars" id="heroStars">★★★☆☆</span>
+              <span class="mockup-rating-text" id="heroRatingText">3.6 avg · 4,518 reviews</span>
               <span class="mockup-rating-badge" id="heroRatingBadge">↓ Slipping</span>
             </div>
           </div>
-          <!-- Mini stat strip -->
-          <div class="mockup-stats">
-            <div class="mockup-stat">
-              <span class="mockup-stat-label">BSR</span>
-              <span class="mockup-stat-value">#278 <span class="mockup-stat-delta good">↓2.5% 90d</span></span>
-            </div>
-            <div class="mockup-stat">
-              <span class="mockup-stat-label">Buy Box</span>
-              <span class="mockup-stat-value">100%</span>
-            </div>
-            <div class="mockup-stat">
-              <span class="mockup-stat-label">Est. volume</span>
-              <span class="mockup-stat-value">~10,000 units/mo</span>
-            </div>
-          </div>
-          <!-- Impact block: revenue at risk + recovery path -->
-          <div class="mockup-impact">
-            <div class="mockup-impact-row">
-              <span class="mockup-impact-label">⚠️ Est. revenue at risk</span>
-              <span class="mockup-impact-value">$95,724<span class="mockup-impact-unit">/yr</span></span>
-            </div>
-            <div class="mockup-impact-recovery">3.8★ now <span class="to">→ 4.5★ if top 3 issues fixed</span></div>
-          </div>
+          <div class="fw"><div class="fw-head"><div class="fw-head-left"><span class="fw-head-label">Flywheel</span><span class="fw-head-score">55<span class="fw-out">/100</span></span><span class="fw-chip watch">At risk</span></div><div class="fw-head-risk"><div class="fw-head-risk-label">Revenue at risk</div><div class="fw-head-risk-val">$464,952<span class="fw-out">/yr</span></div></div></div><div class="fw-grid"><div class="fw-tile"><div class="fw-lever">Operations</div><div class="fw-score strong">95</div><div class="fw-metric">100%</div><div class="fw-note">Buy Box share, 30d</div></div><div class="fw-tile"><div class="fw-lever">Pricing</div><div class="fw-score watch">62</div><div class="fw-metric">$28.49</div><div class="fw-note">Current price</div></div><div class="fw-tile is-unmeasured"><div class="fw-lever">Assortment</div><div class="fw-score unmeasured">&ndash;&ndash;</div><div class="fw-note">Not measured</div></div><div class="fw-tile is-weak"><div class="fw-lever">Visibility</div><div class="fw-score leaking">22</div><div class="fw-metric">#519</div><div class="fw-delta down">-201.7%</div><div class="fw-note">Sales rank, 90d change</div></div><div class="fw-tile"><div class="fw-lever">Ratings</div><div class="fw-score leaking">38</div><div class="fw-metric">3.6</div><div class="fw-delta down">-0.40 in 90d</div><div class="fw-note">Rating now</div></div></div><div class="fw-weak"><span class="fw-weak-mark">&#9888;</span><div><div class="fw-weak-title">Weakest lever: Visibility</div><div class="fw-weak-read">Rank fell from roughly 170 to 519 in 90 days. Far fewer people are seeing this listing than a quarter ago, so every other lever is working on a smaller audience.</div></div></div><div class="fw-conf">Not measured from public data. Assortment: Cached sample snapshot carries no variant family, so coverage cannot be scored. Pricing: Single cached price point, so there is no 90-day price history behind this.</div></div>
+          <!-- GENERATED:LANDING end -->
           <div class="mockup-section">
-            <div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>
+            <div class="mockup-section-label">Ratings lever · what the reviews are saying</div>
           </div>
           <!-- Priority rows -->
           <div id="heroPriorityRows">
@@ -1307,7 +1403,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 
         <div class="mockup-cta-row">
           <a href="#demo" class="mockup-cta" id="heroWidgetCta">Show me exactly what to fix first →</a>
-          <span class="mockup-cta-meta">Built from 100 of your actual reviews · 48 hours · No commitment</span>
+          <span class="mockup-cta-meta">All five levers · 100 of your actual reviews · 48 hours · No commitment</span>
         </div>
       </div>
 
@@ -1321,8 +1417,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <div class="proof-strip-inner">
       <div class="proof-cell reveal">
         <div class="proof-cell-label">Coverage</div>
-        <div class="proof-cell-value">Every review, read</div>
-        <div class="proof-cell-desc">Most seller tools just monitor your star rating. Sentopi pulls every written review, 1 star through 5, and decomposes the why behind each complaint.</div>
+        <div class="proof-cell-value">All five levers</div>
+        <div class="proof-cell-desc">Operations, pricing, assortment, visibility, and ratings, scored every week from your own listing data. Ratings goes deepest: every written review read, 1 star through 5.</div>
       </div>
       <div class="proof-cell reveal d1">
         <div class="proof-cell-label">The pattern</div>
@@ -1335,10 +1431,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         <div class="proof-cell-desc">for a $25 product at 4.0&#9733; vs. 4.5&#9733;, 800 reviews/yr. Yours is calculated to your price and volume.</div>
       </div>
       <div class="proof-cell reveal d3">
-        <div class="proof-cell-label">Turnaround</div>
-        <div class="proof-cell-value">48 hours</div>
-        <div class="proof-cell-desc">from URL to ranked fix list, with owners pre-assigned to product, marketing, or ops.</div>
+        <div class="proof-cell-label">Cadence</div>
+        <div class="proof-cell-value">Every week</div>
+        <div class="proof-cell-desc">A leak shows up in the lever before it shows up in your deposit. First report inside 48 hours, then weekly, with owners pre-assigned.</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ RETAIL FLYWHEEL ══════════ -->
+<section class="section flywheel-section">
+  <div class="container">
+    <div class="fly-header">
+      <span class="eyebrow reveal">The Retail Flywheel</span>
+      <h2 class="section-h2 reveal">Five levers run<br>every Amazon brand.</h2>
+      <p class="section-sub reveal">Run weekly, they compound. Neglect one and it caps the rest. Ratings is the lever that reports on the other four, which is why it is the one we read deepest.</p>
+    </div>
+    <div class="fly-grid">
+      <div class="fly-card reveal">
+        <div class="fly-num">01</div>
+        <h3>Operations</h3>
+        <p>Keep it in stock and shipping fast. A stockout loses today's sale and the rank behind tomorrow's.</p>
+        <span class="fly-watch">Watch: in-stock rate</span>
+      </div>
+      <div class="fly-card reveal d1">
+        <div class="fly-num">02</div>
+        <h3>Pricing</h3>
+        <p>Be obviously worth it next to the alternative on the same screen, or carry a USP strong enough that you never compete on price.</p>
+        <span class="fly-watch">Watch: price vs the comparable listing</span>
+      </div>
+      <div class="fly-card reveal d2">
+        <div class="fly-num">03</div>
+        <h3>Assortment</h3>
+        <p>Carry the size, bundle, and variant your customer is actually looking for. Every gap is demand handed to a competitor.</p>
+        <span class="fly-watch">Watch: variant coverage vs the leader</span>
+      </div>
+      <div class="fly-card reveal d3">
+        <div class="fly-num">04</div>
+        <h3>Visibility</h3>
+        <p>Earn rank with ASIN-level relevancy. Visibility you buy stops the day you stop paying; relevancy compounds.</p>
+        <span class="fly-watch">Watch: organic rank and glance views</span>
+      </div>
+      <div class="fly-card fly-ratings reveal d4">
+        <div class="fly-num">05</div>
+        <h3>Ratings</h3>
+        <p>The feedback signal for the other four. Customers tell you, in their own words, which lever is leaking. This is where we read every review rather than sampling.</p>
+        <span class="fly-watch">Watch: star rating and review velocity</span>
+      </div>
+    </div>
+    <div class="fly-cta reveal">
+      <a href="/growth-loop">Read the full framework: the growth loop →</a>
     </div>
   </div>
 </section>
@@ -1348,8 +1490,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   <div class="container">
     <div class="founders-inner reveal">
       <span class="eyebrow">From the founders</span>
-      <p class="founders-quote only-desktop">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it reads every review and hands you a ranked list of exactly what to fix first.</p>
-      <p class="founders-quote only-mobile">We spent 10+ years in retail and ecommerce at Amazon and Walmart, watching strong products lose sales to problems hiding in their own reviews. Sentopi reads every review and ranks exactly what to fix first.</p>
+      <p class="founders-quote only-desktop">Between us, we spent more than 10 years in retail and ecommerce at some of the largest companies in the world, including Amazon and Walmart. We kept watching strong products lose sales to problems sitting in plain sight in their own reviews. Sentopi is the product we always wished we had: it scores every lever each week, reads every review behind the one that is slipping, and hands you a ranked list of exactly what to fix first. No analyst required.</p>
+      <p class="founders-quote only-mobile">We spent 10+ years in retail and ecommerce at Amazon and Walmart, watching strong products lose sales to problems hiding in their own reviews. Sentopi scores every lever weekly and ranks exactly what to fix first. No analyst required.</p>
       <div class="founders-sign">
         <span class="founders-names"><a href="https://www.linkedin.com/in/oliversilen" target="_blank" rel="noopener">Oliver</a> &amp; <a href="https://www.linkedin.com/in/an-luong/" target="_blank" rel="noopener">An</a></span>
         <span class="founders-role">Cofounders, Sentopi</span>
@@ -1364,19 +1506,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <div class="problem-grid">
       <div>
         <span class="eyebrow reveal">The Problem</span>
-        <h2 class="section-h2 reveal">You already know<br>something is off.</h2>
+        <h2 class="section-h2 reveal">You already know<br>something is off.<br>You just don't know which lever.</h2>
         <div class="problem-list" style="margin-top:32px">
           <div class="problem-item reveal">
             <div class="problem-x-icon">
               <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </div>
-            <p class="problem-text"><strong>Your star rating is stuck</strong> and you don't know which complaint categories are actually driving 1-stars.</p>
+            <p class="problem-text"><strong>Sales slipped and the cause is unclear.</strong> Rank, price, stock, and rating all moved a little. Nothing tells you which one actually cost you the units.</p>
           </div>
           <div class="problem-item reveal d1">
             <div class="problem-x-icon">
               <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </div>
-            <p class="problem-text"><strong>You know there are listing accuracy issues.</strong> Reading hundreds of reviews to find them isn't how you're spending your week.</p>
+            <p class="problem-text"><strong>The answer is buried in your own reviews.</strong> Reading hundreds of them to find it is not how you are spending your week.</p>
           </div>
           <div class="problem-item reveal d2">
             <div class="problem-x-icon">
@@ -1721,31 +1863,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   <div class="container">
     <div class="how-header">
       <span class="eyebrow reveal">How It Works</span>
-      <h2 class="section-h2 reveal">From your Amazon link<br>to your action plan.</h2>
-      <p class="section-sub reveal">Share your link, get back a prioritized report with the actions that move your rating.</p>
+      <h2 class="section-h2 reveal">From your Amazon link<br>to a weekly operating rhythm.</h2>
+      <p class="section-sub reveal">Share your link once. We gather, read, and score all five levers every week; you get back a prioritized report with the actions that move the number.</p>
     </div>
     <div class="how-grid">
       <div class="how-card reveal">
         <div class="how-num">01</div>
-        <h3>Gather Reviews</h3>
-        <p>Drop in your Amazon URL. Most review platforms no longer provide complete review data; Sentopi collects every written review automatically. Nothing for you to do.</p>
-        <span class="how-tag">Full dataset; no sampling</span>
+        <h3>Score the Five Levers</h3>
+        <p>Drop in your Amazon URL. Sentopi reads your stock and Buy Box position, price against comparable listings, variant coverage, rank trajectory, and rating, then scores each lever. Nothing for you to do.</p>
+        <span class="how-tag">Five levers, scored weekly</span>
       </div>
       <div class="how-card reveal d1">
         <div class="how-num">02</div>
-        <h3>Break it Down into Actionable Categories</h3>
-        <p>Every review is categorized by root cause, scored by volume, severity, and fixability, then checked against your listing claims.</p>
+        <h3>Open the Lever That Is Leaking</h3>
+        <p>The weakest lever gets the deep read. When it is ratings, that means every review categorized by root cause, scored by volume, severity, and fixability, then checked against your listing claims.</p>
         <span class="how-tag">Product, ops, or marketing</span>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">03</div>
-        <h3>Your Ranked To-Do List, Ready to Act On</h3>
-        <p>Every fix comes out pre-assigned to product, ops, or marketing with a revenue number attached. No interpretation needed; your team knows exactly what to do and what it's worth.</p>
+        <h3>Your Ranked To-Do List, Every Week</h3>
+        <p>Every fix comes out pre-assigned to product, ops, or marketing with a revenue number attached. No interpretation needed; your team knows exactly what to do and what it is worth.</p>
         <span class="how-tag">No interpretation needed</span>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ══════════ PRICING ══════════ -->
 
 <!-- ══════════ FAQ ══════════ -->
 <section id="free-tools" class="section" style="padding-top:0">
@@ -1779,15 +1923,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <div class="faq-list reveal">
       <details class="faq-item">
         <summary>What does Sentopi do?</summary>
-        <div class="faq-a">Sentopi reads every Amazon review for your product, maps each complaint to a root cause (listing accuracy, product, or operations), and returns a priority-scored fix list with an estimated revenue impact on each item. You get a ranked to-do list: what to fix first, who owns it, and what it is worth in annual revenue.</div>
+        <div class="faq-a">Sentopi runs the Retail Flywheel for your brand. Five levers drive an Amazon business: operations, pricing, assortment, visibility, and ratings. We score all five every week from your own listing data, name the one that is leaking, and go deep on it. When that lever is ratings, going deep means reading every review and mapping each complaint to a root cause. You get a ranked to-do list: what to fix first, who owns it, and what it is worth in annual revenue.</div>
       </details>
       <details class="faq-item">
-        <summary>How is Sentopi different from Helium 10 or other review tools?</summary>
-        <div class="faq-a">Most review tools stop at sentiment and mention frequency; they tell you what people said. Sentopi connects each theme to a root cause, ties it to a dollar impact, and ranks the fixes by what moves your rating fastest. You leave with an action plan instead of another dashboard to interpret.</div>
+        <summary>How is Sentopi different from Helium 10 or Jungle Scout?</summary>
+        <div class="faq-a">Those tools hand you dashboards and leave the interpreting to you. Sentopi scores the five levers, names the weakest one, ties it to a dollar impact, and ranks the fixes. When the weak lever is ratings, we read every review rather than sampling sentiment. You leave with an action plan instead of another dashboard to operate.</div>
       </details>
       <details class="faq-item">
         <summary>Is it really free?</summary>
-        <div class="faq-a">Your first product analysis is free. Paste your Amazon link and we build a report from 100 of your reviews: top complaint categories, priority-scored issues, and what your rating gap is costing you. No credit card, delivered within 48 hours. Paid plans start at $149 per month for ongoing monitoring.</div>
+        <div class="faq-a">The five-lever read on any ASIN is free and instant, with no email required. Your first full product report is free too: paste your Amazon link and we score every lever and read 100 of your reviews, delivered within 48 hours with no credit card. The weekly report is $149 per month per product.</div>
       </details>
       <details class="faq-item">
         <summary>What do I need to give you to get started?</summary>
@@ -1795,7 +1939,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       </details>
       <details class="faq-item">
         <summary>How fast do I get results, and how accurate are they?</summary>
-        <div class="faq-a">The free report lands within 48 hours. Findings are built from your actual reviews and public Amazon data. No vibes, no small sample. Each issue is scored by volume, severity, and fixability, so the ranking reflects real impact rather than how loud a single complaint is.</div>
+        <div class="faq-a">The free report lands within 48 hours. Findings are built from your actual reviews and public Amazon data. Each issue is scored by volume, severity, and fixability, so the ranking reflects real impact rather than how loud a single complaint is. Where public data cannot measure a lever, we say so on the scorecard rather than scoring it anyway.</div>
       </details>
     </div>
   </div>
@@ -1806,7 +1950,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   <div class="container">
     <div class="form-grid">
       <div class="form-left reveal">
-        <h2>Ready to see what's<br><em>driving your 1-stars?</em></h2>
+        <h2>Ready to see which<br><em>lever is leaking?</em></h2>
         <p class="form-sub only-desktop">Drop your Amazon product link and we'll build your rating report from 100 reviews: the top complaint categories, priority scores, and what's actually driving your 1-stars.</p>
         <p class="form-sub only-mobile">Drop your Amazon link. We'll build your report from 100 reviews: top complaints, priority scores, and what's driving your 1-stars.</p>
         <div class="trust-list">
@@ -1842,8 +1986,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 
       <form class="demo-form" name="demo" method="POST" action="/success.html" data-netlify="true">
         <input type="hidden" name="form-name" value="demo">
-        <div class="demo-form-title">Get your free report</div>
-        <div class="demo-form-sub">Free for your first product. Delivered within 48 hours.</div>
+        <div class="demo-form-title">Get your first flywheel report</div>
+        <div class="demo-form-sub">Free for your first product. Delivered within 48 hours, then weekly if you want it.</div>
         <div class="form-group">
           <label class="form-label" for="f-name">Name *</label>
           <input class="form-input" type="text" id="f-name" name="name" placeholder="Jane Smith" required>
@@ -1869,7 +2013,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
   <div class="footer-inner">
     <div class="footer-brand">
       <span class="footer-logo">Sentopi</span>
-      <span class="footer-tagline">Painkiller analytics for Amazon brands.</span>
+      <span class="footer-tagline">The retail flywheel, run for Amazon brands.</span>
     </div>
     <nav class="footer-links">
       <a href="/tools">Free Tools</a>
@@ -1888,8 +2032,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </footer>
 
 <!-- Sticky mobile CTA — shown ≤600px, auto-hides over the form section -->
-<a href="#demo" class="sticky-cta" id="stickyCta">See what your reviews are costing you →</a>
+<a href="#demo" class="sticky-cta" id="stickyCta">Find your leaking lever →</a>
 
+<script src="/flywheel-core.js"></script>
+<script src="/flywheel-view.js"></script>
+<script src="/flywheel-samples.js"></script>
 <script src="/priority-templates.js"></script>
 <script>
 /* ── Sticky mobile CTA: hide while a form section is in view ── */
@@ -1961,6 +2108,9 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
 (function () {
   const input    = document.getElementById('heroAsinInput');
   const goBtn    = document.getElementById('heroAsinGo');
+  /* Single source of truth for the button label: the markup. Restoring a
+     hardcoded string after loading silently reverted a copy change once. */
+  const goBtnLabel = goBtn.textContent;
   const errEl    = document.getElementById('heroWidgetError');
   const tagEl    = document.getElementById('heroSampleTag');
   const bodyEl   = document.getElementById('heroWidgetBody');
@@ -1998,7 +2148,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
   let loadingTimer = null;
   function setLoading(on) {
     goBtn.disabled = on;
-    goBtn.textContent = on ? 'Reading product...' : 'Show my fix list';
+    goBtn.textContent = on ? 'Reading product...' : goBtnLabel;
     if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
     if (on) {
       bodyEl.innerHTML =
@@ -2119,16 +2269,22 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
         '</form>'
       : '';
 
+    /* The flywheel supersedes the legacy stat strip and impact block: BSR lives
+       in Visibility and Buy Box in Operations, so showing both repeats itself. */
+    const riskAnnual = (d.revRiskMonthly !== null && d.revRiskMonthly !== undefined)
+      ? d.revRiskMonthly * 12 : null;
+    const flywheelHtml = window.FlywheelView ? window.FlywheelView.render(d.flywheel, riskAnnual) : '';
+    const bodyTop = flywheelHtml || (statsHtml + impactHtml);
+
     bodyEl.innerHTML =
       '<div class="mockup-sample-tag is-live" id="heroSampleTag">' + (tagText || 'Your product · live data') + '</div>' +
       '<div class="mockup-product-header">' +
         '<div class="mockup-product-name">' + escapeHtml(d.title || d.asin) + '</div>' +
         '<div class="mockup-product-meta">' + meta.join('') + '</div>' +
       '</div>' +
-      statsHtml +
-      impactHtml +
+      bodyTop +
       '<div class="mockup-section">' +
-        '<div class="mockup-section-label">Fix List Preview · Ranked by Impact</div>' +
+        '<div class="mockup-section-label">Ratings lever · what the reviews are saying</div>' +
       '</div>' +
       '<div>' + rows + '</div>' +
       '<div class="mockup-footnote">' + (riskNote ? riskNote + ' ' : '') + 'Example issues common in ' + escapeHtml(catLabel) + ', ranked the way we would prioritize them. Your real fix list is built from this product\'s actual reviews.</div>' +
@@ -2162,7 +2318,7 @@ document.querySelectorAll('.demo-form').forEach(form => form.addEventListener('s
     const asin = extractAsin(raw);
     if (!asin) {
       // Observed failure (WBR Wk26): the one engaged visitor of the week pasted an
-      // email into this ASIN box and clicked "Show my fix list" repeatedly with no
+      // email into this ASIN box and clicked the lookup button repeatedly with no
       // result. Detect the email shape, pre-fill it into the report form below, and
       // tell them where to finish, instead of dead-ending on a generic error.
       if (looksLikeEmail(raw)) {
